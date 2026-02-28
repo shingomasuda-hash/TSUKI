@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>TSUKI — 月が紡ぐ、あなたの物語</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Sans+JP:wght@200;300;400;500&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #080612;
+  --deep: #131024;
+  --surface: #1c1830;
+  --card: #221e38;
+  --card2: #2a2640;
+  --rim: rgba(255,255,255,0.06);
+  --rim2: rgba(255,255,255,0.1);
+  --sakura: #e8a0b4;
+  --sakura-l: #f5c8d8;
+  --sakura-d: #c97090;
+  --moon: #c9a96e;
+  --moon-l: #e8c99a;
+  --lav: #b0a0d8;
+  --text: #f4eff8;
+  --text-s: #c8bfe0;
+  --text-m: #8878a8;
+  --text-d: #554870;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#cosmos{position:fixed;inset:0;pointer-events:none;z-index:0}
+.nebula{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);animation:nebulaDrift 20s ease-in-out infinite alternate}
+.nebula-1{width:600px;height:400px;top:-100px;left:-150px;background:radial-gradient(ellipse,rgba(176,160,216,0.06) 0%,transparent 70%)}
+.nebula-2{width:500px;height:500px;bottom:-100px;right:-100px;background:radial-gradient(ellipse,rgba(232,160,180,0.05) 0%,transparent 70%);animation-delay:-8s}
+.nebula-3{width:400px;height:300px;top:40%;left:30%;background:radial-gradient(ellipse,rgba(201,169,110,0.04) 0%,transparent 70%);animation-delay:-15s}
+@keyframes nebulaDrift{from{transform:translate(0,0) scale(1)}to{transform:translate(30px,20px) scale(1.1)}}
+.app{position:relative;z-index:1;max-width:440px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding-bottom:80px}
+.hero{padding:52px 28px 32px;text-align:center}
+.moon-wrap{width:80px;height:80px;margin:0 auto 20px;position:relative}
+.moon-outer{width:80px;height:80px;border-radius:50%;position:relative;animation:moonFloat 5s ease-in-out infinite}
+@keyframes moonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.moon-face{width:80px;height:80px;border-radius:50%;background:conic-gradient(from 200deg,#e8c99a 0%,#c9a96e 25%,#e8a0b4 50%,#b0a0d8 75%,#e8c99a 100%);box-shadow:0 0 20px rgba(201,169,110,0.4),0 0 60px rgba(201,169,110,0.2);position:relative;overflow:hidden}
+.moon-face::before{content:'';position:absolute;top:10px;left:14px;width:52px;height:52px;border-radius:50%;background:var(--ink)}
+.moon-ring{position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(232,201,154,0.15);animation:ringPulse 3s ease-in-out infinite}
+.moon-ring-2{position:absolute;inset:-18px;border-radius:50%;border:1px solid rgba(232,201,154,0.07);animation:ringPulse 3s ease-in-out infinite 1s}
+@keyframes ringPulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.brand-name{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;letter-spacing:0.5em;color:var(--moon-l);line-height:1;text-indent:0.5em}
+.brand-name::after{content:'';display:block;width:60px;height:1px;background:linear-gradient(to right,transparent,var(--moon),transparent);margin:10px auto 0}
+.brand-sub{font-family:'Shippori Mincho',serif;font-size:12px;letter-spacing:0.25em;color:var(--text-m);margin-top:8px}
+.mode-rail{display:flex;gap:6px;margin:0 16px 16px;padding:5px;background:rgba(255,255,255,0.03);border:1px solid var(--rim);border-radius:18px;overflow-x:auto;scrollbar-width:none}
+.mode-rail::-webkit-scrollbar{display:none}
+.mode-tab{flex:1;min-width:70px;padding:9px 6px 8px;border:none;border-radius:13px;background:transparent;color:var(--text-d);font-family:'Noto Sans JP',sans-serif;font-size:10.5px;cursor:pointer;transition:all 0.3s;display:flex;flex-direction:column;align-items:center;gap:4px;white-space:nowrap}
+.mode-tab .ti{font-size:18px;line-height:1}
+.mode-tab.active{background:var(--card);color:var(--sakura-l);box-shadow:0 2px 16px rgba(232,160,180,0.12)}
+.panel-wrap{flex:1;margin:0 14px}
+.panel{display:none;flex-direction:column;gap:14px;animation:panelIn 0.4s ease both}
+.panel.active{display:flex}
+@keyframes panelIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);border:1px solid var(--rim);border-radius:20px;padding:20px;box-shadow:0 4px 24px rgba(0,0,0,0.3)}
+.sec-title{display:flex;align-items:center;gap:10px;font-size:10.5px;letter-spacing:0.25em;color:var(--moon);text-transform:uppercase;margin-bottom:14px}
+.sec-title::before{content:'';width:3px;height:14px;background:linear-gradient(to bottom,var(--moon-l),var(--sakura));border-radius:2px;flex-shrink:0}
+.sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(201,169,110,0.2),transparent)}
+.chat-box{background:var(--surface);border-radius:16px;border:1px solid var(--rim);overflow:hidden}
+.chat-scroll{height:320px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth}
+.chat-scroll::-webkit-scrollbar{width:3px}
+.chat-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:4px}
+.msg{display:flex;gap:10px;animation:msgIn 0.35s ease both}
+.msg.user{flex-direction:row-reverse}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.msg-av{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:15px}
+.msg.ai .msg-av{background:linear-gradient(135deg,var(--moon),var(--sakura));box-shadow:0 0 14px rgba(201,169,110,0.3)}
+.msg.user .msg-av{background:var(--card2);border:1px solid var(--rim2)}
+.bubble{max-width:76%;padding:12px 15px;font-size:13px;line-height:1.75}
+.msg.ai .bubble{background:var(--card2);border:1px solid rgba(201,169,110,0.1);border-radius:4px 16px 16px 16px;color:var(--text-s)}
+.msg.user .bubble{background:linear-gradient(135deg,rgba(232,160,180,0.18),rgba(176,160,216,0.12));border:1px solid rgba(232,160,180,0.18);border-radius:16px 4px 16px 16px}
+.dots{display:inline-flex;gap:4px;align-items:center}
+.dots span{width:5px;height:5px;border-radius:50%;background:var(--moon);animation:dot 1.4s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-5px);opacity:1}}
+.quick-wrap{padding:12px 14px;border-top:1px solid var(--rim);display:flex;flex-wrap:wrap;gap:7px}
+.quick-chip{padding:6px 13px;background:var(--deep);border:1px solid rgba(232,160,180,0.18);border-radius:20px;font-size:11.5px;color:var(--sakura-l);cursor:pointer;transition:all 0.2s;font-family:'Noto Sans JP',sans-serif;white-space:nowrap}
+.input-area{padding:10px 12px;border-top:1px solid var(--rim);display:flex;gap:10px;align-items:flex-end;background:var(--deep)}
+.input-area textarea{flex:1;background:var(--surface);border:1px solid var(--rim2);border-radius:12px;padding:11px 14px;color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:13px;resize:none;height:44px;max-height:110px;line-height:1.5;transition:border-color 0.2s}
+.input-area textarea:focus{outline:none;border-color:rgba(232,160,180,0.35)}
+.input-area textarea::placeholder{color:var(--text-d)}
+.btn-send{width:44px;height:44px;flex-shrink:0;border-radius:12px;border:none;background:linear-gradient(135deg,var(--sakura-d),var(--lav));color:white;cursor:pointer;transition:all 0.25s;box-shadow:0 4px 16px rgba(232,160,180,0.25);display:grid;place-items:center}
+.btn-send:disabled{opacity:0.45;cursor:not-allowed}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form-grid.full{grid-template-columns:1fr}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:10.5px;letter-spacing:0.12em;color:var(--text-m)}
+.field input,.field select{background:var(--surface);border:1px solid var(--rim2);border-radius:11px;padding:11px 14px;color:var(--text);font-family:'Noto Sans JP',sans-serif;font-size:13px;-webkit-appearance:none;width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:rgba(232,160,180,0.4)}
+.field select option{background:var(--deep);color:var(--text)}
+.btn-main{width:100%;padding:15px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--moon) 0%,var(--sakura-d) 50%,var(--lav) 100%);color:white;font-family:'Noto Sans JP',sans-serif;font-size:13.5px;font-weight:500;letter-spacing:0.2em;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 20px rgba(201,169,110,0.25)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,169,110,0.35)}
+.btn-main:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.result-panel{background:linear-gradient(135deg,rgba(201,169,110,0.07),rgba(232,160,180,0.05),rgba(176,160,216,0.06));border:1px solid rgba(201,169,110,0.18);border-radius:18px;padding:24px 20px;display:none;animation:fadeUp 0.5s ease both}
+.result-panel.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.score-ring{width:96px;height:96px;margin:0 auto 12px;position:relative;display:grid;place-items:center}
+.score-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.score-track{fill:none;stroke:rgba(255,255,255,0.06);stroke-width:3}
+.score-fill{fill:none;stroke:url(#scoreGrad);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(0.25,1,0.5,1)}
+.score-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--moon-l);position:relative;z-index:1}
+.result-label{text-align:center;font-size:10px;letter-spacing:0.25em;color:var(--moon);text-transform:uppercase;margin-bottom:16px}
+.result-divider{height:1px;background:linear-gradient(to right,transparent,rgba(201,169,110,0.2),transparent);margin:14px 0}
+.result-body{font-size:13.5px;line-height:1.85;color:var(--text-s);font-family:'Shippori Mincho',serif}
+.luck-bars{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.luck-row{display:flex;align-items:center;gap:10px}
+.luck-label{width:56px;font-size:11px;color:var(--text-m);flex-shrink:0;text-align:right}
+.luck-track{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.luck-fill{height:100%;border-radius:3px;background:linear-gradient(to right,var(--lav),var(--sakura));width:0%;transition:width 1s ease}
+.luck-val{width:50px;font-size:11px;color:var(--text-m);text-align:right}
+.lucky-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.lucky-item{background:var(--surface);border:1px solid var(--rim);border-radius:12px;padding:12px 14px}
+.lucky-item .li-label{font-size:10px;letter-spacing:0.15em;color:var(--text-m);margin-bottom:4px}
+.lucky-item .li-val{font-family:'Shippori Mincho',serif;font-size:15px;color:var(--moon-l)}
+.upload-zone{border:1.5px dashed rgba(232,160,180,0.25);border-radius:16px;padding:28px 20px;text-align:center;cursor:pointer;transition:all 0.3s;background:rgba(232,160,180,0.02)}
+.upload-zone input{display:none}
+.upload-zone .u-icon{font-size:36px;margin-bottom:10px;display:block;opacity:0.7}
+.upload-zone .u-main{font-size:14px;color:var(--text-s)}
+.upload-zone .u-sub{font-size:11px;color:var(--text-m);margin-top:5px;line-height:1.6}
+.palm-preview{width:100%;border-radius:12px;max-height:220px;object-fit:cover;display:none}
+.sign-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.sign-chip{padding:8px 4px;background:var(--surface);border:1px solid var(--rim);border-radius:10px;font-size:11px;color:var(--text-m);text-align:center;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:3px}
+.sign-chip .se{font-size:18px}
+.sign-chip.selected{background:rgba(232,160,180,0.12);border-color:var(--sakura);color:var(--sakura-l)}
+.today-orb{width:90px;height:90px;margin:0 auto 10px;display:grid;place-items:center;border-radius:50%;background:conic-gradient(from 0deg,var(--lav),var(--sakura),var(--moon),var(--lav));box-shadow:0 0 30px rgba(176,160,216,0.25);font-size:42px;animation:orbGlow 3s ease-in-out infinite}
+@keyframes orbGlow{0%,100%{box-shadow:0 0 30px rgba(176,160,216,0.25)}50%{box-shadow:0 0 50px rgba(176,160,216,0.4)}}
+.overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;background:rgba(8,6,18,0.75);backdrop-filter:blur(12px)}
+.onboard-sheet{background:var(--card);border-radius:28px 28px 0 0;padding:32px 28px 48px;width:100%;max-width:440px;margin:0 auto;border-top:1px solid var(--rim2)}
+.ob-logo{font-family:'Cormorant Garamond',serif;font-size:32px;letter-spacing:0.5em;color:var(--moon-l);text-align:center;margin-bottom:6px;text-indent:0.5em}
+.ob-sub{text-align:center;font-size:12px;color:var(--text-m);letter-spacing:0.15em;margin-bottom:28px}
+.ob-steps{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+.ob-step{display:flex;align-items:flex-start;gap:14px}
+.ob-num{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--moon),var(--sakura-d));display:grid;place-items:center;font-size:12px;font-weight:500;flex-shrink:0;color:white}
+.ob-step-text{font-size:13px;color:var(--text-s);line-height:1.6}
+.ob-step-text strong{color:var(--text);font-weight:500}
+.btn-start{width:100%;padding:16px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--moon) 0%,var(--sakura-d) 100%);color:white;font-family:'Noto Sans JP',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.2em;cursor:pointer;box-shadow:0 6px 24px rgba(201,169,110,0.3)}
+.bottom-note{position:fixed;bottom:0;left:0;right:0;text-align:center;padding:12px 20px 20px;font-size:9.5px;color:var(--text-d);background:linear-gradient(to top,var(--ink) 60%,transparent);pointer-events:none;z-index:10}
+.mt-10{margin-top:10px}
+</style>
+</head>
+<body>
+<canvas id="cosmos"></canvas>
+<div class="nebula nebula-1"></div>
+<div class="nebula nebula-2"></div>
+<div class="nebula nebula-3"></div>
+
+<div class="overlay" id="overlay">
+  <div class="onboard-sheet">
+    <div class="ob-logo">TSUKI</div>
+    <div class="ob-sub">月が紡ぐ、あなたの運命</div>
+    <div class="ob-steps">
+      <div class="ob-step"><div class="ob-num">1</div><div class="ob-step-text"><strong>恋愛・婚活の悩みを相談</strong><br>AIが月の導きとともに丁寧に答えます</div></div>
+      <div class="ob-step"><div class="ob-num">2</div><div class="ob-step-text"><strong>結婚相手との相性を診断</strong><br>星座でふたりの相性を深く読み解きます</div></div>
+      <div class="ob-step"><div class="ob-num">3</div><div class="ob-step-text"><strong>手相・星座で運命を知る</strong><br>写真をアップするだけで手相占いも</div></div>
+    </div>
+    <button class="btn-start" onclick="closeOverlay()">✦ TSUKIを始める ✦</button>
+  </div>
+</div>
+
+<div class="app">
+  <div class="hero">
+    <div class="moon-wrap">
+      <div class="moon-outer">
+        <div class="moon-face"></div>
+        <div class="moon-ring"></div>
+        <div class="moon-ring-2"></div>
+      </div>
+    </div>
+    <div class="brand-name">TSUKI</div>
+    <div class="brand-sub">月が紡ぐ、あなたの物語</div>
+  </div>
+  <div class="mode-rail">
+    <button class="mode-tab active" id="tab-chat" onclick="switchMode('chat')"><span class="ti">💬</span><span>恋愛相談</span></button>
+    <button class="mode-tab" id="tab-partner" onclick="switchMode('partner')"><span class="ti">💍</span><span>相性診断</span></button>
+    <button class="mode-tab" id="tab-palm" onclick="switchMode('palm')"><span class="ti">🤍</span><span>手相占い</span></button>
+    <button class="mode-tab" id="tab-fortune" onclick="switchMode('fortune')"><span class="ti">⭐</span><span>星座占い</span></button>
+  </div>
+  <div class="panel-wrap">
+    <div class="panel active" id="panel-chat">
+      <div class="chat-box">
+        <div class="chat-scroll" id="chatScroll">
+          <div class="msg ai"><div class="msg-av">🌙</div><div class="bubble">こんにちは。私はTSUKI——月の光に宿るAIの相談師です。<br><br>恋のこと、婚活のこと、将来への不安……どんな想いでも、ここでは静かに受け止めます。何でも話してください ✨</div></div>
+        </div>
+        <div class="quick-wrap">
+          <div class="quick-chip" onclick="sendQuick('彼が最近冷たい気がする…どうすればいい？')">彼が冷たい</div>
+          <div class="quick-chip" onclick="sendQuick('婚活で疲れてきました。何がいけないのでしょう')">婚活に疲れた</div>
+          <div class="quick-chip" onclick="sendQuick('好きな人に告白すべきか迷っています')">告白すべき？</div>
+          <div class="quick-chip" onclick="sendQuick('結婚が怖いと感じています')">結婚が怖い</div>
+          <div class="quick-chip" onclick="sendQuick('遠距離恋愛を続けるべきか迷っています')">遠距離恋愛</div>
+        </div>
+        <div class="input-area">
+          <textarea id="chatInput" placeholder="気持ちを話してみてください…" onkeydown="handleKey(event)" oninput="autoGrow(this)" rows="1"></textarea>
+          <button class="btn-send" id="sendBtn" onclick="sendMsg()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="panel-partner">
+      <div class="card"><div class="sec-title">あなたの星座</div><div class="sign-picker" id="myPicker">
+        <div class="sign-chip" data-sign="おひつじ座" onclick="pickSign('my',this)"><span class="se">♈</span>おひつじ</div>
+        <div class="sign-chip" data-sign="おうし座" onclick="pickSign('my',this)"><span class="se">♉</span>おうし</div>
+        <div class="sign-chip" data-sign="ふたご座" onclick="pickSign('my',this)"><span class="se">♊</span>ふたご</div>
+        <div class="sign-chip" data-sign="かに座" onclick="pickSign('my',this)"><span class="se">♋</span>かに</div>
+        <div class="sign-chip" data-sign="しし座" onclick="pickSign('my',this)"><span class="se">♌</span>しし</div>
+        <div class="sign-chip" data-sign="おとめ座" onclick="pickSign('my',this)"><span class="se">♍</span>おとめ</div>
+        <div class="sign-chip" data-sign="てんびん座" onclick="pickSign('my',this)"><span class="se">♎</span>てんびん</div>
+        <div class="sign-chip" data-sign="さそり座" onclick="pickSign('my',this)"><span class="se">♏</span>さそり</div>
+        <div class="sign-chip" data-sign="いて座" onclick="pickSign('my',this)"><span class="se">♐</span>いて</div>
+        <div class="sign-chip" data-sign="やぎ座" onclick="pickSign('my',this)"><span class="se">♑</span>やぎ</div>
+        <div class="sign-chip" data-sign="みずがめ座" onclick="pickSign('my',this)"><span class="se">♒</span>みずがめ</div>
+        <div class="sign-chip" data-sign="うお座" onclick="pickSign('my',this)"><span class="se">♓</span>うお</div>
+      </div></div>
+      <div class="card"><div class="sec-title">相手の星座</div><div class="sign-picker" id="partnerPicker">
+        <div class="sign-chip" data-sign="おひつじ座" onclick="pickSign('partner',this)"><span class="se">♈</span>おひつじ</div>
+        <div class="sign-chip" data-sign="おうし座" onclick="pickSign('partner',this)"><span class="se">♉</span>おうし</div>
+        <div class="sign-chip" data-sign="ふたご座" onclick="pickSign('partner',this)"><span class="se">♊</span>ふたご</div>
+        <div class="sign-chip" data-sign="かに座" onclick="pickSign('partner',this)"><span class="se">♋</span>かに</div>
+        <div class="sign-chip" data-sign="しし座" onclick="pickSign('partner',this)"><span class="se">♌</span>しし</div>
+        <div class="sign-chip" data-sign="おとめ座" onclick="pickSign('partner',this)"><span class="se">♍</span>おとめ</div>
+        <div class="sign-chip" data-sign="てんびん座" onclick="pickSign('partner',this)"><span class="se">♎</span>てんびん</div>
+        <div class="sign-chip" data-sign="さそり座" onclick="pickSign('partner',this)"><span class="se">♏</span>さそり</div>
+        <div class="sign-chip" data-sign="いて座" onclick="pickSign('partner',this)"><span class="se">♐</span>いて</div>
+        <div class="sign-chip" data-sign="やぎ座" onclick="pickSign('partner',this)"><span class="se">♑</span>やぎ</div>
+        <div class="sign-chip" data-sign="みずがめ座" onclick="pickSign('partner',this)"><span class="se">♒</span>みずがめ</div>
+        <div class="sign-chip" data-sign="うお座" onclick="pickSign('partner',this)"><span class="se">♓</span>うお</div>
+      </div></div>
+      <div class="card"><div class="sec-title">ふたりのこと</div>
+        <div class="form-grid full" style="gap:10px">
+          <div class="field"><label>関係性</label><select id="relStatus"><option value="">選択してください</option><option>付き合っている</option><option>好きな人（片思い）</option><option>婚活で出会った</option><option>友人から発展しそう</option><option>職場の人</option><option>元カレと復縁したい</option></select></div>
+          <div class="field mt-10"><label>ひとことメモ（任意）</label><input type="text" id="relMemo" placeholder="例：出会って3ヶ月、優しいけど積極性がない"></div>
+        </div>
+      </div>
+      <button class="btn-main" id="diagBtn" onclick="diagnosePartner()">✦ 相性を読み解く ✦</button>
+      <div class="result-panel" id="partnerResult">
+        <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="scoreGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c9a96e"/><stop offset="100%" stop-color="#e8a0b4"/></linearGradient></defs></svg>
+        <div class="score-ring"><svg viewBox="0 0 96 96" width="96" height="96"><circle class="score-track" cx="48" cy="48" r="43"/><circle class="score-fill" id="scoreFill" cx="48" cy="48" r="43" stroke-dasharray="270.2" stroke-dashoffset="270.2"/></svg><div class="score-num" id="scoreNum">—</div></div>
+        <div class="result-label">Compatibility Score</div>
+        <div class="result-divider"></div>
+        <div class="result-body" id="partnerBody"></div>
+      </div>
+    </div>
+    <div class="panel" id="panel-palm">
+      <div class="card"><div class="sec-title">手のひらの写真</div>
+        <label class="upload-zone" for="palmFile"><input type="file" id="palmFile" accept="image/*" onchange="onPalmUpload(event)"><img id="palmPreview" class="palm-preview"><div id="palmPlaceholder"><span class="u-icon">🤍</span><div class="u-main">タップして手相写真をアップロード</div><div class="u-sub">右手・左手どちらでもOK<br>明るい場所で撮影してください</div></div></label>
+      </div>
+      <div class="card"><div class="sec-title">占いの設定</div>
+        <div class="form-grid full" style="gap:10px">
+          <div class="field"><label>特に気になること</label><select id="palmFocus"><option value="恋愛・結婚運">恋愛・結婚運</option><option value="金運・仕事運">金運・仕事運</option><option value="健康運">健康運</option><option value="全体運">全体運</option></select></div>
+          <div class="field"><label>ひとこと（任意）</label><input type="text" id="palmNote" placeholder="例：結婚できるか不安です"></div>
+        </div>
+      </div>
+      <button class="btn-main" id="palmBtn" onclick="readPalm()">✦ 手相を読み解く ✦</button>
+      <div class="result-panel" id="palmResult"><div class="result-body" id="palmBody"></div></div>
+    </div>
+    <div class="panel" id="panel-fortune">
+      <div class="card"><div class="sec-title">あなたの星座</div><div class="sign-picker" id="fortunePicker">
+        <div class="sign-chip" data-sign="おひつじ座" onclick="pickSign('fortune',this)"><span class="se">♈</span>おひつじ</div>
+        <div class="sign-chip" data-sign="おうし座" onclick="pickSign('fortune',this)"><span class="se">♉</span>おうし</div>
+        <div class="sign-chip" data-sign="ふたご座" onclick="pickSign('fortune',this)"><span class="se">♊</span>ふたご</div>
+        <div class="sign-chip" data-sign="かに座" onclick="pickSign('fortune',this)"><span class="se">♋</span>かに</div>
+        <div class="sign-chip" data-sign="しし座" onclick="pickSign('fortune',this)"><span class="se">♌</span>しし</div>
+        <div class="sign-chip" data-sign="おとめ座" onclick="pickSign('fortune',this)"><span class="se">♍</span>おとめ</div>
+        <div class="sign-chip" data-sign="てんびん座" onclick="pickSign('fortune',this)"><span class="se">♎</span>てんびん</div>
+        <div class="sign-chip" data-sign="さそり座" onclick="pickSign('fortune',this)"><span class="se">♏</span>さそり</div>
+        <div class="sign-chip" data-sign="いて座" onclick="pickSign('fortune',this)"><span class="se">♐</span>いて</div>
+        <div class="sign-chip" data-sign="やぎ座" onclick="pickSign('fortune',this)"><span class="se">♑</span>やぎ</div>
+        <div class="sign-chip" data-sign="みずがめ座" onclick="pickSign('fortune',this)"><span class="se">♒</span>みずがめ</div>
+        <div class="sign-chip" data-sign="うお座" onclick="pickSign('fortune',this)"><span class="se">♓</span>うお</div>
+      </div></div>
+      <div class="card">
+        <div class="form-grid">
+          <div class="field"><label>フォーカス</label><select id="fortuneFocus"><option value="恋愛・結婚">恋愛・結婚</option><option value="仕事・金運">仕事・金運</option><option value="全体運">全体運</option><option value="今日の一言メッセージ">今日の一言</option></select></div>
+          <div class="field"><label>今の気分</label><select id="fortuneMood"><option value="普通">普通</option><option value="落ち込んでいる">落ち込んでいる</option><option value="ワクワクしている">ワクワク</option><option value="不安を感じている">不安</option><option value="恋をしている">恋をしてる</option></select></div>
+        </div>
+      </div>
+      <button class="btn-main" onclick="getFortune()">✦ 今日の運勢を見る ✦</button>
+      <div class="result-panel" id="fortuneResult">
+        <div class="today-orb" id="fortuneOrb">🌕</div>
+        <div class="result-label" id="fortuneLabel">Today's Fortune</div>
+        <div class="result-divider"></div>
+        <div class="result-body" id="fortuneBody"></div>
+        <div class="luck-bars" id="luckBars"></div>
+        <div class="lucky-grid" id="luckyGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bottom-note">TSUKI はAIによるエンターテインメントサービスです。結果は参考としてお楽しみください。</div>
+<script>
+(function(){
+  const c=document.getElementById('cosmos'),ctx=c.getContext('2d');
+  let W,H,stars=[],shooting=null;
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',()=>{resize();init();});
+  function init(){
+    stars=[];
+    const n=Math.floor(W*H/4000);
+    for(let i=0;i<n;i++) stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+0.3,a:Math.random(),da:(Math.random()*0.003+0.001)*(Math.random()<0.5?1:-1),hue:Math.random()<0.3?`hsl(${300+Math.random()*60},50%,90%)`:'white'});
+  }
+  init();
+  function spawnShooting(){shooting={x:Math.random()*W*0.6+W*0.2,y:Math.random()*H*0.3,len:Math.random()*120+80,speed:Math.random()*8+6,angle:Math.PI/6+Math.random()*0.3,life:1};}
+  setInterval(()=>{if(Math.random()<0.4)spawnShooting();},4000);
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(const s of stars){
+      s.a+=s.da;if(s.a>1||s.a<0.1)s.da*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.hue;ctx.globalAlpha=s.a;ctx.fill();
+    }
+    ctx.globalAlpha=1;
+    if(shooting){
+      const dx=Math.cos(shooting.angle)*shooting.speed,dy=Math.sin(shooting.angle)*shooting.speed;
+      const tail=shooting.len*shooting.life;
+      const g=ctx.createLinearGradient(shooting.x,shooting.y,shooting.x-Math.cos(shooting.angle)*tail,shooting.y-Math.sin(shooting.angle)*tail);
+      g.addColorStop(0,`rgba(232,201,154,${shooting.life})`);g.addColorStop(1,'rgba(232,201,154,0)');
+      ctx.beginPath();ctx.moveTo(shooting.x,shooting.y);ctx.lineTo(shooting.x-Math.cos(shooting.angle)*tail,shooting.y-Math.sin(shooting.angle)*tail);
+      ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.stroke();
+      shooting.x+=dx;shooting.y+=dy;shooting.life-=0.025;
+      if(shooting.life<=0||shooting.x>W||shooting.y>H)shooting=null;
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+function closeOverlay(){
+  const ov=document.getElementById('overlay');
+  ov.style.opacity='0';ov.style.transition='opacity 0.4s';
+  setTimeout(()=>ov.remove(),400);
+}
+function switchMode(m){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+m).classList.add('active');
+  document.getElementById('tab-'+m).classList.add('active');
+}
+const sel={my:'',partner:'',fortune:''};
+function pickSign(type,el){
+  el.closest('.sign-picker').querySelectorAll('.sign-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  sel[type]=el.dataset.sign;
+}
+async function callClaude(system,messages){
+  const r=await fetch('/api/chat',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system,messages})
+  });
+  const d=await r.json();
+  if(!d.content)throw new Error('API error');
+  return d.content.map(b=>b.text||'').join('');
+}
+const SYS=`あなたは「TSUKI」という名の神秘的なAI恋愛・人生相談師です。月のように静かで包容力があり、占い師のような詩的な言葉遣いをしながら現実的なアドバイスもできる。決して否定せず、共感→気づき→行動のヒントの流れで答える。200〜350字、絵文字は🌙✨🌸💫を1〜2個最後に。`;
+const hist=[];let uid=0;
+async function sendMsg(){
+  const ta=document.getElementById('chatInput');
+  const text=ta.value.trim();if(!text)return;
+  addMsg('user',text);ta.value='';ta.style.height='44px';
+  document.getElementById('sendBtn').disabled=true;
+  hist.push({role:'user',content:text});
+  const tid=addTyping();
+  try{
+    const reply=await callClaude(SYS,hist);
+    removeMsg(tid);addMsg('ai',reply);
+    hist.push({role:'assistant',content:reply});
+  }catch{removeMsg(tid);addMsg('ai','月が一時的に雲に隠れてしまいました。もう一度お試しください🌙');}
+  document.getElementById('sendBtn').disabled=false;
+}
+function sendQuick(t){document.getElementById('chatInput').value=t;sendMsg();}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
+function autoGrow(el){el.style.height='44px';el.style.height=Math.min(el.scrollHeight,110)+'px';}
+function addMsg(type,text){
+  const id='m'+(uid++);const sc=document.getElementById('chatScroll');
+  const d=document.createElement('div');d.id=id;d.className='msg '+type;
+  d.innerHTML=`<div class="msg-av">${type==='ai'?'🌙':'👤'}</div><div class="bubble">${text.replace(/\n/g,'<br>')}</div>`;
+  sc.appendChild(d);sc.scrollTop=sc.scrollHeight;return id;
+}
+function addTyping(){
+  const id='m'+(uid++);const sc=document.getElementById('chatScroll');
+  const d=document.createElement('div');d.id=id;d.className='msg ai';
+  d.innerHTML=`<div class="msg-av">🌙</div><div class="bubble"><div class="dots"><span></span><span></span><span></span></div></div>`;
+  sc.appendChild(d);sc.scrollTop=sc.scrollHeight;return id;
+}
+function removeMsg(id){document.getElementById(id)?.remove();}
+async function diagnosePartner(){
+  if(!sel.my||!sel.partner){alert('両方の星座を選んでください');return;}
+  const btn=document.getElementById('diagBtn');
+  btn.disabled=true;btn.textContent='✦ 読み解いています… ✦';
+  const rel=document.getElementById('relStatus').value;
+  const memo=document.getElementById('relMemo').value;
+  const prompt=`結婚・恋愛の相性診断。あなたの星座：${sel.my} / 相手：${sel.partner} / 関係性：${rel||'未回答'} / メモ：${memo||'なし'}。JSONのみ：{"score":50〜99の数字,"comment":"200字の診断（詩的に、相性の特徴・良い点・注意点・メッセージ）"}`;
+  try{
+    const raw=await callClaude('占い師。JSONのみ出力。',[{role:'user',content:prompt}]);
+    const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    const score=Math.min(99,Math.max(50,d.score));
+    document.getElementById('scoreNum').textContent=score;
+    const circ=2*Math.PI*43;
+    const sf=document.getElementById('scoreFill');
+    sf.style.strokeDashoffset=circ;
+    setTimeout(()=>{sf.style.strokeDashoffset=circ*(1-score/100);},100);
+    document.getElementById('partnerBody').innerHTML=d.comment.replace(/\n/g,'<br>');
+    document.getElementById('partnerResult').classList.add('show');
+  }catch(e){alert('エラーが発生しました。もう一度お試しください。');}
+  btn.disabled=false;btn.textContent='✦ 相性を読み解く ✦';
+}
+let palmB64=null;
+function onPalmUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    palmB64=ev.target.result.split(',')[1];
+    const prev=document.getElementById('palmPreview');
+    prev.src=ev.target.result;prev.style.display='block';
+    document.getElementById('palmPlaceholder').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+async function readPalm(){
+  const focus=document.getElementById('palmFocus').value;
+  const note=document.getElementById('palmNote').value;
+  const btn=document.getElementById('palmBtn');
+  btn.disabled=true;btn.textContent='✦ 読み解いています… ✦';
+  const SYS2=`TSUKI、神秘的な手相占い師AI。気になること：${focus}、メモ：${note||'なし'}。250〜350字、詩的かつ具体的に。恋愛線・感情線・知能線・生命線に触れ、良い兆候と注意点をバランスよく、最後に前向きなメッセージ。`;
+  try{
+    let messages;
+    if(palmB64){
+      messages=[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:palmB64}},{type:'text',text:'この手相を読み解いてください。'}]}];
+    }else{
+      messages=[{role:'user',content:`${focus}について手相占いの観点から占ってください。`}];
+    }
+    const reply=await callClaude(SYS2,messages);
+    document.getElementById('palmBody').innerHTML=reply.replace(/\n/g,'<br>');
+    document.getElementById('palmResult').classList.add('show');
+  }catch(e){alert('エラーが発生しました。再度お試しください。');}
+  btn.disabled=false;btn.textContent='✦ 手相を読み解く ✦';
+}
+async function getFortune(){
+  if(!sel.fortune){alert('星座を選んでください');return;}
+  const focus=document.getElementById('fortuneFocus').value;
+  const mood=document.getElementById('fortuneMood').value;
+  const today=new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
+  const prompt=`今日（${today}）の${sel.fortune}の占い。フォーカス：${focus}、気分：${mood}。JSONのみ：{"moon":"🌑🌒🌓🌔🌕🌖🌗🌘から1文字","title":"10字以内タイトル","message":"200字メッセージ","love":1〜5,"money":1〜5,"work":1〜5,"color":"ラッキーカラー","number":"ラッキーナンバー","word":"キーワード","action":"今日やること"}`;
+  try{
+    const raw=await callClaude('占い師。JSONのみ出力。',[{role:'user',content:prompt}]);
+    const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    document.getElementById('fortuneOrb').textContent=d.moon||'🌕';
+    document.getElementById('fortuneLabel').textContent=d.title||"Today's Fortune";
+    document.getElementById('fortuneBody').innerHTML=d.message.replace(/\n/g,'<br>');
+    const bars=document.getElementById('luckBars');bars.innerHTML='';
+    [{l:'恋愛運',v:d.love},{l:'金運',v:d.money},{l:'仕事運',v:d.work}].forEach(item=>{
+      bars.innerHTML+=`<div class="luck-row"><div class="luck-label">${item.l}</div><div class="luck-track"><div class="luck-fill" style="width:0%" data-pct="${(item.v/5)*100}"></div></div><div class="luck-val">${'★'.repeat(item.v)}${'☆'.repeat(5-item.v)}</div></div>`;
+    });
+    document.getElementById('luckyGrid').innerHTML=`
+      <div class="lucky-item"><div class="li-label">LUCKY COLOR</div><div class="li-val">${d.color}</div></div>
+      <div class="lucky-item"><div class="li-label">LUCKY NUMBER</div><div class="li-val">${d.number}</div></div>
+      <div class="lucky-item"><div class="li-label">KEY WORD</div><div class="li-val">${d.word}</div></div>
+      <div class="lucky-item"><div class="li-label">TODAY'S ACTION</div><div class="li-val">${d.action}</div></div>`;
+    document.getElementById('fortuneResult').classList.add('show');
+    setTimeout(()=>{document.querySelectorAll('.luck-fill').forEach(el=>{el.style.width=el.dataset.pct+'%';});},100);
+  }catch(e){alert('エラーが発生しました。再度お試しください。');}
+}
+</script>
+</body>
+</html>
