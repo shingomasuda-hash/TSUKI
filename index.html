@@ -64,9 +64,9 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
 .quiz-input option{background:var(–deep)}
 .quiz-nav{display:flex;gap:10px;max-width:440px;margin:0 auto 32px}
 .btn-quiz-back{flex:1;padding:13px;border-radius:12px;border:1px solid var(–rim2);background:transparent;color:var(–text-m);font-family:‘Noto Sans JP’,sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s}
-.btn-quiz-next{flex:2;padding:13px;border-radius:12px;border:none;background:var(–surface);color:var(–text-d);font-family:‘Noto Sans JP’,sans-serif;font-size:13px;font-weight:500;cursor:not-allowed;letter-spacing:0.1em;transition:all 0.35s;pointer-events:none}
-.btn-quiz-next.ready{background:linear-gradient(135deg,var(–moon),var(–sakura-d));color:white;cursor:pointer;pointer-events:auto;box-shadow:0 4px 16px rgba(201,169,110,0.3);transform:none}
-.btn-quiz-next.ready:active{transform:scale(0.97)}
+.btn-quiz-next{flex:2;padding:13px;border-radius:12px;border:1px solid rgba(201,169,110,0.25);background:rgba(201,169,110,0.08);color:rgba(201,169,110,0.45);font-family:‘Noto Sans JP’,sans-serif;font-size:13px;font-weight:500;cursor:pointer;letter-spacing:0.1em;transition:all 0.35s}
+.btn-quiz-next.ready{background:linear-gradient(135deg,var(–moon),var(–sakura-d));color:white;border-color:transparent;box-shadow:0 4px 20px rgba(201,169,110,0.4);animation:btnPulse 2s ease-in-out infinite}
+.btn-quiz-next.ready:active{transform:scale(0.97);animation:none}
 
 /* MAIN APP */
 .app{position:relative;z-index:1;max-width:440px;margin:0 auto;min-height:100vh;display:none;flex-direction:column;padding-bottom:80px}
