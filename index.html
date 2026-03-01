@@ -409,6 +409,7 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
   <div class="modal-sheet">
     <div class="modal-title">🌙 プロフィール</div>
     <div id="profileContent"></div>
+    <button class="btn-sub" onclick="regenAvatar()" style="margin-top:12px;border-color:rgba(201,169,110,0.3);color:var(--moon)">📸 アバターを作り直す</button>
     <button class="btn-logout" onclick="logout()">ログアウト</button>
     <button class="btn-modal-close" onclick="closeModal('profileModal')">閉じる</button>
   </div>
@@ -690,6 +691,7 @@ function checkAuthReady(){const email=document.getElementById('authEmail').value
 async function handleAuth(){const email=document.getElementById('authEmail').value.trim();const password=document.getElementById('authPassword').value;const name=document.getElementById('authName').value.trim();const btn=document.getElementById('authBtn');if(!email||!password){showAuthMsg('メールアドレスとパスワードを入力してください','error');return;}btn.textContent='処理中…';try{if(isSignUp){const{error}=await sb.auth.signUp({email,password,options:{data:{name}}});if(error)throw error;showAuthMsg('確認メールを送信しました。メールのリンクをクリックしてください。','success');}else{const{error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;}}catch(e){showAuthMsg(e.message==='Invalid login credentials'?'メールアドレスまたはパスワードが間違っています':e.message,'error');}btn.textContent=isSignUp?'✦ 登録する ✦':'✦ ログイン ✦';}
 function showAuthMsg(text,type){const el=document.getElementById('authMsg');el.textContent=text;el.className='auth-msg '+type;}
 async function logout(){await sb.auth.signOut();closeModal('profileModal');}
+function regenAvatar(){closeModal('profileModal');document.getElementById('avatarSetup').classList.add('show');document.getElementById('avatarResult').classList.remove('show');document.getElementById('avatarNextBtn').style.display='none';document.getElementById('avatarAnalyzeBtn').style.display='none';document.getElementById('avatarPreviewImg').style.display='none';document.getElementById('avatarPlaceholder').style.display='block';avatarB64=null;}
 
 /* QUIZ */
 const quizQuestions=[
