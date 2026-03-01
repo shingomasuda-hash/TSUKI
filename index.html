@@ -973,6 +973,13 @@ JSONのみ：{"moon":"🌑🌒🌓🌔🌕🌖🌗🌘から1文字","title":"10
   } catch(e) { alert('エラーが発生しました。再度お試しください。'); console.error(e); }
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+  const supabaseUrl = "https://oyzfiuaemprfibxtggip.supabase.co";
+  const supabaseAnonKey = "ここにPublishable key";
+
+  const sb = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+</script>
 </body>
 </html>
