@@ -67,7 +67,7 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
 .btn-quiz-next.ready:active{transform:scale(0.97);animation:none}
 
 /* AVATAR SETUP */
-.avatar-setup{position:fixed;inset:0;z-index:185;background:var(–ink);display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px}
+.avatar-setup{position:fixed;inset:0;z-index:210;background:var(–ink);display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px;overflow-y:auto}
 .avatar-setup.show{display:flex}
 .avatar-upload-zone{width:140px;height:140px;border-radius:50%;border:2px dashed rgba(201,169,110,0.4);display:grid;place-items:center;cursor:pointer;margin:0 auto 24px;overflow:hidden;position:relative;background:var(–surface)}
 .avatar-upload-zone img{width:100%;height:100%;object-fit:cover;display:none}
@@ -771,50 +771,143 @@ btn.disabled=false;}
 function generateAvatarSVG(d){
   const c1=d.color1||'#e8a0b4';const c2=d.color2||'#b0a0d8';
   const hair=d.hair_color||'#3d2060';const skin=d.skin_tone||'#f5d5b8';const eye=d.eye_color||'#6a4c9c';
-  const faceShape=d.face_shape||'oval';
-  const rx=faceShape==='round'?28:faceShape==='heart'?24:faceShape==='square'?22:26;
-  const ry=faceShape==='round'?28:faceShape==='heart'?30:faceShape==='square'?28:30;
-  
-  // 髪型
-  let hairPath='';
   const hs=d.hair_style||'hairmedium';
-  if(hs==='hairshort'){hairPath=`<ellipse cx="40" cy="22" rx="22" ry="16" fill="${hair}"/><rect x="18" y="22" width="6" height="10" rx="3" fill="${hair}"/><rect x="56" y="22" width="6" height="10" rx="3" fill="${hair}"/>`;}
-  else if(hs==='hairlong'){hairPath=`<ellipse cx="40" cy="20" rx="24" ry="18" fill="${hair}"/><rect x="16" y="25" width="8" height="35" rx="4" fill="${hair}"/><rect x="56" y="25" width="8" height="35" rx="4" fill="${hair}"/>`;}
-  else if(hs==='hairbun'){hairPath=`<ellipse cx="40" cy="22" rx="22" ry="16" fill="${hair}"/><circle cx="40" cy="8" r="9" fill="${hair}"/><ellipse cx="40" cy="17" rx="7" ry="4" fill="${hair}"/>`;}
-  else{hairPath=`<ellipse cx="40" cy="21" rx="23" ry="17" fill="${hair}"/><rect x="17" y="26" width="7" height="22" rx="4" fill="${hair}"/><rect x="56" y="26" width="7" height="22" rx="4" fill="${hair}"/>`;}
-  
+  const faceShape=d.face_shape||'oval';
+
+  // 肌のハイライト・シャドウ色
+  const skinLight=adjustColor(skin,18);const skinDark=adjustColor(skin,-22);
+  const hairLight=adjustColor(hair,25);const hairDark=adjustColor(hair,-20);
+  const eyeDark=adjustColor(eye,-30);
+
+  // 髪型パス（高品質）
+  let hairBack='',hairFront='',hairExtra='';
+  if(hs==='hairshort'){
+    hairBack=`<ellipse cx="40" cy="23" rx="22" ry="16" fill="${hair}"/>
+      <path d="M18,30 Q16,42 20,50 L20,35 Z" fill="${hair}"/>
+      <path d="M62,30 Q64,42 60,50 L60,35 Z" fill="${hair}"/>`;
+    hairFront=`<path d="M19,26 Q22,16 40,14 Q58,16 61,26 Q54,20 40,19 Q26,20 19,26Z" fill="${hairLight}" opacity="0.5"/>`;
+  } else if(hs==='hairlong'){
+    hairBack=`<ellipse cx="40" cy="22" rx="24" ry="18" fill="${hair}"/>
+      <path d="M16,28 Q12,45 14,65 Q18,72 22,68 Q20,55 20,40 Z" fill="${hair}"/>
+      <path d="M64,28 Q68,45 66,65 Q62,72 58,68 Q60,55 60,40 Z" fill="${hair}"/>
+      <path d="M22,68 Q26,75 30,72 Q25,58 22,42Z" fill="${hairDark}"/>
+      <path d="M58,68 Q54,75 50,72 Q55,58 58,42Z" fill="${hairDark}"/>`;
+    hairFront=`<path d="M20,28 Q24,17 40,15 Q56,17 60,28 Q52,22 40,21 Q28,22 20,28Z" fill="${hairLight}" opacity="0.45"/>`;
+  } else if(hs==='hairbun'){
+    hairBack=`<ellipse cx="40" cy="23" rx="22" ry="16" fill="${hair}"/>
+      <circle cx="40" cy="9" r="11" fill="${hair}"/>
+      <ellipse cx="40" cy="18" rx="9" ry="5" fill="${hairDark}"/>
+      <path d="M18,30 Q16,40 19,48 L20,34 Z" fill="${hair}"/>
+      <path d="M62,30 Q64,40 61,48 L60,34 Z" fill="${hair}"/>`;
+    hairFront=`<path d="M20,28 Q24,17 40,15 Q56,17 60,28 Q52,22 40,21 Q28,22 20,28Z" fill="${hairLight}" opacity="0.4"/>
+      <ellipse cx="40" cy="9" rx="7" ry="4" fill="${hairLight}" opacity="0.3"/>`;
+  } else {
+    hairBack=`<ellipse cx="40" cy="22" rx="23" ry="17" fill="${hair}"/>
+      <path d="M17,29 Q14,42 16,56 Q19,62 22,58 Q20,46 20,33 Z" fill="${hair}"/>
+      <path d="M63,29 Q66,42 64,56 Q61,62 58,58 Q60,46 60,33 Z" fill="${hair}"/>
+      <path d="M22,58 Q25,65 28,62 Q24,50 22,38Z" fill="${hairDark}"/>
+      <path d="M58,58 Q55,65 52,62 Q56,50 58,38Z" fill="${hairDark}"/>`;
+    hairFront=`<path d="M19,27 Q23,16 40,14 Q57,16 61,27 Q53,21 40,20 Q27,21 19,27Z" fill="${hairLight}" opacity="0.45"/>`;
+  }
+
+  // 顔の輪郭
+  const faceRx=faceShape==='round'?20:faceShape==='square'?19:faceShape==='heart'?18:19;
+  const faceRy=faceShape==='round'?22:faceShape==='square'?21:faceShape==='heart'?23:23;
+
+  // 眉毛
+  const browY=35;
+  const brows=`<path d="M27,${browY} Q31,${browY-3} 35,${browY-1}" stroke="${hairDark}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <path d="M45,${browY-1} Q49,${browY-3} 53,${browY}" stroke="${hairDark}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
+
+  // まつ毛
+  const lashes=`<path d="M26,41 Q24,38 25,36" stroke="${hairDark}" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M54,41 Q56,38 55,36" stroke="${hairDark}" stroke-width="1" fill="none" stroke-linecap="round"/>`;
+
+  // 鼻
+  const nose=`<path d="M39,46 Q37,50 38,52 Q40,53 42,52 Q43,50 41,46" fill="${skinDark}" opacity="0.25"/>`;
+
+  // 口
+  const mouth=`<path d="M34,57 Q37,61 40,62 Q43,61 46,57" stroke="${skinDark}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M36,57 Q40,59.5 44,57" fill="${adjustColor(skin,-10)}" opacity="0.5"/>`;
+
   // アクセサリー
   let acc='';
-  if(d.accessory==='star'){acc=`<polygon points="40,2 42,8 48,8 43,12 45,18 40,14 35,18 37,12 32,8 38,8" fill="${c1}" opacity="0.9"/>`;}
-  else if(d.accessory==='moon'){acc=`<path d="M48,4 Q54,10 50,18 Q44,14 44,8 Q44,4 48,4Z" fill="${c1}" opacity="0.9"/>`;}
-  else if(d.accessory==='flower'){acc=`<circle cx="40" cy="5" r="3" fill="${c1}"/><circle cx="46" cy="7" r="2.5" fill="${c2}"/><circle cx="34" cy="7" r="2.5" fill="${c2}"/><circle cx="40" cy="5" r="2" fill="white" opacity="0.6"/>`;}
-  
+  if(d.accessory==='star'){
+    acc=`<g transform="translate(56,8)">
+      <polygon points="8,0 10,6 16,6 11,10 13,16 8,12 3,16 5,10 0,6 6,6" fill="${c1}" opacity="0.95"/>
+      <polygon points="8,1 10,6 15,6 11,9.5 12.5,15 8,11.5 3.5,15 5,9.5 1,6 6,6" fill="white" opacity="0.3"/>
+    </g>
+    <circle cx="24" cy="14" r="2" fill="${c2}" opacity="0.6"/>
+    <circle cx="20" cy="20" r="1.2" fill="${c1}" opacity="0.5"/>`;
+  } else if(d.accessory==='moon'){
+    acc=`<g transform="translate(55,6)">
+      <path d="M12,2 Q18,8 16,16 Q10,20 6,16 Q4,10 8,6 Q10,4 12,2Z" fill="${c1}" opacity="0.9"/>
+      <path d="M11,3 Q15,8 14,15 Q11,17 8,15 Q7,10 9,7Z" fill="${c2}" opacity="0.4"/>
+    </g>
+    <circle cx="22" cy="12" r="1.8" fill="${c1}" opacity="0.55"/>
+    <circle cx="18" cy="18" r="1" fill="${c2}" opacity="0.5"/>`;
+  } else if(d.accessory==='flower'){
+    acc=`<g transform="translate(54,7)">
+      <circle cx="8" cy="8" r="3.5" fill="${c2}" opacity="0.85"/>
+      <ellipse cx="8" cy="3" rx="2.5" ry="3" fill="${c1}" opacity="0.8"/>
+      <ellipse cx="8" cy="13" rx="2.5" ry="3" fill="${c1}" opacity="0.8"/>
+      <ellipse cx="3" cy="8" rx="3" ry="2.5" fill="${c1}" opacity="0.8"/>
+      <ellipse cx="13" cy="8" rx="3" ry="2.5" fill="${c1}" opacity="0.8"/>
+      <circle cx="8" cy="8" r="2.5" fill="white" opacity="0.6"/>
+    </g>`;
+  }
+
+  // ほほ紅
+  const blush=`<ellipse cx="28" cy="50" rx="5.5" ry="3.5" fill="${c1}" opacity="0.18"/>
+    <ellipse cx="52" cy="50" rx="5.5" ry="3.5" fill="${c1}" opacity="0.18"/>`;
+
+  // 首・体
+  const body=`<path d="M34,72 Q32,68 33,65 Q40,63 47,65 Q48,68 46,72Z" fill="${skin}"/>
+    <path d="M28,80 Q32,72 40,70 Q48,72 52,80Z" fill="${adjustColor(c2,-10)}" opacity="0.7"/>`;
+
+  // 光の反射（アニメーション用）
+  const shine=`<ellipse cx="34" cy="40" rx="1.5" ry="2" fill="white" opacity="0.7"/>
+    <ellipse cx="46" cy="40" rx="1.5" ry="2" fill="white" opacity="0.7"/>`;
+
   return `<svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <radialGradient id="bgG" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="${c2}" stop-opacity="0.3"/>
-        <stop offset="100%" stop-color="${c1}" stop-opacity="0.1"/>
+      <radialGradient id="bgG${Math.random().toString(36).slice(2,6)}" cx="50%" cy="40%" r="55%">
+        <stop offset="0%" stop-color="${c2}" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="${c1}" stop-opacity="0.08"/>
       </radialGradient>
-      <radialGradient id="skinG" cx="40%" cy="35%" r="60%">
-        <stop offset="0%" stop-color="${skin}" stop-opacity="1"/>
-        <stop offset="100%" stop-color="${adjustColor(skin,-20)}" stop-opacity="1"/>
+      <radialGradient id="faceG${Math.random().toString(36).slice(2,6)}" cx="40%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="${skinLight}"/>
+        <stop offset="60%" stop-color="${skin}"/>
+        <stop offset="100%" stop-color="${skinDark}"/>
       </radialGradient>
+      <radialGradient id="eyeG${Math.random().toString(36).slice(2,6)}" cx="35%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="${adjustColor(eye,40)}"/>
+        <stop offset="100%" stop-color="${eyeDark}"/>
+      </radialGradient>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
     </defs>
-    <circle cx="40" cy="40" r="40" fill="url(#bgG)"/>
-    ${hairPath}
-    <ellipse cx="40" cy="44" rx="${rx}" ry="${ry}" fill="url(#skinG)"/>
-    <ellipse cx="31" cy="40" rx="5" ry="5.5" fill="white"/>
-    <ellipse cx="49" cy="40" rx="5" ry="5.5" fill="white"/>
-    <circle cx="31" cy="40" r="3.5" fill="${eye}"/>
-    <circle cx="49" cy="40" r="3.5" fill="${eye}"/>
-    <circle cx="32" cy="39" r="1.2" fill="white" opacity="0.8"/>
-    <circle cx="50" cy="39" r="1.2" fill="white" opacity="0.8"/>
-    <ellipse cx="40" cy="52" rx="6" ry="3" fill="${adjustColor(skin,-15)}" opacity="0.6"/>
-    <path d="M35,56 Q40,60 45,56" stroke="${adjustColor(skin,-30)}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <ellipse cx="28" cy="46" rx="4" ry="3" fill="${c1}" opacity="0.25"/>
-    <ellipse cx="52" cy="46" rx="4" ry="3" fill="${c1}" opacity="0.25"/>
+    <circle cx="40" cy="40" r="40" fill="url(#bgG${Math.random().toString(36).slice(2,6)})"/>
+    <circle cx="40" cy="40" r="38" fill="none" stroke="${c1}" stroke-width="0.8" opacity="0.3"/>
+    ${body}
+    ${hairBack}
+    <ellipse cx="40" cy="47" rx="${faceRx}" ry="${faceRy}" fill="url(#faceG${Math.random().toString(36).slice(2,6)})"/>
+    ${blush}
+    ${brows}
+    <ellipse cx="31" cy="42" rx="6" ry="6.5" fill="white"/>
+    <ellipse cx="49" cy="42" rx="6" ry="6.5" fill="white"/>
+    <circle cx="31" cy="42" r="4.2" fill="url(#eyeG${Math.random().toString(36).slice(2,6)})"/>
+    <circle cx="49" cy="42" r="4.2" fill="url(#eyeG${Math.random().toString(36).slice(2,6)})"/>
+    <circle cx="30" cy="41" r="1.8" fill="#111" opacity="0.9"/>
+    <circle cx="48" cy="41" r="1.8" fill="#111" opacity="0.9"/>
+    ${shine}
+    ${lashes}
+    ${nose}
+    ${mouth}
+    ${hairFront}
     ${acc}
-    <circle cx="40" cy="40" r="39" fill="none" stroke="${c1}" stroke-width="0.5" opacity="0.4"/>
   </svg>`;
 }
 
@@ -826,8 +919,8 @@ function adjustColor(hex,amount){
     return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
   }catch{return hex;}
 }
-function skipAvatarSetup(){userProfile.avatar_name=userProfile.avatar_name||'つき';userProfile.avatar_color=userProfile.avatar_color||'#c9a96e|#e8a0b4';sb.from('profiles').update({avatar_name:userProfile.avatar_name||'つき',avatar_color:userProfile.avatar_color}).eq('id',currentUser.id);document.getElementById('avatarSetup').classList.remove('show');showApp();}
-function finishAvatarSetup(){document.getElementById('avatarSetup').classList.remove('show');showApp();}
+function skipAvatarSetup(){userProfile.avatar_name=userProfile.avatar_name||'つき';userProfile.avatar_color=userProfile.avatar_color||'#c9a96e|#e8a0b4';sb.from('profiles').update({avatar_name:userProfile.avatar_name||'つき',avatar_color:userProfile.avatar_color}).eq('id',currentUser.id);document.getElementById('avatarSetup').classList.remove('show');showApp();setTimeout(()=>setupAvatarUI(),300);}
+function finishAvatarSetup(){document.getElementById('avatarSetup').classList.remove('show');showApp();setTimeout(()=>setupAvatarUI(),300);}
 
 /* SHOW APP */
 async function showApp(){
