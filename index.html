@@ -269,8 +269,8 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
   <div class="auth-card">
     <div class="auth-title" id="authTitle">ログイン</div>
     <div id="authMsg" class="auth-msg"></div>
-    <div class="auth-field"><label>メールアドレス</label><input type="email" id="authEmail" placeholder="your@email.com"></div>
-    <div class="auth-field" id="authPasswordField"><label>パスワード</label><input type="password" id="authPassword" placeholder="8文字以上"></div>
+    <div class="auth-field"><label>メールアドレス</label><input type="email" id="authEmail" placeholder="your@email.com" oninput="checkAuthReady()" onchange="checkAuthReady()"></div>
+    <div class="auth-field" id="authPasswordField"><label>パスワード</label><input type="password" id="authPassword" placeholder="8文字以上" oninput="checkAuthReady()" onchange="checkAuthReady()"></div>
     <div class="auth-field" id="authNameField" style="display:none"><label>ニックネーム</label><input type="text" id="authName" placeholder="例：さくら"></div>
     <button class="btn-auth" id="authBtn" onclick="handleAuth()">✦ ログイン ✦</button>
     <div class="auth-switch" id="authSwitch">アカウントをお持ちでない方は <a onclick="toggleAuthMode()">新規登録</a></div>
@@ -591,8 +591,8 @@ function checkAndShowQuiz(){if(!userProfile||!userProfile.quiz_done){document.ge
 function toggleAuthMode(){isSignUp=!isSignUp;document.getElementById('authTitle').textContent=isSignUp?'新規登録':'ログイン';document.getElementById('authBtn').textContent=isSignUp?'✦ 登録する ✦':'✦ ログイン ✦';document.getElementById('authSwitch').innerHTML=isSignUp?'すでにアカウントをお持ちの方は <a onclick="toggleAuthMode()">ログイン</a>':'アカウントをお持ちでない方は <a onclick="toggleAuthMode()">新規登録</a>';document.getElementById('authNameField').style.display=isSignUp?'flex':'none';document.getElementById('authMsg').className='auth-msg';}
 async function handleAuth(){const email=document.getElementById('authEmail').value.trim();const password=document.getElementById('authPassword').value;const name=document.getElementById('authName').value.trim();const btn=document.getElementById('authBtn');const msg=document.getElementById('authMsg');if(!email||!password){showAuthMsg('メールアドレスとパスワードを入力してください','error');return;}btn.disabled=true;btn.textContent='処理中…';try{if(isSignUp){const{error}=await sb.auth.signUp({email,password,options:{data:{name}}});if(error)throw error;showAuthMsg('確認メールを送信しました。メールのリンクをクリックしてください。','success');}else{const{error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;}}catch(e){showAuthMsg(e.message==='Invalid login credentials'?'メールアドレスまたはパスワードが間違っています':e.message,'error');}btn.disabled=false;btn.textContent=isSignUp?'✦ 登録する ✦':'✦ ログイン ✦';}
 function showAuthMsg(text,type){const el=document.getElementById('authMsg');el.textContent=text;el.className='auth-msg '+type;}
-function checkAuthReady(){const email=document.getElementById('authEmail').value.trim();const pw=document.getElementById('authPassword').value;const name=document.getElementById('authName').value.trim();const ready=email&&pw.length>=6&&(!isSignUp||name);document.getElementById('authBtn').className='btn-auth'+(ready?' ready':'');}
-document.addEventListener('DOMContentLoaded',()=>{['authEmail','authPassword','authName'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',checkAuthReady);});});
+function checkAuthReady(){const email=document.getElementById('authEmail').value.trim();const pw=document.getElementById('authPassword').value;const ready=email.length>0&&pw.length>=1;document.getElementById('authBtn').className='btn-auth'+(ready?' ready':'');}
+setTimeout(()=>{['authEmail','authPassword','authName'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',checkAuthReady);});},500);
 async function logout(){await sb.auth.signOut();closeModal('profileModal');}
 
 /* ===== QUIZ ===== */
