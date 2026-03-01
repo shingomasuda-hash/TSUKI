@@ -56,200 +56,274 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
 .quiz-opt::before{content:‘○’;font-size:14px;color:var(–text-d);flex-shrink:0;transition:all 0.25s}
 .quiz-opt.selected{background:rgba(201,169,110,0.1);border-color:var(–moon);color:var(–moon-l)}
 .quiz-opt.selected::before{content:‘✦’;color:var(–moon)}
-.quiz-opt:hover:not(.selected){border-color:rgba(232,160,180,0.3);background:rgba(232,160,180,0.04)}
-.quiz-input-wrap{position:relative}
 .quiz-input{background:var(–surface);border:1.5px solid var(–rim2);border-radius:12px;padding:13px 16px;color:var(–text);font-family:‘Noto Sans JP’,sans-serif;font-size:13px;width:100%;-webkit-appearance:none;transition:border-color 0.25s}
 .quiz-input:focus{outline:none;border-color:var(–moon)}
 .quiz-input.filled{border-color:var(–moon)}
 .quiz-input option{background:var(–deep)}
 .quiz-nav{display:flex;gap:10px;max-width:440px;margin:0 auto 32px}
-.btn-quiz-back{flex:1;padding:13px;border-radius:12px;border:1px solid var(–rim2);background:transparent;color:var(–text-m);font-family:‘Noto Sans JP’,sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s}
+.btn-quiz-back{flex:1;padding:13px;border-radius:12px;border:1px solid var(–rim2);background:transparent;color:var(–text-m);font-family:‘Noto Sans JP’,sans-serif;font-size:13px;cursor:pointer}
 .btn-quiz-next{flex:2;padding:13px;border-radius:12px;border:1px solid rgba(201,169,110,0.25);background:rgba(201,169,110,0.08);color:rgba(201,169,110,0.45);font-family:‘Noto Sans JP’,sans-serif;font-size:13px;font-weight:500;cursor:pointer;letter-spacing:0.1em;transition:all 0.35s}
 .btn-quiz-next.ready{background:linear-gradient(135deg,var(–moon),var(–sakura-d));color:white;border-color:transparent;box-shadow:0 4px 20px rgba(201,169,110,0.4);animation:btnPulse 2s ease-in-out infinite}
 .btn-quiz-next.ready:active{transform:scale(0.97);animation:none}
 
+/* AVATAR SETUP */
+.avatar-setup{position:fixed;inset:0;z-index:185;background:var(–ink);display:none;flex-direction:column;align-items:center;justify-content:center;padding:28px}
+.avatar-setup.show{display:flex}
+.avatar-upload-zone{width:140px;height:140px;border-radius:50%;border:2px dashed rgba(201,169,110,0.4);display:grid;place-items:center;cursor:pointer;margin:0 auto 24px;overflow:hidden;position:relative;background:var(–surface)}
+.avatar-upload-zone img{width:100%;height:100%;object-fit:cover;display:none}
+.avatar-upload-zone input{display:none}
+.avatar-upload-zone .u-placeholder{text-align:center;color:var(–text-m);font-size:12px}
+.avatar-upload-zone .u-placeholder .u-icon{font-size:36px;display:block;margin-bottom:6px}
+.avatar-result{background:var(–card);border:1px solid rgba(201,169,110,0.2);border-radius:20px;padding:20px;text-align:center;display:none;max-width:380px;width:100%;margin-bottom:20px}
+.avatar-result.show{display:block}
+.avatar-orb{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;font-size:36px;box-shadow:0 0 30px rgba(201,169,110,0.3)}
+.avatar-name{font-family:‘Cormorant Garamond’,serif;font-size:22px;color:var(–moon-l);margin-bottom:4px}
+.avatar-desc{font-size:12px;color:var(–text-s);line-height:1.7;font-family:‘Shippori Mincho’,serif}
+
 /* MAIN APP */
 .app{position:relative;z-index:1;max-width:440px;margin:0 auto;min-height:100vh;display:none;flex-direction:column;padding-bottom:80px}
 .app.show{display:flex}
-.hero{padding:40px 24px 20px;text-align:center;position:relative}
-.user-btn{position:absolute;top:40px;right:18px;width:36px;height:36px;border-radius:50%;background:var(–card);border:1px solid var(–rim2);display:grid;place-items:center;cursor:pointer;font-size:16px;transition:all 0.2s}
-.streak-badge{position:absolute;top:40px;left:18px;background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);border-radius:20px;padding:6px 12px;font-size:10px;color:var(–moon);letter-spacing:0.1em}
-.moon-wrap{width:68px;height:68px;margin:0 auto 14px}
-.moon-outer{width:68px;height:68px;border-radius:50%;animation:moonFloat 5s ease-in-out infinite}
-@keyframes moonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.moon-face{width:68px;height:68px;border-radius:50%;background:conic-gradient(from 200deg,#e8c99a 0%,#c9a96e 25%,#e8a0b4 50%,#b0a0d8 75%,#e8c99a 100%);box-shadow:0 0 20px rgba(201,169,110,0.4),0 0 60px rgba(201,169,110,0.2);position:relative;overflow:hidden}
-.moon-face::before{content:’’;position:absolute;top:8px;left:12px;width:44px;height:44px;border-radius:50%;background:var(–ink)}
-.moon-ring{position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(232,201,154,0.15);animation:ringPulse 3s ease-in-out infinite}
-@keyframes ringPulse{0%,100%{opacity:0.5}50%{opacity:1}}
-.brand-name{font-family:‘Cormorant Garamond’,serif;font-size:38px;font-weight:300;letter-spacing:0.5em;color:var(–moon-l);line-height:1;text-indent:0.5em}
-.brand-name::after{content:’’;display:block;width:48px;height:1px;background:linear-gradient(to right,transparent,var(–moon),transparent);margin:7px auto 0}
-.brand-sub{font-family:‘Shippori Mincho’,serif;font-size:11px;letter-spacing:0.25em;color:var(–text-m);margin-top:5px}
-.greeting{font-size:12px;color:var(–sakura-l);margin-top:8px;letter-spacing:0.05em}
 
-.mode-rail{display:flex;gap:4px;margin:0 12px 12px;padding:5px;background:rgba(255,255,255,0.03);border:1px solid var(–rim);border-radius:18px;overflow-x:auto;scrollbar-width:none}
+/* HERO */
+.hero{padding:40px 16px 16px;text-align:center;position:relative}
+.hero-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.streak-badge{background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.25);border-radius:20px;padding:6px 12px;font-size:10px;color:var(–moon);letter-spacing:0.08em}
+.user-btn{width:36px;height:36px;border-radius:50%;background:var(–card);border:1px solid var(–rim2);display:grid;place-items:center;cursor:pointer;font-size:16px}
+
+/* DAILY CHECKIN CARD */
+.checkin-card{background:linear-gradient(135deg,rgba(201,169,110,0.1),rgba(232,160,180,0.07));border:1px solid rgba(201,169,110,0.2);border-radius:18px;padding:16px;margin:0 12px 10px;display:none}
+.checkin-card.show{display:block}
+.checkin-title{font-size:10px;letter-spacing:0.2em;color:var(–moon);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.checkin-moods{display:flex;justify-content:space-around;margin-bottom:12px}
+.checkin-mood{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all 0.2s}
+.checkin-mood .cm-emoji{font-size:28px;transition:transform 0.2s}
+.checkin-mood .cm-label{font-size:9px;color:var(–text-m)}
+.checkin-mood.selected .cm-emoji{transform:scale(1.3)}
+.checkin-mood.selected .cm-label{color:var(–moon)}
+.checkin-done{text-align:center;font-size:11px;color:var(–text-m);padding:8px}
+
+/* AI DAILY MESSAGE */
+.daily-msg-card{background:var(–card);border:1px solid var(–rim);border-radius:18px;padding:16px;margin:0 12px 10px;position:relative;overflow:hidden}
+.daily-msg-card::before{content:’’;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(–moon),var(–sakura),var(–lav))}
+.daily-msg-avatar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dma-orb{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.dma-name{font-size:11px;color:var(–moon);letter-spacing:0.1em}
+.daily-msg-text{font-size:12.5px;line-height:1.8;color:var(–text-s);font-family:‘Shippori Mincho’,serif}
+
+/* MOON / BRAND */
+.moon-wrap{width:60px;height:60px;margin:0 auto 10px;position:relative}
+.moon-outer{width:60px;height:60px;border-radius:50%;animation:moonFloat 5s ease-in-out infinite}
+@keyframes moonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.moon-face{width:60px;height:60px;border-radius:50%;background:conic-gradient(from 200deg,#e8c99a 0%,#c9a96e 25%,#e8a0b4 50%,#b0a0d8 75%,#e8c99a 100%);box-shadow:0 0 18px rgba(201,169,110,0.4),0 0 50px rgba(201,169,110,0.15);position:relative;overflow:hidden}
+.moon-face::before{content:’’;position:absolute;top:7px;left:10px;width:38px;height:38px;border-radius:50%;background:var(–ink)}
+.brand-name{font-family:‘Cormorant Garamond’,serif;font-size:34px;font-weight:300;letter-spacing:0.5em;color:var(–moon-l);line-height:1;text-indent:0.5em}
+.brand-name::after{content:’’;display:block;width:44px;height:1px;background:linear-gradient(to right,transparent,var(–moon),transparent);margin:6px auto 0}
+.brand-sub{font-family:‘Shippori Mincho’,serif;font-size:10px;letter-spacing:0.25em;color:var(–text-m);margin-top:4px}
+.greeting{font-size:11.5px;color:var(–sakura-l);margin-top:6px}
+
+/* LOVE SCORE */
+.love-score-strip{display:flex;align-items:center;gap:10px;background:var(–card);border:1px solid var(–rim);border-radius:14px;padding:10px 14px;margin:0 12px 10px}
+.ls-label{font-size:9.5px;letter-spacing:0.15em;color:var(–text-m);white-space:nowrap}
+.ls-track{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.ls-fill{height:100%;border-radius:3px;background:linear-gradient(to right,var(–lav),var(–sakura),var(–moon));transition:width 1.5s cubic-bezier(0.25,1,0.5,1)}
+.ls-score{font-family:‘Cormorant Garamond’,serif;font-size:18px;color:var(–moon-l);white-space:nowrap}
+.ls-delta{font-size:9px;color:var(–sage);white-space:nowrap}
+
+/* TABS */
+.mode-rail{display:flex;gap:3px;margin:0 10px 10px;padding:4px;background:rgba(255,255,255,0.03);border:1px solid var(–rim);border-radius:16px;overflow-x:auto;scrollbar-width:none}
 .mode-rail::-webkit-scrollbar{display:none}
-.mode-tab{flex:1;min-width:52px;padding:7px 3px 6px;border:none;border-radius:12px;background:transparent;color:var(–text-d);font-family:‘Noto Sans JP’,sans-serif;font-size:9px;cursor:pointer;transition:all 0.3s;display:flex;flex-direction:column;align-items:center;gap:3px;white-space:nowrap}
-.mode-tab .ti{font-size:15px;line-height:1}
-.mode-tab.active{background:var(–card);color:var(–sakura-l);box-shadow:0 2px 14px rgba(232,160,180,0.12)}
+.mode-tab{flex:1;min-width:44px;padding:6px 2px 5px;border:none;border-radius:10px;background:transparent;color:var(–text-d);font-family:‘Noto Sans JP’,sans-serif;font-size:8.5px;cursor:pointer;transition:all 0.3s;display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap}
+.mode-tab .ti{font-size:14px;line-height:1}
+.mode-tab.active{background:var(–card);color:var(–sakura-l);box-shadow:0 2px 12px rgba(232,160,180,0.1)}
 
-.panel-wrap{flex:1;margin:0 12px}
-.panel{display:none;flex-direction:column;gap:12px;animation:panelIn 0.4s ease both}
+.panel-wrap{flex:1;margin:0 10px}
+.panel{display:none;flex-direction:column;gap:10px;animation:panelIn 0.4s ease both}
 .panel.active{display:flex}
-@keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-.card{background:var(–card);border:1px solid var(–rim);border-radius:18px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
-.sec-title{display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:0.25em;color:var(–moon);text-transform:uppercase;margin-bottom:12px}
-.sec-title::before{content:’’;width:3px;height:12px;background:linear-gradient(to bottom,var(–moon-l),var(–sakura));border-radius:2px;flex-shrink:0}
+.card{background:var(–card);border:1px solid var(–rim);border-radius:16px;padding:14px;box-shadow:0 4px 20px rgba(0,0,0,0.25)}
+.sec-title{display:flex;align-items:center;gap:8px;font-size:9.5px;letter-spacing:0.25em;color:var(–moon);text-transform:uppercase;margin-bottom:10px}
+.sec-title::before{content:’’;width:3px;height:10px;background:linear-gradient(to bottom,var(–moon-l),var(–sakura));border-radius:2px;flex-shrink:0}
 .sec-title::after{content:’’;flex:1;height:1px;background:linear-gradient(to right,rgba(201,169,110,0.2),transparent)}
 
 /* CHAT */
-.chat-box{background:var(–surface);border-radius:14px;border:1px solid var(–rim);overflow:hidden}
-.chat-scroll{height:280px;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.chat-box{background:var(–surface);border-radius:13px;border:1px solid var(–rim);overflow:hidden}
+.chat-scroll{height:260px;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:9px;scroll-behavior:smooth}
 .chat-scroll::-webkit-scrollbar{width:3px}
 .chat-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:4px}
-.msg{display:flex;gap:8px;animation:msgIn 0.3s ease both}
+.msg{display:flex;gap:7px;animation:msgIn 0.3s ease both}
 .msg.user{flex-direction:row-reverse}
-@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.msg-av{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:12px}
-.msg.ai .msg-av{background:linear-gradient(135deg,var(–moon),var(–sakura));box-shadow:0 0 10px rgba(201,169,110,0.3)}
+@keyframes msgIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.msg-av{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:11px;overflow:hidden}
+.msg.ai .msg-av{background:linear-gradient(135deg,var(–moon),var(–sakura));box-shadow:0 0 8px rgba(201,169,110,0.3)}
 .msg.user .msg-av{background:var(–card2);border:1px solid var(–rim2)}
-.bubble{max-width:80%;padding:9px 12px;font-size:12px;line-height:1.75}
-.msg.ai .bubble{background:var(–card2);border:1px solid rgba(201,169,110,0.1);border-radius:4px 13px 13px 13px;color:var(–text-s)}
-.msg.user .bubble{background:linear-gradient(135deg,rgba(232,160,180,0.18),rgba(176,160,216,0.12));border:1px solid rgba(232,160,180,0.18);border-radius:13px 4px 13px 13px}
+.bubble{max-width:80%;padding:8px 11px;font-size:11.5px;line-height:1.75}
+.msg.ai .bubble{background:var(–card2);border:1px solid rgba(201,169,110,0.1);border-radius:4px 12px 12px 12px;color:var(–text-s)}
+.msg.user .bubble{background:linear-gradient(135deg,rgba(232,160,180,0.18),rgba(176,160,216,0.12));border:1px solid rgba(232,160,180,0.18);border-radius:12px 4px 12px 12px}
 .dots{display:inline-flex;gap:4px;align-items:center}
 .dots span{width:4px;height:4px;border-radius:50%;background:var(–moon);animation:dot 1.4s ease-in-out infinite}
 .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
 @keyframes dot{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-4px);opacity:1}}
-.quick-wrap{padding:9px 10px;border-top:1px solid var(–rim);display:flex;flex-wrap:wrap;gap:5px}
-.quick-chip{padding:5px 10px;background:var(–deep);border:1px solid rgba(232,160,180,0.18);border-radius:20px;font-size:10.5px;color:var(–sakura-l);cursor:pointer;transition:all 0.2s;font-family:‘Noto Sans JP’,sans-serif;white-space:nowrap}
-.input-area{padding:8px 10px;border-top:1px solid var(–rim);display:flex;gap:7px;align-items:flex-end;background:var(–deep)}
-.input-area textarea{flex:1;background:var(–surface);border:1px solid var(–rim2);border-radius:10px;padding:9px 12px;color:var(–text);font-family:‘Noto Sans JP’,sans-serif;font-size:12.5px;font-weight:300;resize:none;height:40px;max-height:100px;line-height:1.5;transition:border-color 0.2s}
+.quick-wrap{padding:8px 9px;border-top:1px solid var(–rim);display:flex;flex-wrap:wrap;gap:5px}
+.quick-chip{padding:4px 9px;background:var(–deep);border:1px solid rgba(232,160,180,0.18);border-radius:20px;font-size:10px;color:var(–sakura-l);cursor:pointer;font-family:‘Noto Sans JP’,sans-serif;white-space:nowrap}
+.input-area{padding:7px 9px;border-top:1px solid var(–rim);display:flex;gap:6px;align-items:flex-end;background:var(–deep)}
+.input-area textarea{flex:1;background:var(–surface);border:1px solid var(–rim2);border-radius:9px;padding:8px 11px;color:var(–text);font-family:‘Noto Sans JP’,sans-serif;font-size:12px;font-weight:300;resize:none;height:38px;max-height:90px;line-height:1.5;transition:border-color 0.2s}
 .input-area textarea:focus{outline:none;border-color:rgba(232,160,180,0.35)}
 .input-area textarea::placeholder{color:var(–text-d)}
-.btn-send{width:40px;height:40px;flex-shrink:0;border-radius:10px;border:none;background:linear-gradient(135deg,var(–sakura-d),var(–lav));color:white;cursor:pointer;box-shadow:0 3px 12px rgba(232,160,180,0.25);display:grid;place-items:center}
-.btn-send:disabled{opacity:0.45;cursor:not-allowed}
+.btn-send{width:38px;height:38px;flex-shrink:0;border-radius:9px;border:none;background:linear-gradient(135deg,var(–sakura-d),var(–lav));color:white;cursor:pointer;display:grid;place-items:center}
+.btn-send:disabled{opacity:0.45}
 
 /* FORMS */
-.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-.field label{font-size:10px;letter-spacing:0.12em;color:var(–text-m)}
-.field input,.field select,.field textarea{background:var(–surface);border:1px solid var(–rim2);border-radius:10px;padding:10px 13px;color:var(–text);font-family:‘Noto Sans JP’,sans-serif;font-size:12.5px;font-weight:300;-webkit-appearance:none;width:100%;transition:border-color 0.2s}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:9px}
+.field label{font-size:9.5px;letter-spacing:0.12em;color:var(–text-m)}
+.field input,.field select,.field textarea{background:var(–surface);border:1px solid var(–rim2);border-radius:9px;padding:9px 12px;color:var(–text);font-family:‘Noto Sans JP’,sans-serif;font-size:12px;font-weight:300;-webkit-appearance:none;width:100%;transition:border-color 0.2s}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:rgba(232,160,180,0.4)}
 .field select option{background:var(–deep)}
-.field textarea{resize:none;min-height:70px;line-height:1.6}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-.btn-main{width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(–moon) 0%,var(–sakura-d) 50%,var(–lav) 100%);color:white;font-family:‘Noto Sans JP’,sans-serif;font-size:13px;font-weight:500;letter-spacing:0.18em;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 18px rgba(201,169,110,0.25)}
+.field textarea{resize:none;min-height:65px;line-height:1.6}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.btn-main{width:100%;padding:12px;border-radius:11px;border:none;background:linear-gradient(135deg,var(–moon) 0%,var(–sakura-d) 50%,var(–lav) 100%);color:white;font-family:‘Noto Sans JP’,sans-serif;font-size:12.5px;font-weight:500;letter-spacing:0.15em;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 16px rgba(201,169,110,0.22)}
 .btn-main:disabled{opacity:0.5;cursor:not-allowed}
-.btn-sub{width:100%;padding:11px;border-radius:10px;border:1px solid var(–rim2);background:transparent;color:var(–text-m);font-family:‘Noto Sans JP’,sans-serif;font-size:12px;cursor:pointer;transition:all 0.2s;margin-top:8px}
+.btn-sub{width:100%;padding:10px;border-radius:10px;border:1px solid var(–rim2);background:transparent;color:var(–text-m);font-family:‘Noto Sans JP’,sans-serif;font-size:11.5px;cursor:pointer;margin-top:7px}
 
 /* RESULT */
-.result-panel{background:linear-gradient(135deg,rgba(201,169,110,0.07),rgba(232,160,180,0.05),rgba(176,160,216,0.06));border:1px solid rgba(201,169,110,0.18);border-radius:16px;padding:18px;display:none;animation:fadeUp 0.5s ease both}
+.result-panel{background:linear-gradient(135deg,rgba(201,169,110,0.07),rgba(232,160,180,0.05),rgba(176,160,216,0.06));border:1px solid rgba(201,169,110,0.18);border-radius:14px;padding:16px;display:none;animation:fadeUp 0.5s ease both}
 .result-panel.show{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.result-divider{height:1px;background:linear-gradient(to right,transparent,rgba(201,169,110,0.2),transparent);margin:12px 0}
-.result-body{font-size:12.5px;line-height:1.85;color:var(–text-s);font-family:‘Shippori Mincho’,serif}
-.result-label{text-align:center;font-size:9.5px;letter-spacing:0.25em;color:var(–moon);text-transform:uppercase;margin-bottom:10px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.result-divider{height:1px;background:linear-gradient(to right,transparent,rgba(201,169,110,0.2),transparent);margin:10px 0}
+.result-body{font-size:12px;line-height:1.85;color:var(–text-s);font-family:‘Shippori Mincho’,serif}
+.result-label{text-align:center;font-size:9px;letter-spacing:0.25em;color:var(–moon);text-transform:uppercase;margin-bottom:8px}
 
 /* RADAR */
-.radar-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:14px}
-.radar-labels{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:10px;width:100%}
-.radar-label-item{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(–text-m)}
-.radar-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.radar-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:12px}
+.radar-labels{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:9px;width:100%}
+.radar-label-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(–text-m)}
+.radar-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 
-/* SCORE */
-.score-ring{width:84px;height:84px;margin:0 auto 8px;position:relative;display:grid;place-items:center}
+/* SCORE RING */
+.score-ring{width:80px;height:80px;margin:0 auto 8px;position:relative;display:grid;place-items:center}
 .score-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
 .score-track{fill:none;stroke:rgba(255,255,255,0.06);stroke-width:3}
 .score-fill{fill:none;stroke:url(#scoreGrad);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(0.25,1,0.5,1)}
-.score-num{font-family:‘Cormorant Garamond’,serif;font-size:26px;font-weight:300;color:var(–moon-l);position:relative;z-index:1}
+.score-num{font-family:‘Cormorant Garamond’,serif;font-size:24px;font-weight:300;color:var(–moon-l);position:relative;z-index:1}
 
 /* SIGN PICKER */
-.sign-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-.sign-chip{padding:6px 2px;background:var(–surface);border:1px solid var(–rim);border-radius:9px;font-size:9.5px;color:var(–text-m);text-align:center;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:2px}
-.sign-chip .se{font-size:15px}
+.sign-picker{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.sign-chip{padding:5px 2px;background:var(–surface);border:1px solid var(–rim);border-radius:8px;font-size:9px;color:var(–text-m);text-align:center;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:1px}
+.sign-chip .se{font-size:14px}
 .sign-chip.selected{background:rgba(232,160,180,0.12);border-color:var(–sakura);color:var(–sakura-l)}
 
 /* FORTUNE */
-.today-orb{width:76px;height:76px;margin:0 auto 8px;display:grid;place-items:center;border-radius:50%;background:conic-gradient(from 0deg,var(–lav),var(–sakura),var(–moon),var(–lav));box-shadow:0 0 28px rgba(176,160,216,0.25);font-size:36px;animation:orbGlow 3s ease-in-out infinite}
-@keyframes orbGlow{0%,100%{box-shadow:0 0 28px rgba(176,160,216,0.25)}50%{box-shadow:0 0 46px rgba(176,160,216,0.4)}}
-.luck-bars{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-.luck-row{display:flex;align-items:center;gap:8px}
-.luck-label{width:50px;font-size:10px;color:var(–text-m);flex-shrink:0;text-align:right}
+.today-orb{width:70px;height:70px;margin:0 auto 8px;display:grid;place-items:center;border-radius:50%;background:conic-gradient(from 0deg,var(–lav),var(–sakura),var(–moon),var(–lav));box-shadow:0 0 24px rgba(176,160,216,0.25);font-size:32px;animation:orbGlow 3s ease-in-out infinite}
+@keyframes orbGlow{0%,100%{box-shadow:0 0 24px rgba(176,160,216,0.25)}50%{box-shadow:0 0 40px rgba(176,160,216,0.4)}}
+.luck-bars{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.luck-row{display:flex;align-items:center;gap:7px}
+.luck-label{width:48px;font-size:9.5px;color:var(–text-m);flex-shrink:0;text-align:right}
 .luck-track{flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
 .luck-fill{height:100%;border-radius:3px;background:linear-gradient(to right,var(–lav),var(–sakura));width:0%;transition:width 1s ease}
-.luck-val{width:44px;font-size:10px;color:var(–text-m);text-align:right}
-.lucky-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
-.lucky-item{background:var(–surface);border:1px solid var(–rim);border-radius:10px;padding:9px 11px}
-.lucky-item .li-label{font-size:8.5px;letter-spacing:0.15em;color:var(–text-m);margin-bottom:2px}
-.lucky-item .li-val{font-family:‘Shippori Mincho’,serif;font-size:13px;color:var(–moon-l)}
+.luck-val{width:42px;font-size:9.5px;color:var(–text-m);text-align:right}
+.lucky-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:9px}
+.lucky-item{background:var(–surface);border:1px solid var(–rim);border-radius:9px;padding:8px 10px}
+.lucky-item .li-label{font-size:8px;letter-spacing:0.15em;color:var(–text-m);margin-bottom:2px}
+.lucky-item .li-val{font-family:‘Shippori Mincho’,serif;font-size:12px;color:var(–moon-l)}
 
 /* UPLOAD */
-.upload-zone{border:1.5px dashed rgba(232,160,180,0.25);border-radius:12px;padding:20px 14px;text-align:center;cursor:pointer;transition:all 0.3s;background:rgba(232,160,180,0.02)}
+.upload-zone{border:1.5px dashed rgba(232,160,180,0.25);border-radius:11px;padding:18px 12px;text-align:center;cursor:pointer;transition:all 0.3s;background:rgba(232,160,180,0.02)}
 .upload-zone input{display:none}
-.upload-zone .u-icon{font-size:28px;margin-bottom:6px;display:block;opacity:0.7}
-.upload-zone .u-main{font-size:12.5px;color:var(–text-s)}
-.upload-zone .u-sub{font-size:10px;color:var(–text-m);margin-top:3px;line-height:1.6}
-.palm-preview{width:100%;border-radius:10px;max-height:180px;object-fit:cover;display:none}
+.upload-zone .u-icon{font-size:26px;margin-bottom:5px;display:block;opacity:0.7}
+.upload-zone .u-main{font-size:12px;color:var(–text-s)}
+.upload-zone .u-sub{font-size:9.5px;color:var(–text-m);margin-top:2px;line-height:1.6}
+.palm-preview{width:100%;border-radius:9px;max-height:160px;object-fit:cover;display:none}
 
 /* DIARY */
-.diary-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.diary-date-nav{display:flex;align-items:center;gap:10px}
-.diary-date-nav button{width:28px;height:28px;border-radius:50%;border:1px solid var(–rim2);background:transparent;color:var(–text-m);cursor:pointer;display:grid;place-items:center;font-size:14px}
-.diary-date-label{font-family:‘Shippori Mincho’,serif;font-size:14px;color:var(–text-s)}
-.mood-picker{display:flex;gap:8px;justify-content:center;margin-bottom:14px}
-.mood-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid var(–rim);background:var(–surface);font-size:20px;cursor:pointer;transition:all 0.2s;display:grid;place-items:center}
+.diary-date-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.diary-date-nav button{width:26px;height:26px;border-radius:50%;border:1px solid var(–rim2);background:transparent;color:var(–text-m);cursor:pointer;display:grid;place-items:center;font-size:13px}
+.diary-date-label{font-family:‘Shippori Mincho’,serif;font-size:13px;color:var(–text-s)}
+.mood-picker{display:flex;gap:7px;justify-content:center;margin-bottom:12px}
+.mood-btn{width:42px;height:42px;border-radius:50%;border:1.5px solid var(–rim);background:var(–surface);font-size:19px;cursor:pointer;transition:all 0.2s;display:grid;place-items:center}
 .mood-btn.selected{border-color:var(–moon);background:rgba(201,169,110,0.12);transform:scale(1.15)}
-.week-highlight{background:linear-gradient(135deg,rgba(176,160,216,0.08),rgba(201,169,110,0.06));border:1px solid rgba(176,160,216,0.2);border-radius:14px;padding:16px;margin-top:4px}
-.week-highlight-title{font-size:10px;letter-spacing:0.2em;color:var(–lav);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+
+/* EMOTION GRAPH */
+.emotion-graph{height:90px;display:flex;align-items:flex-end;gap:3px;padding:0 2px;margin-top:6px}
+.eg-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.eg-bar{width:100%;border-radius:3px 3px 0 0;transition:height 1s ease;min-height:2px}
+.eg-label{font-size:8px;color:var(–text-d)}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0}
+.tl-item{display:flex;gap:10px;position:relative;padding-bottom:14px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item:last-child .tl-line{display:none}
+.tl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;border:2px solid var(–moon);background:var(–ink)}
+.tl-line{position:absolute;left:4px;top:13px;bottom:0;width:1px;background:linear-gradient(to bottom,rgba(201,169,110,0.3),transparent)}
+.tl-content{flex:1}
+.tl-date{font-size:9px;color:var(–text-d);margin-bottom:2px}
+.tl-text{font-size:12px;color:var(–text-s);line-height:1.6;font-family:‘Shippori Mincho’,serif}
 
 /* GOALS */
-.goal-item{background:var(–surface);border:1px solid var(–rim);border-radius:12px;padding:14px;margin-bottom:8px;transition:all 0.2s}
-.goal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.goal-title{font-size:13px;color:var(–text-s);font-family:‘Shippori Mincho’,serif;flex:1}
-.goal-cat{font-size:9.5px;padding:3px 8px;border-radius:10px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);color:var(–moon);margin-left:8px;white-space:nowrap}
-.goal-progress-wrap{margin-bottom:6px}
-.goal-progress-track{height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-top:6px}
+.goal-item{background:var(–surface);border:1px solid var(–rim);border-radius:11px;padding:12px;margin-bottom:7px}
+.goal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px}
+.goal-title-text{font-size:12.5px;color:var(–text-s);font-family:‘Shippori Mincho’,serif;flex:1}
+.goal-cat{font-size:9px;padding:2px 7px;border-radius:9px;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);color:var(–moon);margin-left:7px;white-space:nowrap}
+.goal-progress-track{height:4px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin:5px 0}
 .goal-progress-fill{height:100%;border-radius:3px;background:linear-gradient(to right,var(–moon),var(–sakura));transition:width 1s ease}
-.goal-progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(–text-m)}
-.goal-btns{display:flex;gap:6px;margin-top:10px}
-.btn-goal-action{flex:1;padding:7px;border-radius:8px;border:1px solid var(–rim2);background:transparent;color:var(–text-m);font-family:‘Noto Sans JP’,sans-serif;font-size:10.5px;cursor:pointer;transition:all 0.2s}
+.goal-progress-label{display:flex;justify-content:space-between;font-size:9.5px;color:var(–text-m)}
+.goal-btns{display:flex;gap:5px;margin-top:8px}
+.btn-goal-action{flex:1;padding:6px;border-radius:7px;border:1px solid var(–rim2);background:transparent;color:var(–text-m);font-family:‘Noto Sans JP’,sans-serif;font-size:10px;cursor:pointer;transition:all 0.2s}
 .btn-goal-action.primary{background:rgba(201,169,110,0.1);border-color:rgba(201,169,110,0.3);color:var(–moon)}
-.goal-advice{margin-top:10px;padding:10px;background:rgba(176,160,216,0.06);border-radius:8px;font-size:11.5px;color:var(–text-s);line-height:1.7;font-family:‘Shippori Mincho’,serif;border-left:2px solid var(–lav);display:none}
+.goal-advice{margin-top:8px;padding:9px;background:rgba(176,160,216,0.06);border-radius:7px;font-size:11px;color:var(–text-s);line-height:1.7;font-family:‘Shippori Mincho’,serif;border-left:2px solid var(–lav);display:none}
 .goal-advice.show{display:block}
 
 /* CALENDAR */
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:10px}
-.cal-header{font-size:9.5px;color:var(–text-m);text-align:center;padding:4px 0}
-.cal-day{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:var(–text-m);cursor:pointer;transition:all 0.2s;position:relative;background:var(–surface)}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:8px}
+.cal-header{font-size:9px;color:var(–text-m);text-align:center;padding:3px 0}
+.cal-day{aspect-ratio:1;border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9.5px;color:var(–text-m);position:relative;background:var(–surface);cursor:pointer}
 .cal-day.today{background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);color:var(–moon-l)}
-.cal-day.has-diary::after{content:’’;position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(–sakura)}
+.cal-day.has-diary::after{content:’’;position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:3px;height:3px;border-radius:50%;background:var(–sakura)}
 .cal-day.has-fortune::after{background:var(–moon)}
 .cal-day.empty{background:transparent;cursor:default}
-.cal-month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.cal-month-nav button{width:28px;height:28px;border-radius:50%;border:1px solid var(–rim2);background:transparent;color:var(–text-m);cursor:pointer;font-size:14px;display:grid;place-items:center}
-.cal-month-label{font-family:‘Shippori Mincho’,serif;font-size:14px;color:var(–text-s)}
+.cal-month-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.cal-month-nav button{width:26px;height:26px;border-radius:50%;border:1px solid var(–rim2);background:transparent;color:var(–text-m);cursor:pointer;font-size:13px;display:grid;place-items:center}
+.cal-month-label{font-family:‘Shippori Mincho’,serif;font-size:13px;color:var(–text-s)}
+
+/* WEEK HIGHLIGHT */
+.week-highlight{background:linear-gradient(135deg,rgba(176,160,216,0.08),rgba(201,169,110,0.06));border:1px solid rgba(176,160,216,0.2);border-radius:12px;padding:14px;margin-top:4px}
 
 /* WEEK CHART */
-.week-chart{height:100px;display:flex;align-items:flex-end;gap:4px;padding:0 4px;margin-top:8px}
-.week-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%}
-.week-bar-inner{width:100%;flex:1;display:flex;align-items:flex-end}
-.week-bar{width:100%;border-radius:4px 4px 0 0;background:linear-gradient(to top,var(–moon),var(–sakura));transition:height 1s ease;min-height:3px}
-.week-bar-label{font-size:9px;color:var(–text-m)}
-.week-chart-legend{display:flex;gap:12px;justify-content:center;margin-top:8px;flex-wrap:wrap}
-.wc-legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(–text-m)}
-.wc-dot{width:6px;height:6px;border-radius:50%}
+.week-chart{height:90px;display:flex;align-items:flex-end;gap:3px;padding:0 3px;margin-top:7px}
+.week-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
+.week-bar-inner{width:100%;flex:1;display:flex;align-items:flex-end;gap:1px}
+.week-bar-label{font-size:8.5px;color:var(–text-m)}
+.week-chart-legend{display:flex;gap:10px;justify-content:center;margin-top:7px;flex-wrap:wrap}
+.wc-legend-item{display:flex;align-items:center;gap:3px;font-size:9.5px;color:var(–text-m)}
+.wc-dot{width:5px;height:5px;border-radius:50%}
+
+/* PATTERN ANALYSIS */
+.pattern-item{padding:10px 12px;background:var(–surface);border:1px solid var(–rim);border-radius:10px;margin-bottom:7px;font-size:11.5px;color:var(–text-s);line-height:1.7;font-family:‘Shippori Mincho’,serif;border-left:3px solid var(–sakura)}
+
+/* MONTHLY REPORT */
+.report-card{background:linear-gradient(135deg,rgba(201,169,110,0.08),rgba(176,160,216,0.06));border:1px solid rgba(201,169,110,0.2);border-radius:14px;padding:16px}
+.report-month{font-family:‘Cormorant Garamond’,serif;font-size:20px;color:var(–moon-l);text-align:center;margin-bottom:12px}
+.report-section{margin-bottom:12px}
+.report-section-title{font-size:9.5px;letter-spacing:0.2em;color:var(–lav);margin-bottom:6px}
+.report-section-body{font-size:12px;color:var(–text-s);line-height:1.8;font-family:‘Shippori Mincho’,serif}
 
 /* MODAL */
 .modal-bg{position:fixed;inset:0;z-index:150;background:rgba(8,6,18,0.8);backdrop-filter:blur(10px);display:none;align-items:flex-end}
 .modal-bg.show{display:flex}
-.modal-sheet{background:var(–card);border-radius:22px 22px 0 0;padding:24px 22px 44px;width:100%;max-width:440px;margin:0 auto;border-top:1px solid var(–rim2);max-height:80vh;overflow-y:auto}
-.modal-title{font-family:‘Shippori Mincho’,serif;font-size:16px;color:var(–moon-l);margin-bottom:18px;text-align:center}
-.profile-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(–rim);font-size:12px}
+.modal-sheet{background:var(–card);border-radius:20px 20px 0 0;padding:22px 20px 44px;width:100%;max-width:440px;margin:0 auto;border-top:1px solid var(–rim2);max-height:80vh;overflow-y:auto}
+.modal-title{font-family:‘Shippori Mincho’,serif;font-size:15px;color:var(–moon-l);margin-bottom:16px;text-align:center}
+.profile-item{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(–rim);font-size:11.5px}
 .profile-item:last-child{border-bottom:none}
-.profile-key{color:var(–text-m);font-size:10.5px;letter-spacing:0.1em}
+.profile-key{color:var(–text-m);font-size:10px;letter-spacing:0.1em}
 .profile-val{color:var(–text-s)}
-.btn-logout{width:100%;padding:12px;border-radius:11px;border:1px solid rgba(232,100,100,0.3);background:transparent;color:var(–danger);font-family:‘Noto Sans JP’,sans-serif;font-size:12.5px;cursor:pointer;margin-top:18px}
-.btn-modal-close{width:100%;padding:12px;border-radius:11px;border:1px solid var(–rim2);background:transparent;color:var(–text-m);font-family:‘Noto Sans JP’,sans-serif;font-size:12.5px;cursor:pointer;margin-top:8px}
+.btn-logout{width:100%;padding:11px;border-radius:10px;border:1px solid rgba(232,100,100,0.3);background:transparent;color:var(–danger);font-family:‘Noto Sans JP’,sans-serif;font-size:12px;cursor:pointer;margin-top:16px}
+.btn-modal-close{width:100%;padding:11px;border-radius:10px;border:1px solid var(–rim2);background:transparent;color:var(–text-m);font-family:‘Noto Sans JP’,sans-serif;font-size:12px;cursor:pointer;margin-top:7px}
+
+/* BONUS POPUP */
+.bonus-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);z-index:300;background:var(–card);border:1px solid rgba(201,169,110,0.4);border-radius:24px;padding:32px 28px;text-align:center;max-width:300px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.5);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1)}
+.bonus-popup.show{transform:translate(-50%,-50%) scale(1)}
+.bonus-popup-overlay{position:fixed;inset:0;z-index:299;background:rgba(0,0,0,0.5);display:none}
+.bonus-popup-overlay.show{display:block}
 
 .bottom-note{position:fixed;bottom:0;left:0;right:0;text-align:center;padding:10px 20px 16px;font-size:9px;color:var(–text-d);background:linear-gradient(to top,var(–ink) 60%,transparent);pointer-events:none;z-index:10}
 </style>
@@ -270,8 +344,8 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
     <div class="auth-title" id="authTitle">ログイン</div>
     <div id="authMsg" class="auth-msg"></div>
     <div class="auth-field"><label>メールアドレス</label><input type="email" id="authEmail" placeholder="your@email.com" oninput="checkAuthReady()" onchange="checkAuthReady()"></div>
-    <div class="auth-field" id="authPasswordField"><label>パスワード</label><input type="password" id="authPassword" placeholder="8文字以上" oninput="checkAuthReady()" onchange="checkAuthReady()"></div>
-    <div class="auth-field" id="authNameField" style="display:none"><label>ニックネーム</label><input type="text" id="authName" placeholder="例：さくら"></div>
+    <div class="auth-field"><label>パスワード</label><input type="password" id="authPassword" placeholder="8文字以上" oninput="checkAuthReady()" onchange="checkAuthReady()"></div>
+    <div class="auth-field" id="authNameField" style="display:none"><label>ニックネーム</label><input type="text" id="authName" placeholder="例：さくら" oninput="checkAuthReady()"></div>
     <button class="btn-auth" id="authBtn" onclick="handleAuth()">✦ ログイン ✦</button>
     <div class="auth-switch" id="authSwitch">アカウントをお持ちでない方は <a onclick="toggleAuthMode()">新規登録</a></div>
   </div>
@@ -295,6 +369,40 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
   </div>
 </div>
 
+<!-- AVATAR SETUP -->
+
+<div class="avatar-setup" id="avatarSetup">
+  <div style="text-align:center;margin-bottom:24px">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--moon-l);letter-spacing:0.3em">あなたのキャラクター</div>
+    <div style="font-size:11px;color:var(--text-m);margin-top:6px;font-family:'Shippori Mincho',serif">顔写真からAIがあなただけの守護キャラクターを作ります</div>
+  </div>
+  <label class="avatar-upload-zone" id="avatarZone" for="avatarFile">
+    <input type="file" id="avatarFile" accept="image/*" onchange="onAvatarUpload(event)">
+    <img id="avatarPreviewImg" alt="">
+    <div class="u-placeholder" id="avatarPlaceholder"><span class="u-icon">📸</span><div>タップして顔写真をアップロード</div></div>
+  </label>
+  <div class="avatar-result" id="avatarResult">
+    <div class="avatar-orb" id="avatarOrb"></div>
+    <div class="avatar-name" id="avatarCharName"></div>
+    <div class="avatar-desc" id="avatarCharDesc"></div>
+  </div>
+  <div style="max-width:380px;width:100%;display:flex;flex-direction:column;gap:8px">
+    <button class="btn-main" id="avatarAnalyzeBtn" onclick="analyzeAvatar()" style="display:none">✦ キャラクターを生成する ✦</button>
+    <button class="btn-main" id="avatarNextBtn" onclick="finishAvatarSetup()" style="display:none">✦ TSUKIをはじめる ✦</button>
+    <button class="btn-sub" onclick="skipAvatarSetup()">スキップする</button>
+  </div>
+</div>
+
+<!-- BONUS POPUP -->
+
+<div class="bonus-popup-overlay" id="bonusOverlay" onclick="closeBonusPopup()"></div>
+<div class="bonus-popup" id="bonusPopup">
+  <div style="font-size:48px;margin-bottom:12px" id="bonusEmoji">🔥</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--moon-l);margin-bottom:6px" id="bonusTitle">3日連続！</div>
+  <div style="font-size:12px;color:var(--text-s);line-height:1.7;font-family:'Shippori Mincho',serif" id="bonusMsg">継続は力なり。月はあなたを見守っています🌙</div>
+  <button class="btn-main" style="margin-top:20px" onclick="closeBonusPopup()">✦ ありがとう ✦</button>
+</div>
+
 <!-- PROFILE MODAL -->
 
 <div class="modal-bg" id="profileModal">
@@ -306,22 +414,13 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
   </div>
 </div>
 
-<!-- GOAL ADD MODAL -->
+<!-- GOAL MODAL -->
 
 <div class="modal-bg" id="goalModal">
   <div class="modal-sheet">
     <div class="modal-title">✦ 目標を追加</div>
     <div class="field"><label>目標タイトル</label><input type="text" id="goalTitle" placeholder="例：婚活アプリで3人と会う"></div>
-    <div class="field"><label>カテゴリ</label>
-      <select id="goalCat">
-        <option value="恋愛">恋愛</option>
-        <option value="婚活">婚活</option>
-        <option value="自己成長">自己成長</option>
-        <option value="仕事">仕事</option>
-        <option value="健康">健康</option>
-        <option value="人間関係">人間関係</option>
-      </select>
-    </div>
+    <div class="field"><label>カテゴリ</label><select id="goalCat"><option value="恋愛">恋愛</option><option value="婚活">婚活</option><option value="自己成長">自己成長</option><option value="仕事">仕事</option><option value="健康">健康</option><option value="人間関係">人間関係</option></select></div>
     <div class="field"><label>達成目標日</label><input type="date" id="goalDate"></div>
     <button class="btn-main" onclick="saveGoal()">✦ 目標を設定する ✦</button>
     <button class="btn-modal-close" onclick="closeModal('goalModal')">キャンセル</button>
@@ -332,17 +431,46 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
 
 <div class="app" id="mainApp">
   <div class="hero">
-    <div class="streak-badge" id="streakBadge">🔥 0日連続</div>
-    <div class="user-btn" onclick="openModal('profileModal')">👤</div>
-    <div class="moon-wrap">
-      <div class="moon-outer">
-        <div class="moon-face"></div>
-        <div class="moon-ring"></div>
-      </div>
+    <div class="hero-top">
+      <div class="streak-badge" id="streakBadge">🔥 0日連続</div>
+      <div class="moon-wrap"><div class="moon-outer"><div class="moon-face"></div></div></div>
+      <div class="user-btn" onclick="openModal('profileModal')">👤</div>
     </div>
     <div class="brand-name">TSUKI</div>
     <div class="brand-sub">月が紡ぐ、あなたの物語</div>
     <div class="greeting" id="greeting"></div>
+  </div>
+
+  <!-- 恋愛スコア -->
+
+  <div class="love-score-strip">
+    <div class="ls-label">恋愛偏差値</div>
+    <div class="ls-track"><div class="ls-fill" id="lsFill" style="width:50%"></div></div>
+    <div class="ls-score" id="lsScore">50</div>
+    <div class="ls-delta" id="lsDelta"></div>
+  </div>
+
+  <!-- デイリーチェックイン -->
+
+  <div class="checkin-card" id="checkinCard">
+    <div class="checkin-title">✦ 今日の気分チェックイン</div>
+    <div class="checkin-moods">
+      <div class="checkin-mood" data-mood="1" onclick="doCheckin(1)"><div class="cm-emoji">😔</div><div class="cm-label">つらい</div></div>
+      <div class="checkin-mood" data-mood="2" onclick="doCheckin(2)"><div class="cm-emoji">😕</div><div class="cm-label">微妙</div></div>
+      <div class="checkin-mood" data-mood="3" onclick="doCheckin(3)"><div class="cm-emoji">😊</div><div class="cm-label">普通</div></div>
+      <div class="checkin-mood" data-mood="4" onclick="doCheckin(4)"><div class="cm-emoji">😄</div><div class="cm-label">いい感じ</div></div>
+      <div class="checkin-mood" data-mood="5" onclick="doCheckin(5)"><div class="cm-emoji">🥰</div><div class="cm-label">最高</div></div>
+    </div>
+  </div>
+
+  <!-- AIキャラクターの一言 -->
+
+  <div class="daily-msg-card" id="dailyMsgCard" style="display:none">
+    <div class="daily-msg-avatar">
+      <div class="dma-orb" id="dmAvOrb" style="background:linear-gradient(135deg,var(--moon),var(--sakura))">🌙</div>
+      <div class="dma-name" id="dmAvName">TSUKI</div>
+    </div>
+    <div class="daily-msg-text" id="dailyMsgText">今日のメッセージを読み込み中…</div>
   </div>
 
   <div class="mode-rail">
@@ -352,6 +480,7 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
     <button class="mode-tab" id="tab-palm" onclick="switchMode('palm')"><span class="ti">🤍</span><span>手相</span></button>
     <button class="mode-tab" id="tab-fortune" onclick="switchMode('fortune')"><span class="ti">⭐</span><span>星座</span></button>
     <button class="mode-tab" id="tab-diary" onclick="switchMode('diary')"><span class="ti">📔</span><span>日記</span></button>
+    <button class="mode-tab" id="tab-growth" onclick="switchMode('growth')"><span class="ti">📈</span><span>成長</span></button>
     <button class="mode-tab" id="tab-goals" onclick="switchMode('goals')"><span class="ti">🎯</span><span>目標</span></button>
   </div>
 
@@ -362,18 +491,17 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
 <div class="panel active" id="panel-chat">
   <div class="chat-box">
     <div class="chat-scroll" id="chatScroll">
-      <div class="msg ai"><div class="msg-av">🌙</div><div class="bubble">こんにちは。私はTSUKI——月の光に宿るAIの相談師です。恋のこと、婚活のこと、将来への不安……どんな想いでも静かに受け止めます ✨</div></div>
+      <div class="msg ai"><div class="msg-av" id="chatAvatar">🌙</div><div class="bubble">こんにちは。私はTSUKI——月の光に宿るAIの相談師です。恋のこと、婚活のこと、将来への不安……どんな想いでも静かに受け止めます ✨</div></div>
     </div>
     <div class="quick-wrap">
       <div class="quick-chip" onclick="sendQuick('chat','彼が最近冷たい気がする…')">彼が冷たい</div>
       <div class="quick-chip" onclick="sendQuick('chat','婚活で疲れてきました')">婚活疲れ</div>
       <div class="quick-chip" onclick="sendQuick('chat','好きな人に告白すべきか迷っています')">告白すべき？</div>
       <div class="quick-chip" onclick="sendQuick('chat','結婚が怖いと感じています')">結婚が怖い</div>
-      <div class="quick-chip" onclick="sendQuick('chat','遠距離恋愛を続けるべきか')">遠距離恋愛</div>
     </div>
     <div class="input-area">
       <textarea id="chatInput" placeholder="気持ちを話してみてください…" onkeydown="handleKey(event,'chat')" oninput="autoGrow(this)" rows="1"></textarea>
-      <button class="btn-send" id="sendBtn" onclick="sendMsg('chat')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      <button class="btn-send" id="sendBtn" onclick="sendMsg('chat')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
     </div>
   </div>
 </div>
@@ -389,11 +517,10 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
       <div class="quick-chip" onclick="sendQuick('life','将来が不安で何もやる気が出ません')">将来が不安</div>
       <div class="quick-chip" onclick="sendQuick('life','自分に自信が持てません')">自己肯定感</div>
       <div class="quick-chip" onclick="sendQuick('life','人間関係で疲れています')">人間関係</div>
-      <div class="quick-chip" onclick="sendQuick('life','やりたいことが見つかりません')">夢・目標</div>
     </div>
     <div class="input-area">
       <textarea id="lifeInput" placeholder="何でも話してみてください…" onkeydown="handleKey(event,'life')" oninput="autoGrow(this)" rows="1"></textarea>
-      <button class="btn-send" id="lifeSendBtn" onclick="sendMsg('life')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      <button class="btn-send" id="lifeSendBtn" onclick="sendMsg('life')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
     </div>
   </div>
 </div>
@@ -401,32 +528,10 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
 <!-- PARTNER -->
 <div class="panel" id="panel-partner">
   <div class="card"><div class="sec-title">あなたの星座</div><div class="sign-picker" id="myPicker">
-    <div class="sign-chip" data-sign="おひつじ座" onclick="pickSign('my',this)"><span class="se">♈</span>おひつじ</div>
-    <div class="sign-chip" data-sign="おうし座" onclick="pickSign('my',this)"><span class="se">♉</span>おうし</div>
-    <div class="sign-chip" data-sign="ふたご座" onclick="pickSign('my',this)"><span class="se">♊</span>ふたご</div>
-    <div class="sign-chip" data-sign="かに座" onclick="pickSign('my',this)"><span class="se">♋</span>かに</div>
-    <div class="sign-chip" data-sign="しし座" onclick="pickSign('my',this)"><span class="se">♌</span>しし</div>
-    <div class="sign-chip" data-sign="おとめ座" onclick="pickSign('my',this)"><span class="se">♍</span>おとめ</div>
-    <div class="sign-chip" data-sign="てんびん座" onclick="pickSign('my',this)"><span class="se">♎</span>てんびん</div>
-    <div class="sign-chip" data-sign="さそり座" onclick="pickSign('my',this)"><span class="se">♏</span>さそり</div>
-    <div class="sign-chip" data-sign="いて座" onclick="pickSign('my',this)"><span class="se">♐</span>いて</div>
-    <div class="sign-chip" data-sign="やぎ座" onclick="pickSign('my',this)"><span class="se">♑</span>やぎ</div>
-    <div class="sign-chip" data-sign="みずがめ座" onclick="pickSign('my',this)"><span class="se">♒</span>みずがめ</div>
-    <div class="sign-chip" data-sign="うお座" onclick="pickSign('my',this)"><span class="se">♓</span>うお</div>
+    <div class="sign-chip" data-sign="おひつじ座" onclick="pickSign('my',this)"><span class="se">♈</span>おひつじ</div><div class="sign-chip" data-sign="おうし座" onclick="pickSign('my',this)"><span class="se">♉</span>おうし</div><div class="sign-chip" data-sign="ふたご座" onclick="pickSign('my',this)"><span class="se">♊</span>ふたご</div><div class="sign-chip" data-sign="かに座" onclick="pickSign('my',this)"><span class="se">♋</span>かに</div><div class="sign-chip" data-sign="しし座" onclick="pickSign('my',this)"><span class="se">♌</span>しし</div><div class="sign-chip" data-sign="おとめ座" onclick="pickSign('my',this)"><span class="se">♍</span>おとめ</div><div class="sign-chip" data-sign="てんびん座" onclick="pickSign('my',this)"><span class="se">♎</span>てんびん</div><div class="sign-chip" data-sign="さそり座" onclick="pickSign('my',this)"><span class="se">♏</span>さそり</div><div class="sign-chip" data-sign="いて座" onclick="pickSign('my',this)"><span class="se">♐</span>いて</div><div class="sign-chip" data-sign="やぎ座" onclick="pickSign('my',this)"><span class="se">♑</span>やぎ</div><div class="sign-chip" data-sign="みずがめ座" onclick="pickSign('my',this)"><span class="se">♒</span>みずがめ</div><div class="sign-chip" data-sign="うお座" onclick="pickSign('my',this)"><span class="se">♓</span>うお</div>
   </div></div>
   <div class="card"><div class="sec-title">相手の星座</div><div class="sign-picker" id="partnerPicker">
-    <div class="sign-chip" data-sign="おひつじ座" onclick="pickSign('partner',this)"><span class="se">♈</span>おひつじ</div>
-    <div class="sign-chip" data-sign="おうし座" onclick="pickSign('partner',this)"><span class="se">♉</span>おうし</div>
-    <div class="sign-chip" data-sign="ふたご座" onclick="pickSign('partner',this)"><span class="se">♊</span>ふたご</div>
-    <div class="sign-chip" data-sign="かに座" onclick="pickSign('partner',this)"><span class="se">♋</span>かに</div>
-    <div class="sign-chip" data-sign="しし座" onclick="pickSign('partner',this)"><span class="se">♌</span>しし</div>
-    <div class="sign-chip" data-sign="おとめ座" onclick="pickSign('partner',this)"><span class="se">♍</span>おとめ</div>
-    <div class="sign-chip" data-sign="てんびん座" onclick="pickSign('partner',this)"><span class="se">♎</span>てんびん</div>
-    <div class="sign-chip" data-sign="さそり座" onclick="pickSign('partner',this)"><span class="se">♏</span>さそり</div>
-    <div class="sign-chip" data-sign="いて座" onclick="pickSign('partner',this)"><span class="se">♐</span>いて</div>
-    <div class="sign-chip" data-sign="やぎ座" onclick="pickSign('partner',this)"><span class="se">♑</span>やぎ</div>
-    <div class="sign-chip" data-sign="みずがめ座" onclick="pickSign('partner',this)"><span class="se">♒</span>みずがめ</div>
-    <div class="sign-chip" data-sign="うお座" onclick="pickSign('partner',this)"><span class="se">♓</span>うお</div>
+    <div class="sign-chip" data-sign="おひつじ座" onclick="pickSign('partner',this)"><span class="se">♈</span>おひつじ</div><div class="sign-chip" data-sign="おうし座" onclick="pickSign('partner',this)"><span class="se">♉</span>おうし</div><div class="sign-chip" data-sign="ふたご座" onclick="pickSign('partner',this)"><span class="se">♊</span>ふたご</div><div class="sign-chip" data-sign="かに座" onclick="pickSign('partner',this)"><span class="se">♋</span>かに</div><div class="sign-chip" data-sign="しし座" onclick="pickSign('partner',this)"><span class="se">♌</span>しし</div><div class="sign-chip" data-sign="おとめ座" onclick="pickSign('partner',this)"><span class="se">♍</span>おとめ</div><div class="sign-chip" data-sign="てんびん座" onclick="pickSign('partner',this)"><span class="se">♎</span>てんびん</div><div class="sign-chip" data-sign="さそり座" onclick="pickSign('partner',this)"><span class="se">♏</span>さそり</div><div class="sign-chip" data-sign="いて座" onclick="pickSign('partner',this)"><span class="se">♐</span>いて</div><div class="sign-chip" data-sign="やぎ座" onclick="pickSign('partner',this)"><span class="se">♑</span>やぎ</div><div class="sign-chip" data-sign="みずがめ座" onclick="pickSign('partner',this)"><span class="se">♒</span>みずがめ</div><div class="sign-chip" data-sign="うお座" onclick="pickSign('partner',this)"><span class="se">♓</span>うお</div>
   </div></div>
   <div class="card">
     <div class="field"><label>関係性</label><select id="relStatus"><option value="">選択してください</option><option>付き合っている</option><option>好きな人（片思い）</option><option>婚活で出会った</option><option>友人から発展しそう</option><option>職場の人</option><option>元カレと復縁したい</option></select></div>
@@ -435,9 +540,9 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
   <button class="btn-main" id="diagBtn" onclick="diagnosePartner()">✦ 相性を読み解く ✦</button>
   <div class="result-panel" id="partnerResult">
     <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="scoreGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c9a96e"/><stop offset="100%" stop-color="#e8a0b4"/></linearGradient></defs></svg>
-    <div class="score-ring"><svg viewBox="0 0 84 84" width="84" height="84"><circle class="score-track" cx="42" cy="42" r="38"/><circle class="score-fill" id="scoreFill" cx="42" cy="42" r="38" stroke-dasharray="238.8" stroke-dashoffset="238.8"/></svg><div class="score-num" id="scoreNum">—</div></div>
+    <div class="score-ring"><svg viewBox="0 0 80 80" width="80" height="80"><circle class="score-track" cx="40" cy="40" r="36"/><circle class="score-fill" id="scoreFill" cx="40" cy="40" r="36" stroke-dasharray="226.2" stroke-dashoffset="226.2"/></svg><div class="score-num" id="scoreNum">—</div></div>
     <div class="result-label">総合相性スコア</div>
-    <div class="radar-wrap"><canvas id="partnerRadar" width="200" height="200"></canvas><div class="radar-labels" id="partnerRadarLabels"></div></div>
+    <div class="radar-wrap"><canvas id="partnerRadar" width="190" height="190"></canvas><div class="radar-labels" id="partnerRadarLabels"></div></div>
     <div class="result-divider"></div>
     <div class="result-body" id="partnerBody"></div>
   </div>
@@ -454,7 +559,7 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
   </div>
   <button class="btn-main" id="palmBtn" onclick="readPalm()">✦ 手相を読み解く ✦</button>
   <div class="result-panel" id="palmResult">
-    <div class="radar-wrap"><canvas id="palmRadar" width="200" height="200"></canvas><div class="radar-labels" id="palmRadarLabels"></div></div>
+    <div class="radar-wrap"><canvas id="palmRadar" width="190" height="190"></canvas><div class="radar-labels" id="palmRadarLabels"></div></div>
     <div class="result-divider"></div>
     <div class="result-body" id="palmBody"></div>
   </div>
@@ -463,25 +568,12 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
 <!-- FORTUNE -->
 <div class="panel" id="panel-fortune">
   <div class="card"><div class="sec-title">あなたの星座</div><div class="sign-picker" id="fortunePicker">
-    <div class="sign-chip" data-sign="おひつじ座" onclick="pickSign('fortune',this)"><span class="se">♈</span>おひつじ</div>
-    <div class="sign-chip" data-sign="おうし座" onclick="pickSign('fortune',this)"><span class="se">♉</span>おうし</div>
-    <div class="sign-chip" data-sign="ふたご座" onclick="pickSign('fortune',this)"><span class="se">♊</span>ふたご</div>
-    <div class="sign-chip" data-sign="かに座" onclick="pickSign('fortune',this)"><span class="se">♋</span>かに</div>
-    <div class="sign-chip" data-sign="しし座" onclick="pickSign('fortune',this)"><span class="se">♌</span>しし</div>
-    <div class="sign-chip" data-sign="おとめ座" onclick="pickSign('fortune',this)"><span class="se">♍</span>おとめ</div>
-    <div class="sign-chip" data-sign="てんびん座" onclick="pickSign('fortune',this)"><span class="se">♎</span>てんびん</div>
-    <div class="sign-chip" data-sign="さそり座" onclick="pickSign('fortune',this)"><span class="se">♏</span>さそり</div>
-    <div class="sign-chip" data-sign="いて座" onclick="pickSign('fortune',this)"><span class="se">♐</span>いて</div>
-    <div class="sign-chip" data-sign="やぎ座" onclick="pickSign('fortune',this)"><span class="se">♑</span>やぎ</div>
-    <div class="sign-chip" data-sign="みずがめ座" onclick="pickSign('fortune',this)"><span class="se">♒</span>みずがめ</div>
-    <div class="sign-chip" data-sign="うお座" onclick="pickSign('fortune',this)"><span class="se">♓</span>うお</div>
+    <div class="sign-chip" data-sign="おひつじ座" onclick="pickSign('fortune',this)"><span class="se">♈</span>おひつじ</div><div class="sign-chip" data-sign="おうし座" onclick="pickSign('fortune',this)"><span class="se">♉</span>おうし</div><div class="sign-chip" data-sign="ふたご座" onclick="pickSign('fortune',this)"><span class="se">♊</span>ふたご</div><div class="sign-chip" data-sign="かに座" onclick="pickSign('fortune',this)"><span class="se">♋</span>かに</div><div class="sign-chip" data-sign="しし座" onclick="pickSign('fortune',this)"><span class="se">♌</span>しし</div><div class="sign-chip" data-sign="おとめ座" onclick="pickSign('fortune',this)"><span class="se">♍</span>おとめ</div><div class="sign-chip" data-sign="てんびん座" onclick="pickSign('fortune',this)"><span class="se">♎</span>てんびん</div><div class="sign-chip" data-sign="さそり座" onclick="pickSign('fortune',this)"><span class="se">♏</span>さそり</div><div class="sign-chip" data-sign="いて座" onclick="pickSign('fortune',this)"><span class="se">♐</span>いて</div><div class="sign-chip" data-sign="やぎ座" onclick="pickSign('fortune',this)"><span class="se">♑</span>やぎ</div><div class="sign-chip" data-sign="みずがめ座" onclick="pickSign('fortune',this)"><span class="se">♒</span>みずがめ</div><div class="sign-chip" data-sign="うお座" onclick="pickSign('fortune',this)"><span class="se">♓</span>うお</div>
   </div></div>
-  <div class="card">
-    <div class="form-row">
-      <div class="field"><label>フォーカス</label><select id="fortuneFocus"><option value="恋愛・結婚">恋愛・結婚</option><option value="仕事・金運">仕事・金運</option><option value="全体運">全体運</option><option value="今日の一言">今日の一言</option></select></div>
-      <div class="field"><label>今の気分</label><select id="fortuneMood"><option value="普通">普通</option><option value="落ち込んでいる">落ち込んでいる</option><option value="ワクワクしている">ワクワク</option><option value="不安を感じている">不安</option><option value="恋をしている">恋をしてる</option></select></div>
-    </div>
-  </div>
+  <div class="card"><div class="form-row">
+    <div class="field"><label>フォーカス</label><select id="fortuneFocus"><option value="恋愛・結婚">恋愛・結婚</option><option value="仕事・金運">仕事・金運</option><option value="全体運">全体運</option><option value="今日の一言">今日の一言</option></select></div>
+    <div class="field"><label>今の気分</label><select id="fortuneMood"><option value="普通">普通</option><option value="落ち込んでいる">落ち込んでいる</option><option value="ワクワクしている">ワクワク</option><option value="不安を感じている">不安</option><option value="恋をしている">恋をしてる</option></select></div>
+  </div></div>
   <button class="btn-main" onclick="getFortune()">✦ 今日の運勢を見る ✦</button>
   <div class="result-panel" id="fortuneResult">
     <div class="today-orb" id="fortuneOrb">🌕</div>
@@ -491,30 +583,21 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
     <div class="luck-bars" id="luckBars"></div>
     <div class="lucky-grid" id="luckyGrid"></div>
   </div>
-  <!-- 週間運勢チャート -->
-  <div class="card">
-    <div class="sec-title">週間運勢グラフ</div>
+  <div class="card"><div class="sec-title">週間運勢グラフ</div>
     <div class="week-chart" id="weekChart"></div>
-    <div class="week-chart-legend">
-      <div class="wc-legend-item"><div class="wc-dot" style="background:var(--sakura)"></div>恋愛</div>
-      <div class="wc-legend-item"><div class="wc-dot" style="background:var(--moon)"></div>金運</div>
-      <div class="wc-legend-item"><div class="wc-dot" style="background:var(--lav)"></div>仕事</div>
-    </div>
+    <div class="week-chart-legend"><div class="wc-legend-item"><div class="wc-dot" style="background:var(--sakura)"></div>恋愛</div><div class="wc-legend-item"><div class="wc-dot" style="background:var(--moon)"></div>金運</div><div class="wc-legend-item"><div class="wc-dot" style="background:var(--lav)"></div>仕事</div></div>
   </div>
 </div>
 
 <!-- DIARY -->
 <div class="panel" id="panel-diary">
   <div class="card">
-    <div class="diary-header">
-      <div class="diary-date-nav">
-        <button onclick="changeDiaryDate(-1)">‹</button>
-        <div class="diary-date-label" id="diaryDateLabel"></div>
-        <button onclick="changeDiaryDate(1)">›</button>
-      </div>
+    <div class="diary-date-nav">
+      <button onclick="changeDiaryDate(-1)">‹</button>
+      <div class="diary-date-label" id="diaryDateLabel"></div>
+      <button onclick="changeDiaryDate(1)">›</button>
     </div>
-    <div style="margin-bottom:12px">
-      <div style="font-size:10px;letter-spacing:0.15em;color:var(--text-m);margin-bottom:8px;text-align:center">今日の気分</div>
+    <div style="margin-bottom:10px"><div style="font-size:9.5px;letter-spacing:0.15em;color:var(--text-m);margin-bottom:7px;text-align:center">今日の気分</div>
       <div class="mood-picker" id="moodPicker">
         <div class="mood-btn" data-mood="1" onclick="setMood(1)">😔</div>
         <div class="mood-btn" data-mood="2" onclick="setMood(2)">😕</div>
@@ -524,41 +607,57 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
       </div>
     </div>
     <div class="field"><label>✨ 今日の良かったこと</label><textarea id="diaryGood" placeholder="どんな小さなことでも…"></textarea></div>
-    <div class="field"><label>💭 今日の気になったこと・反省</label><textarea id="diaryBad" placeholder="明日への糧に…"></textarea></div>
-    <button class="btn-main" onclick="saveDiary()">✦ 今日の日記を保存 ✦</button>
+    <div class="field"><label>💭 気になったこと・反省</label><textarea id="diaryBad" placeholder="明日への糧に…"></textarea></div>
+    <button class="btn-main" onclick="saveDiary()">✦ 日記を保存 ✦</button>
   </div>
-  <!-- 週次ハイライト -->
-  <div class="card" id="weekHighlightCard">
-    <div class="sec-title">今週のハイライト</div>
-    <div class="week-highlight" id="weekHighlight">
-      <div style="text-align:center;color:var(--text-d);font-size:12px;padding:12px">日記を書くと週次ハイライトが生成されます🌙</div>
-    </div>
+  <!-- AIからのコメント -->
+  <div class="card" id="aiDiaryCommentCard" style="display:none">
+    <div class="sec-title">キャラクターからのひとこと</div>
+    <div class="daily-msg-avatar"><div class="dma-orb" id="diaryAvOrb" style="background:linear-gradient(135deg,var(--moon),var(--sakura))">🌙</div><div class="dma-name" id="diaryAvName">TSUKI</div></div>
+    <div class="daily-msg-text" id="aiDiaryComment"></div>
+  </div>
+  <div class="card"><div class="sec-title">今週のハイライト</div>
+    <div class="week-highlight" id="weekHighlight"><div style="text-align:center;color:var(--text-d);font-size:11.5px;padding:10px">日記を書くと週次ハイライトが生成されます🌙</div></div>
     <button class="btn-sub" onclick="generateWeekHighlight()">✦ 今週を振り返る ✦</button>
   </div>
-  <!-- カレンダー -->
   <div class="card">
-    <div class="cal-month-nav">
-      <button onclick="changeCalMonth(-1)">‹</button>
-      <div class="cal-month-label" id="calMonthLabel"></div>
-      <button onclick="changeCalMonth(1)">›</button>
-    </div>
+    <div class="cal-month-nav"><button onclick="changeCalMonth(-1)">‹</button><div class="cal-month-label" id="calMonthLabel"></div><button onclick="changeCalMonth(1)">›</button></div>
     <div class="calendar-grid" id="calGrid"></div>
-    <div style="display:flex;gap:12px;margin-top:10px;font-size:9.5px;color:var(--text-m)">
-      <div style="display:flex;align-items:center;gap:4px"><div style="width:6px;height:6px;border-radius:50%;background:var(--sakura)"></div>日記あり</div>
-      <div style="display:flex;align-items:center;gap:4px"><div style="width:6px;height:6px;border-radius:50%;background:var(--moon)"></div>運勢あり</div>
-    </div>
+  </div>
+</div>
+
+<!-- GROWTH -->
+<div class="panel" id="panel-growth">
+  <!-- 感情グラフ30日 -->
+  <div class="card"><div class="sec-title">30日間の感情グラフ</div>
+    <div class="emotion-graph" id="emotionGraph"></div>
+    <div style="display:flex;justify-content:space-between;font-size:8.5px;color:var(--text-d);margin-top:4px"><span>30日前</span><span>今日</span></div>
+  </div>
+  <!-- 気持ちの変化タイムライン -->
+  <div class="card"><div class="sec-title">気持ちの変化タイムライン</div>
+    <div class="timeline" id="emotionTimeline"><div style="color:var(--text-d);font-size:11.5px;text-align:center;padding:10px">日記を書くとタイムラインが作られます🌙</div></div>
+  </div>
+  <!-- 恋愛パターン分析 -->
+  <div class="card"><div class="sec-title">恋愛パターン分析</div>
+    <div id="patternAnalysis"><div style="color:var(--text-d);font-size:11.5px;text-align:center;padding:10px">相談を重ねると分析が深まります🌙</div></div>
+    <button class="btn-sub" onclick="analyzePattern()">✦ パターンを分析する ✦</button>
+  </div>
+  <!-- AI月次レポート -->
+  <div class="card"><div class="sec-title">AI月次レポート</div>
+    <div id="monthlyReportArea"><div style="color:var(--text-d);font-size:11.5px;text-align:center;padding:10px">月末にAIが今月のあなたをまとめます🌙</div></div>
+    <button class="btn-sub" onclick="generateMonthlyReport()">✦ 今月のレポートを生成 ✦</button>
   </div>
 </div>
 
 <!-- GOALS -->
 <div class="panel" id="panel-goals">
   <div class="card" style="background:linear-gradient(135deg,rgba(201,169,110,0.08),rgba(232,160,180,0.05))">
-    <div style="text-align:center;padding:8px 0">
-      <div style="font-size:28px;margin-bottom:6px">🎯</div>
-      <div style="font-family:'Shippori Mincho',serif;font-size:15px;color:var(--moon-l);margin-bottom:4px">目標を設定して、月と一緒に叶えよう</div>
-      <div style="font-size:11px;color:var(--text-m)">進捗を記録し、AIがアドバイスします</div>
+    <div style="text-align:center;padding:6px 0">
+      <div style="font-size:26px;margin-bottom:5px">🎯</div>
+      <div style="font-family:'Shippori Mincho',serif;font-size:14px;color:var(--moon-l);margin-bottom:3px">目標を設定して、月と一緒に叶えよう</div>
+      <div style="font-size:10.5px;color:var(--text-m)">進捗を記録し、AIがアドバイスします</div>
     </div>
-    <button class="btn-main" style="margin-top:14px" onclick="openModal('goalModal')">✦ 新しい目標を追加 ✦</button>
+    <button class="btn-main" style="margin-top:12px" onclick="openModal('goalModal')">✦ 新しい目標を追加 ✦</button>
   </div>
   <div id="goalsList"></div>
 </div>
@@ -566,36 +665,33 @@ body{background:var(--ink);color:var(--text);font-family:'Noto Sans JP',sans-ser
 
   </div>
 </div>
-
 <div class="bottom-note">TSUKI はAIによるエンターテインメントサービスです。結果は参考としてお楽しみください。</div>
 
 <script>
-/* ===== SUPABASE ===== */
 const SUPABASE_URL='https://oyzfiuaemprfibxtggip.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im95emZpdWFlbXByZmlieHRnZ2lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNjQyMzIsImV4cCI6MjA4Nzk0MDIzMn0.SjCpLHXUgpe76hy8JHxOAQ2BYf2JRpZGA2f6l8DhWIw';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-/* ===== STARS ===== */
-(function(){const c=document.getElementById('cosmos'),ctx=c.getContext('2d');let W,H,stars=[],shooting=null;function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}resize();window.addEventListener('resize',()=>{resize();init();});function init(){stars=[];const n=Math.floor(W*H/4000);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+0.3,a:Math.random(),da:(Math.random()*0.003+0.001)*(Math.random()<0.5?1:-1),hue:Math.random()<0.3?`hsl(${300+Math.random()*60},50%,90%)`:'white'});}init();setInterval(()=>{if(Math.random()<0.4)shooting={x:Math.random()*W*0.6+W*0.2,y:Math.random()*H*0.3,len:Math.random()*120+80,speed:Math.random()*8+6,angle:Math.PI/6+Math.random()*0.3,life:1};},4000);function draw(){ctx.clearRect(0,0,W,H);for(const s of stars){s.a+=s.da;if(s.a>1||s.a<0.1)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.hue;ctx.globalAlpha=s.a;ctx.fill();}ctx.globalAlpha=1;if(shooting){const dx=Math.cos(shooting.angle)*shooting.speed,dy=Math.sin(shooting.angle)*shooting.speed;const tail=shooting.len*shooting.life;const g=ctx.createLinearGradient(shooting.x,shooting.y,shooting.x-Math.cos(shooting.angle)*tail,shooting.y-Math.sin(shooting.angle)*tail);g.addColorStop(0,`rgba(232,201,154,${shooting.life})`);g.addColorStop(1,'rgba(232,201,154,0)');ctx.beginPath();ctx.moveTo(shooting.x,shooting.y);ctx.lineTo(shooting.x-Math.cos(shooting.angle)*tail,shooting.y-Math.sin(shooting.angle)*tail);ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.stroke();shooting.x+=dx;shooting.y+=dy;shooting.life-=0.025;if(shooting.life<=0||shooting.x>W||shooting.y>H)shooting=null;}requestAnimationFrame(draw);}draw();})();
+/* STARS */
+(function(){const c=document.getElementById('cosmos'),ctx=c.getContext('2d');let W,H,stars=[],shooting=null;function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}resize();window.addEventListener('resize',()=>{resize();init();});function init(){stars=[];const n=Math.floor(W*H/4500);for(let i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+0.3,a:Math.random(),da:(Math.random()*0.003+0.001)*(Math.random()<0.5?1:-1),hue:Math.random()<0.3?`hsl(${300+Math.random()*60},50%,90%)`:'white'});}init();setInterval(()=>{if(Math.random()<0.4)shooting={x:Math.random()*W*0.6+W*0.2,y:Math.random()*H*0.3,len:Math.random()*100+60,speed:Math.random()*7+5,angle:Math.PI/6+Math.random()*0.3,life:1};},4000);function draw(){ctx.clearRect(0,0,W,H);for(const s of stars){s.a+=s.da;if(s.a>1||s.a<0.1)s.da*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.hue;ctx.globalAlpha=s.a;ctx.fill();}ctx.globalAlpha=1;if(shooting){const dx=Math.cos(shooting.angle)*shooting.speed,dy=Math.sin(shooting.angle)*shooting.speed;const tail=shooting.len*shooting.life;const g=ctx.createLinearGradient(shooting.x,shooting.y,shooting.x-Math.cos(shooting.angle)*tail,shooting.y-Math.sin(shooting.angle)*tail);g.addColorStop(0,`rgba(232,201,154,${shooting.life})`);g.addColorStop(1,'rgba(232,201,154,0)');ctx.beginPath();ctx.moveTo(shooting.x,shooting.y);ctx.lineTo(shooting.x-Math.cos(shooting.angle)*tail,shooting.y-Math.sin(shooting.angle)*tail);ctx.strokeStyle=g;ctx.lineWidth=1.5;ctx.stroke();shooting.x+=dx;shooting.y+=dy;shooting.life-=0.025;if(shooting.life<=0||shooting.x>W||shooting.y>H)shooting=null;}requestAnimationFrame(draw);}draw();})();
 
-/* ===== AUTH ===== */
+/* AUTH */
 let currentUser=null,userProfile={},isSignUp=false;
-sb.auth.onAuthStateChange(async(event,session)=>{
-  if(session?.user){currentUser=session.user;await loadProfile();checkAndShowQuiz();}
-  else{currentUser=null;showAuth();}
-});
+sb.auth.onAuthStateChange(async(event,session)=>{if(session?.user){currentUser=session.user;await loadProfile();checkAndShowNext();}else{currentUser=null;showAuth();}});
 async function loadProfile(){const{data}=await sb.from('profiles').select('*').eq('id',currentUser.id).single();if(data)userProfile=data;}
-function showAuth(){document.getElementById('authScreen').classList.remove('hidden');document.getElementById('mainApp').classList.remove('show');document.getElementById('quizScreen').classList.remove('show');}
-function showApp(){document.getElementById('authScreen').classList.add('hidden');document.getElementById('quizScreen').classList.remove('show');document.getElementById('mainApp').classList.add('show');updateGreeting();updateProfileModal();updateStreak();loadWeekChart();loadCalendar();loadGoals();}
-function checkAndShowQuiz(){if(!userProfile||!userProfile.quiz_done){document.getElementById('authScreen').classList.add('hidden');startQuiz();}else{showApp();}}
-function toggleAuthMode(){isSignUp=!isSignUp;document.getElementById('authTitle').textContent=isSignUp?'新規登録':'ログイン';document.getElementById('authBtn').textContent=isSignUp?'✦ 登録する ✦':'✦ ログイン ✦';document.getElementById('authSwitch').innerHTML=isSignUp?'すでにアカウントをお持ちの方は <a onclick="toggleAuthMode()">ログイン</a>':'アカウントをお持ちでない方は <a onclick="toggleAuthMode()">新規登録</a>';document.getElementById('authNameField').style.display=isSignUp?'flex':'none';document.getElementById('authMsg').className='auth-msg';}
-async function handleAuth(){const email=document.getElementById('authEmail').value.trim();const password=document.getElementById('authPassword').value;const name=document.getElementById('authName').value.trim();const btn=document.getElementById('authBtn');const msg=document.getElementById('authMsg');if(!email||!password){showAuthMsg('メールアドレスとパスワードを入力してください','error');return;}btn.disabled=true;btn.textContent='処理中…';try{if(isSignUp){const{error}=await sb.auth.signUp({email,password,options:{data:{name}}});if(error)throw error;showAuthMsg('確認メールを送信しました。メールのリンクをクリックしてください。','success');}else{const{error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;}}catch(e){showAuthMsg(e.message==='Invalid login credentials'?'メールアドレスまたはパスワードが間違っています':e.message,'error');}btn.disabled=false;btn.textContent=isSignUp?'✦ 登録する ✦':'✦ ログイン ✦';}
-function showAuthMsg(text,type){const el=document.getElementById('authMsg');el.textContent=text;el.className='auth-msg '+type;}
+function showAuth(){document.getElementById('authScreen').classList.remove('hidden');document.getElementById('mainApp').classList.remove('show');document.getElementById('quizScreen').classList.remove('show');document.getElementById('avatarSetup').classList.remove('show');}
+function checkAndShowNext(){
+  if(!userProfile||!userProfile.quiz_done){document.getElementById('authScreen').classList.add('hidden');startQuiz();return;}
+  if(!userProfile.avatar_name){document.getElementById('authScreen').classList.add('hidden');document.getElementById('quizScreen').classList.remove('show');document.getElementById('avatarSetup').classList.add('show');return;}
+  showApp();
+}
+function toggleAuthMode(){isSignUp=!isSignUp;document.getElementById('authTitle').textContent=isSignUp?'新規登録':'ログイン';document.getElementById('authBtn').textContent=isSignUp?'✦ 登録する ✦':'✦ ログイン ✦';document.getElementById('authSwitch').innerHTML=isSignUp?'すでにアカウントをお持ちの方は <a onclick="toggleAuthMode()">ログイン</a>':'アカウントをお持ちでない方は <a onclick="toggleAuthMode()">新規登録</a>';document.getElementById('authNameField').style.display=isSignUp?'flex':'none';document.getElementById('authMsg').className='auth-msg';checkAuthReady();}
 function checkAuthReady(){const email=document.getElementById('authEmail').value.trim();const pw=document.getElementById('authPassword').value;const ready=email.length>0&&pw.length>=1;document.getElementById('authBtn').className='btn-auth'+(ready?' ready':'');}
-setTimeout(()=>{['authEmail','authPassword','authName'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',checkAuthReady);});},500);
+async function handleAuth(){const email=document.getElementById('authEmail').value.trim();const password=document.getElementById('authPassword').value;const name=document.getElementById('authName').value.trim();const btn=document.getElementById('authBtn');if(!email||!password){showAuthMsg('メールアドレスとパスワードを入力してください','error');return;}btn.textContent='処理中…';try{if(isSignUp){const{error}=await sb.auth.signUp({email,password,options:{data:{name}}});if(error)throw error;showAuthMsg('確認メールを送信しました。メールのリンクをクリックしてください。','success');}else{const{error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;}}catch(e){showAuthMsg(e.message==='Invalid login credentials'?'メールアドレスまたはパスワードが間違っています':e.message,'error');}btn.textContent=isSignUp?'✦ 登録する ✦':'✦ ログイン ✦';}
+function showAuthMsg(text,type){const el=document.getElementById('authMsg');el.textContent=text;el.className='auth-msg '+type;}
 async function logout(){await sb.auth.signOut();closeModal('profileModal');}
 
-/* ===== QUIZ ===== */
+/* QUIZ */
 const quizQuestions=[
   {q:'あなたのニックネームを教えてください',type:'text',key:'name',placeholder:'例：さくら'},
   {q:'年齢を教えてください',type:'select',key:'age',options:['20歳未満','20〜24歳','25〜29歳','30〜34歳','35〜39歳','40歳以上']},
@@ -622,85 +718,217 @@ function renderQuiz(){
   nextBtn.className='btn-quiz-next'+(hasAnswer?' ready':'');
   nextBtn.textContent=quizStep===total-1?'✦ 完了 ✦':'次へ →';
   let html=`<div class="quiz-card"><div class="quiz-q">${q.q}</div>`;
-  if(q.type==='text'){html+=`<div class="quiz-input-wrap"><input class="quiz-input${quizAnswers[q.key]?' filled':''}" type="text" placeholder="${q.placeholder||''}" value="${quizAnswers[q.key]||''}" oninput="quizSetText('${q.key}',this)" id="quizTextInput"></div>`;}
+  if(q.type==='text'){html+=`<input class="quiz-input${quizAnswers[q.key]?' filled':''}" type="text" placeholder="${q.placeholder||''}" value="${quizAnswers[q.key]||''}" oninput="quizSetText('${q.key}',this)" id="quizTextInput">`;}
   else if(q.type==='select'){html+=`<select class="quiz-input${quizAnswers[q.key]?' filled':''}" onchange="quizSetAnswer('${q.key}',this.value)"><option value="">選択してください</option>${q.options.map(o=>`<option value="${o}" ${quizAnswers[q.key]===o?'selected':''}>${o}</option>`).join('')}</select>`;}
   else if(q.type==='options'){html+=`<div class="quiz-options">${q.options.map(o=>`<div class="quiz-opt ${quizAnswers[q.key]===o?'selected':''}" onclick="quizSetAnswer('${q.key}','${o}')">${o}</div>`).join('')}</div>`;}
   html+='</div>';
   document.getElementById('quizContent').innerHTML=html;
 }
-function quizSetText(key,el){quizAnswers[key]=el.value.trim();el.classList.toggle('filled',!!el.value.trim());const nextBtn=document.getElementById('quizNextBtn');nextBtn.className='btn-quiz-next'+(el.value.trim()?' ready':'');}
+function quizSetText(key,el){quizAnswers[key]=el.value.trim();el.classList.toggle('filled',!!el.value.trim());document.getElementById('quizNextBtn').className='btn-quiz-next'+(el.value.trim()?' ready':'');}
 function quizSetAnswer(key,val){quizAnswers[key]=val;renderQuiz();}
-async function quizNext(){if(!quizAnswers[quizQuestions[quizStep].key])return;if(quizStep<quizQuestions.length-1){quizStep++;renderQuiz();}else{const btn=document.getElementById('quizNextBtn');btn.textContent='保存中…';btn.className='btn-quiz-next';const profileData={...quizAnswers,id:currentUser.id,quiz_done:true,streak:1,last_login:new Date().toISOString().split('T')[0],updated_at:new Date().toISOString()};await sb.from('profiles').upsert(profileData);userProfile=profileData;showApp();}}
+async function quizNext(){if(!quizAnswers[quizQuestions[quizStep].key])return;if(quizStep<quizQuestions.length-1){quizStep++;renderQuiz();}else{const btn=document.getElementById('quizNextBtn');btn.textContent='保存中…';btn.className='btn-quiz-next';const profileData={...quizAnswers,id:currentUser.id,quiz_done:true,love_score:50,love_score_history:JSON.stringify([{date:new Date().toISOString().split('T')[0],score:50}]),streak:1,last_login:new Date().toISOString().split('T')[0],updated_at:new Date().toISOString()};await sb.from('profiles').upsert(profileData);userProfile=profileData;document.getElementById('quizScreen').classList.remove('show');document.getElementById('avatarSetup').classList.add('show');}}
 function quizBack(){if(quizStep>0){quizStep--;renderQuiz();}}
 
-/* ===== PROFILE / STREAK ===== */
+/* AVATAR */
+let avatarB64=null;
+function onAvatarUpload(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{avatarB64=ev.target.result.split(',')[1];const img=document.getElementById('avatarPreviewImg');img.src=ev.target.result;img.style.display='block';document.getElementById('avatarPlaceholder').style.display='none';document.getElementById('avatarAnalyzeBtn').style.display='block';};reader.readAsDataURL(file);}
+async function analyzeAvatar(){const btn=document.getElementById('avatarAnalyzeBtn');btn.disabled=true;btn.textContent='生成中…';const sys=`あなたは神秘的なAIです。ユーザーの顔写真を見て、その人のための守護キャラクターを作ります。ユーザー情報：名前:${userProfile.name||'あなた'} 性格:${userProfile.personality||'未設定'} 恋愛観:${userProfile.love_value||'未設定'}\nJSONのみ出力：{"name":"キャラクター名（ひらがな・カタカナ2〜4文字）","personality":"キャラクターの性格（20字）","description":"キャラクターの説明（60字、月・星・自然のモチーフ）","color1":"#xxxxxx","color2":"#xxxxxx","emoji":"キャラクターを表す絵文字1文字","greeting":"ユーザーへの最初のひとこと（40字、温かく詩的に）"}`;
+try{const messages=avatarB64?[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:avatarB64}},{type:'text',text:'この人の守護キャラクターを作ってください'}]}]:[{role:'user',content:'守護キャラクターを作ってください'}];const raw=await callClaude(sys,messages);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());const orb=document.getElementById('avatarOrb');orb.style.background=`linear-gradient(135deg,${d.color1},${d.color2})`;orb.textContent=d.emoji;document.getElementById('avatarCharName').textContent=d.name;document.getElementById('avatarCharDesc').textContent=d.description;document.getElementById('avatarResult').classList.add('show');document.getElementById('avatarNextBtn').style.display='block';document.getElementById('avatarAnalyzeBtn').style.display='none';
+await sb.from('profiles').update({avatar_name:d.name,avatar_personality:d.personality,avatar_description:d.description,avatar_color:d.color1+'|'+d.color2,last_ai_comment:d.greeting,last_ai_comment_date:new Date().toISOString().split('T')[0]}).eq('id',currentUser.id);userProfile.avatar_name=d.name;userProfile.avatar_personality=d.personality;userProfile.avatar_color=d.color1+'|'+d.color2;userProfile.last_ai_comment=d.greeting;}catch(e){btn.textContent='もう一度試す';console.error(e);}btn.disabled=false;}
+function skipAvatarSetup(){userProfile.avatar_name=userProfile.avatar_name||'つき';userProfile.avatar_color=userProfile.avatar_color||'#c9a96e|#e8a0b4';sb.from('profiles').update({avatar_name:userProfile.avatar_name||'つき',avatar_color:userProfile.avatar_color}).eq('id',currentUser.id);document.getElementById('avatarSetup').classList.remove('show');showApp();}
+function finishAvatarSetup(){document.getElementById('avatarSetup').classList.remove('show');showApp();}
+
+/* SHOW APP */
+async function showApp(){
+  document.getElementById('authScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('show');
+  document.getElementById('avatarSetup').classList.remove('show');
+  document.getElementById('mainApp').classList.add('show');
+  updateGreeting();updateProfileModal();
+  await updateStreak();
+  updateLoveScore();
+  setupAvatarUI();
+  loadDailyMsg();
+  checkDailyCheckin();
+  loadWeekChart();
+  loadCalendar();
+  loadGoals();
+  loadEmotionGraph();
+  loadTimeline();
+}
+
+function updateGreeting(){const name=userProfile?.name||'';const hour=new Date().getHours();const time=hour<5?'深夜に':hour<12?'おはようございます':hour<18?'こんにちは':'こんばんは';document.getElementById('greeting').textContent=name?`${time}、${name}さん 🌙`:'';}
+
+function setupAvatarUI(){
+  const colors=(userProfile.avatar_color||'#c9a96e|#e8a0b4').split('|');
+  const name=userProfile.avatar_name||'TSUKI';
+  const emoji=userProfile.avatar_emoji||'🌙';
+  ['chatAvatar','dmAvOrb','diaryAvOrb'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.background=`linear-gradient(135deg,${colors[0]},${colors[1]})`;el.textContent=emoji;}});
+  ['dmAvName','diaryAvName'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=name;});
+}
+
+/* STREAK */
+async function updateStreak(){
+  const today=new Date().toISOString().split('T')[0];
+  const last=userProfile.last_login;
+  let streak=userProfile.streak||0;
+  if(last!==today){
+    const yesterday=new Date(Date.now()-86400000).toISOString().split('T')[0];
+    if(last===yesterday){streak++;}else{streak=1;}
+    await sb.from('profiles').update({streak,last_login:today}).eq('id',currentUser.id);
+    userProfile.streak=streak;userProfile.last_login=today;
+    if(streak===3||streak===7||streak===14||streak===30){showBonusPopup(streak);}
+  }
+  document.getElementById('streakBadge').textContent=`🔥 ${streak}日連続`;
+}
+
+function showBonusPopup(streak){
+  const msgs={3:['🌟','3日連続！','月があなたの継続を讃えています。この調子で続けましょう🌙'],7:['🌕','7日連続！','1週間続きました！あなたの恋愛偏差値が上がっています✨'],14:['💫','14日連続！','2週間！本当にすごいです。TSUKIとの絆が深まっています🌸'],30:['🏆','30日連続！！','1ヶ月続きました！あなたは本当に特別です。月はいつもそばにいます🌙']};
+  const m=msgs[streak]||['✦',`${streak}日連続！`,'継続は力なり。あなたの頑張りが輝いています🌙'];
+  document.getElementById('bonusEmoji').textContent=m[0];document.getElementById('bonusTitle').textContent=m[1];document.getElementById('bonusMsg').textContent=m[2];
+  document.getElementById('bonusOverlay').classList.add('show');document.getElementById('bonusPopup').classList.add('show');
+}
+function closeBonusPopup(){document.getElementById('bonusOverlay').classList.remove('show');document.getElementById('bonusPopup').classList.remove('show');}
+
+/* LOVE SCORE */
+function updateLoveScore(){
+  const score=userProfile.love_score||50;
+  document.getElementById('lsScore').textContent=score;
+  document.getElementById('lsFill').style.width=score+'%';
+  const hist=JSON.parse(userProfile.love_score_history||'[]');
+  if(hist.length>=2){const delta=hist[hist.length-1].score-hist[hist.length-2].score;if(delta>0)document.getElementById('lsDelta').textContent=`+${delta}↑`;else if(delta<0)document.getElementById('lsDelta').textContent=`${delta}↓`;}
+}
+async function addLoveScore(delta){
+  const newScore=Math.min(99,Math.max(1,(userProfile.love_score||50)+delta));
+  const hist=JSON.parse(userProfile.love_score_history||'[]');
+  hist.push({date:new Date().toISOString().split('T')[0],score:newScore});
+  if(hist.length>30)hist.shift();
+  await sb.from('profiles').update({love_score:newScore,love_score_history:JSON.stringify(hist)}).eq('id',currentUser.id);
+  userProfile.love_score=newScore;userProfile.love_score_history=JSON.stringify(hist);
+  updateLoveScore();
+}
+
+/* DAILY CHECKIN */
+function checkDailyCheckin(){
+  const today=new Date().toISOString().split('T')[0];
+  const lastCheckin=localStorage.getItem('tsuki_checkin');
+  if(lastCheckin!==today){document.getElementById('checkinCard').classList.add('show');}
+}
+async function doCheckin(mood){
+  document.querySelectorAll('.checkin-mood').forEach(el=>el.classList.toggle('selected',parseInt(el.dataset.mood)===mood));
+  const today=new Date().toISOString().split('T')[0];
+  localStorage.setItem('tsuki_checkin',today);
+  setTimeout(()=>{document.getElementById('checkinCard').classList.remove('show');},800);
+  await sb.from('diaries').upsert({user_id:currentUser.id,date:today,mood},{onConflict:'user_id,date'});
+  await addLoveScore(mood-3);
+}
+
+/* DAILY AI MESSAGE */
+async function loadDailyMsg(){
+  const today=new Date().toISOString().split('T')[0];
+  const lastDate=userProfile.last_ai_comment_date;
+  if(lastDate===today&&userProfile.last_ai_comment){showDailyMsg(userProfile.last_ai_comment);return;}
+  const{data:recentDiary}=await sb.from('diaries').select('*').eq('user_id',currentUser.id).order('date',{ascending:false}).limit(3);
+  const diaryContext=recentDiary?.length?`最近の日記：${recentDiary.map(d=>`${d.date}（気分${d.mood}/5）良かったこと：${d.good_thing||'未記入'}`).join(' / ')}`:'まだ日記がありません';
+  const sys=`あなたは${userProfile.avatar_name||'TSUKI'}という守護キャラクターです。性格：${userProfile.avatar_personality||'神秘的で優しい'}。ユーザーに毎朝（毎晩）のメッセージを送ります。${buildUserContext()}\n${diaryContext}\n今日の日付：${today}\n60字以内の温かいメッセージを送ってください。前日の日記に触れながら、今日への励ましを込めて。`;
+  try{const msg=await callClaude(sys,[{role:'user',content:'今日のメッセージをください'}]);showDailyMsg(msg);await sb.from('profiles').update({last_ai_comment:msg,last_ai_comment_date:today}).eq('id',currentUser.id);}catch(e){showDailyMsg('今日も月があなたを見守っています🌙');}}
+function showDailyMsg(msg){document.getElementById('dailyMsgText').textContent=msg;document.getElementById('dailyMsgCard').style.display='block';}
+
+/* MODE */
+function switchMode(m){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));document.getElementById('panel-'+m).classList.add('active');document.getElementById('tab-'+m).classList.add('active');if(m==='diary'){renderDiaryDate();loadDiary();}if(m==='goals'){loadGoals();}if(m==='fortune'){loadWeekChart();}if(m==='growth'){loadEmotionGraph();loadTimeline();}}
+
+/* MODAL */
 function openModal(id){document.getElementById(id).classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
-function updateProfileModal(){const p=userProfile;if(!p)return;const items=[['ニックネーム',p.name||'未設定'],['年齢',p.age||'未設定'],['恋愛状況',p.love_status||'未設定'],['結婚観',p.marriage_view||'未設定'],['職業',p.job||'未設定'],['主な悩み',p.main_worry||'未設定'],['性格タイプ',p.personality||'未設定'],['恋愛で大切なこと',p.love_value||'未設定'],['星座',p.zodiac||'未設定']];document.getElementById('profileContent').innerHTML=items.map(([k,v])=>`<div class="profile-item"><span class="profile-key">${k}</span><span class="profile-val">${v}</span></div>`).join('');}
-function updateGreeting(){const name=userProfile?.name||'';const hour=new Date().getHours();const time=hour<12?'おはようございます':hour<18?'こんにちは':'こんばんは';document.getElementById('greeting').textContent=name?`${time}、${name}さん 🌙`:'';} 
-async function updateStreak(){const today=new Date().toISOString().split('T')[0];const last=userProfile.last_login;let streak=userProfile.streak||0;if(last!==today){const yesterday=new Date(Date.now()-86400000).toISOString().split('T')[0];if(last===yesterday){streak++;}else if(last&&last<yesterday){streak=1;}else{streak=1;}await sb.from('profiles').update({streak,last_login:today}).eq('id',currentUser.id);userProfile.streak=streak;userProfile.last_login=today;}document.getElementById('streakBadge').textContent=`🔥 ${streak}日連続`;}
+function updateProfileModal(){const p=userProfile;if(!p)return;const items=[['ニックネーム',p.name||'未設定'],['守護キャラクター',p.avatar_name||'未設定'],['年齢',p.age||'未設定'],['恋愛状況',p.love_status||'未設定'],['結婚観',p.marriage_view||'未設定'],['職業',p.job||'未設定'],['恋愛偏差値',p.love_score||50],['連続ログイン',`${p.streak||0}日`]];document.getElementById('profileContent').innerHTML=items.map(([k,v])=>`<div class="profile-item"><span class="profile-key">${k}</span><span class="profile-val">${v}</span></div>`).join('');}
 
-/* ===== MODE ===== */
-function switchMode(m){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));document.getElementById('panel-'+m).classList.add('active');document.getElementById('tab-'+m).classList.add('active');if(m==='diary'){renderDiaryDate();loadDiary();}if(m==='goals'){loadGoals();}if(m==='fortune'){loadWeekChart();}}
-
-/* ===== SIGN PICKER ===== */
+/* SIGN PICKER */
 const sel={my:'',partner:'',fortune:''};
 function pickSign(type,el){el.closest('.sign-picker').querySelectorAll('.sign-chip').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');sel[type]=el.dataset.sign;}
 
-/* ===== API ===== */
+/* API */
 async function callClaude(system,messages){const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system,messages})});const d=await r.json();if(!d.content)throw new Error('API error');return d.content.map(b=>b.text||'').join('');}
-function buildUserContext(){const p=userProfile;if(!p||!p.quiz_done)return'';return`\n【ユーザー情報】名前:${p.name||'不明'} 年齢:${p.age||'不明'} 恋愛状況:${p.love_status||'不明'} 結婚観:${p.marriage_view||'不明'} 職業:${p.job||'不明'} 悩み:${p.main_worry||'不明'} 性格:${p.personality||'不明'} 恋愛観:${p.love_value||'不明'} 星座:${p.zodiac||'不明'} 希望トーン:${p.tone_pref||'優しく寄り添う'}\nこのユーザー情報を最大限活用して個別化された回答をしてください。`;}
+function buildUserContext(){const p=userProfile;if(!p||!p.quiz_done)return'';return`【ユーザー】名前:${p.name||'不明'} 年齢:${p.age||'不明'} 恋愛状況:${p.love_status||'不明'} 結婚観:${p.marriage_view||'不明'} 職業:${p.job||'不明'} 悩み:${p.main_worry||'不明'} 性格:${p.personality||'不明'} 恋愛観:${p.love_value||'不明'} 星座:${p.zodiac||'不明'} トーン:${p.tone_pref||'優しく'}`;}
 
-/* ===== CHAT ===== */
-const SYS_LOVE=`あなたは「TSUKI」という名の神秘的なAI恋愛相談師です。月のように静かで包容力があり、詩的な言葉遣いをしながら具体的なアドバイスもできる。共感→気づき→行動のヒントの流れで答える。200〜400字、絵文字は🌙✨🌸💫を1〜2個最後に。`;
-const SYS_LIFE=`あなたは「TSUKI」という名の神秘的なAI人生相談師です。月のように広い視点で物事を捉え、哲学的かつ実践的なアドバイスをする。200〜400字、絵文字は🌿🌙✨を1〜2個最後に。`;
+/* CHAT */
+const SYS_LOVE=`あなたは守護キャラクター「${()=>userProfile.avatar_name||'TSUKI'}」として恋愛相談に乗ります。月のように静かで包容力があり、詩的かつ具体的。共感→気づき→行動の流れで。200〜400字、絵文字1〜2個。`;
 const chatHist={chat:[],life:[]};let uid=0;
-async function sendMsg(type){const inputId=type==='chat'?'chatInput':'lifeInput';const btnId=type==='chat'?'sendBtn':'lifeSendBtn';const scrollId=type==='chat'?'chatScroll':'lifeScroll';const ta=document.getElementById(inputId);const text=ta.value.trim();if(!text)return;addMsg(type,'user',text,scrollId);ta.value='';ta.style.height='40px';document.getElementById(btnId).disabled=true;chatHist[type].push({role:'user',content:text});const tid=addTyping(type,scrollId);try{const sys=(type==='chat'?SYS_LOVE:SYS_LIFE)+buildUserContext();const reply=await callClaude(sys,chatHist[type]);removeMsg(tid);addMsg(type,'ai',reply,scrollId);chatHist[type].push({role:'assistant',content:reply});}catch{removeMsg(tid);addMsg(type,'ai','月が一時的に雲に隠れてしまいました。もう一度お試しください🌙',scrollId);}document.getElementById(btnId).disabled=false;}
+async function sendMsg(type){
+  const inputId=type==='chat'?'chatInput':'lifeInput';const btnId=type==='chat'?'sendBtn':'lifeSendBtn';const scrollId=type==='chat'?'chatScroll':'lifeScroll';
+  const ta=document.getElementById(inputId);const text=ta.value.trim();if(!text)return;
+  addMsg(type,'user',text,scrollId);ta.value='';ta.style.height='38px';document.getElementById(btnId).disabled=true;
+  chatHist[type].push({role:'user',content:text});
+  const tid=addTyping(type,scrollId);
+  try{
+    const avatarName=userProfile.avatar_name||'TSUKI';const avatarPersonality=userProfile.avatar_personality||'神秘的で優しい';
+    const sys=type==='chat'?`あなたは守護キャラクター「${avatarName}」です。性格：${avatarPersonality}。恋愛相談師として寄り添います。${buildUserContext()} 200〜400字、絵文字1〜2個。`:`あなたは守護キャラクター「${avatarName}」です。性格：${avatarPersonality}。人生相談師として寄り添います。${buildUserContext()} 200〜400字、絵文字1〜2個。`;
+    const reply=await callClaude(sys,chatHist[type]);
+    removeMsg(tid);addMsg(type,'ai',reply,scrollId);chatHist[type].push({role:'assistant',content:reply});
+    await addLoveScore(1);
+  }catch{removeMsg(tid);addMsg(type,'ai','月が一時的に雲に隠れてしまいました。もう一度お試しください🌙',scrollId);}
+  document.getElementById(btnId).disabled=false;
+}
 function sendQuick(type,t){const inputId=type==='chat'?'chatInput':'lifeInput';document.getElementById(inputId).value=t;sendMsg(type);}
 function handleKey(e,type){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg(type);}}
-function autoGrow(el){el.style.height='40px';el.style.height=Math.min(el.scrollHeight,100)+'px';}
-function addMsg(type,role,text,scrollId){const id='m'+(uid++);const sc=document.getElementById(scrollId);const d=document.createElement('div');d.id=id;d.className='msg '+role;const icon=role==='ai'?(type==='life'?'🌿':'🌙'):'👤';d.innerHTML=`<div class="msg-av">${icon}</div><div class="bubble">${text.replace(/\n/g,'<br>')}</div>`;sc.appendChild(d);sc.scrollTop=sc.scrollHeight;return id;}
-function addTyping(type,scrollId){const id='m'+(uid++);const sc=document.getElementById(scrollId);const d=document.createElement('div');d.id=id;d.className='msg ai';const icon=type==='life'?'🌿':'🌙';d.innerHTML=`<div class="msg-av">${icon}</div><div class="bubble"><div class="dots"><span></span><span></span><span></span></div></div>`;sc.appendChild(d);sc.scrollTop=sc.scrollHeight;return id;}
+function autoGrow(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';}
+function addMsg(type,role,text,scrollId){const id='m'+(uid++);const sc=document.getElementById(scrollId);const d=document.createElement('div');d.id=id;d.className='msg '+role;const colors=(userProfile.avatar_color||'#c9a96e|#e8a0b4').split('|');const avStyle=role==='ai'?`style="background:linear-gradient(135deg,${colors[0]},${colors[1]})"`:'';\const icon=role==='ai'?(type==='life'?'🌿':'🌙'):'👤';d.innerHTML=`<div class="msg-av" ${avStyle}>${icon}</div><div class="bubble">${text.replace(/\n/g,'<br>')}</div>`;sc.appendChild(d);sc.scrollTop=sc.scrollHeight;return id;}
+function addTyping(type,scrollId){const id='m'+(uid++);const sc=document.getElementById(scrollId);const d=document.createElement('div');d.id=id;d.className='msg ai';const colors=(userProfile.avatar_color||'#c9a96e|#e8a0b4').split('|');d.innerHTML=`<div class="msg-av" style="background:linear-gradient(135deg,${colors[0]},${colors[1]})">🌙</div><div class="bubble"><div class="dots"><span></span><span></span><span></span></div></div>`;sc.appendChild(d);sc.scrollTop=sc.scrollHeight;return id;}
 function removeMsg(id){document.getElementById(id)?.remove();}
 
-/* ===== RADAR ===== */
-function drawRadar(canvasId,labels,values){const canvas=document.getElementById(canvasId);if(!canvas)return;const ctx=canvas.getContext('2d');const cx=canvas.width/2,cy=canvas.height/2,R=Math.min(cx,cy)-28,n=labels.length;ctx.clearRect(0,0,canvas.width,canvas.height);for(let lv=1;lv<=5;lv++){const r=(R*lv)/5;ctx.beginPath();for(let i=0;i<=n;i++){const a=(Math.PI*2*i/n)-Math.PI/2;i===0?ctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a)):ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));}ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;ctx.stroke();}for(let i=0;i<n;i++){const a=(Math.PI*2*i/n)-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;ctx.stroke();}ctx.beginPath();for(let i=0;i<n;i++){const a=(Math.PI*2*i/n)-Math.PI/2;const r=(R*Math.min(values[i],100))/100;i===0?ctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a)):ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));}ctx.closePath();const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R);g.addColorStop(0,'rgba(201,169,110,0.4)');g.addColorStop(1,'rgba(232,160,180,0.15)');ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='rgba(201,169,110,0.7)';ctx.lineWidth=2;ctx.stroke();const colors=['#c9a96e','#e8a0b4','#b0a0d8','#90c8a0','#f5c8d8'];const el=document.getElementById(canvasId.replace('Radar','RadarLabels'));if(el)el.innerHTML=labels.map((l,i)=>`<div class="radar-label-item"><div class="radar-dot" style="background:${colors[i%colors.length]}"></div>${l}：${values[i]}</div>`).join('');}
+/* RADAR */
+function drawRadar(canvasId,labels,values){const canvas=document.getElementById(canvasId);if(!canvas)return;const ctx=canvas.getContext('2d');const cx=canvas.width/2,cy=canvas.height/2,R=Math.min(cx,cy)-26,n=labels.length;ctx.clearRect(0,0,canvas.width,canvas.height);for(let lv=1;lv<=5;lv++){const r=(R*lv)/5;ctx.beginPath();for(let i=0;i<=n;i++){const a=(Math.PI*2*i/n)-Math.PI/2;i===0?ctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a)):ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));}ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;ctx.stroke();}for(let i=0;i<n;i++){const a=(Math.PI*2*i/n)-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;ctx.stroke();}ctx.beginPath();for(let i=0;i<n;i++){const a=(Math.PI*2*i/n)-Math.PI/2;const r=(R*Math.min(values[i],100))/100;i===0?ctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a)):ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));}ctx.closePath();const g=ctx.createRadialGradient(cx,cy,0,cx,cy,R);g.addColorStop(0,'rgba(201,169,110,0.4)');g.addColorStop(1,'rgba(232,160,180,0.15)');ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='rgba(201,169,110,0.7)';ctx.lineWidth=2;ctx.stroke();const colors=['#c9a96e','#e8a0b4','#b0a0d8','#90c8a0','#f5c8d8'];const el=document.getElementById(canvasId.replace('Radar','RadarLabels'));if(el)el.innerHTML=labels.map((l,i)=>`<div class="radar-label-item"><div class="radar-dot" style="background:${colors[i%colors.length]}"></div>${l}：${values[i]}</div>`).join('');}
 
-/* ===== PARTNER ===== */
-async function diagnosePartner(){if(!sel.my||!sel.partner){alert('両方の星座を選んでください');return;}const btn=document.getElementById('diagBtn');btn.disabled=true;btn.textContent='✦ 読み解いています… ✦';const rel=document.getElementById('relStatus').value,memo=document.getElementById('relMemo').value;const prompt=`恋愛・結婚相性診断。あなたの星座：${sel.my} / 相手：${sel.partner} / 関係性：${rel||'未回答'} / メモ：${memo||'なし'}${buildUserContext()}\nJSONのみ：{"score":50〜99,"love":1〜100,"trust":1〜100,"future":1〜100,"passion":1〜100,"harmony":1〜100,"comment":"250字診断"}`;try{const raw=await callClaude('占い師。JSONのみ出力。',[{role:'user',content:prompt}]);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());const score=Math.min(99,Math.max(50,d.score));document.getElementById('scoreNum').textContent=score;const circ=2*Math.PI*38;const sf=document.getElementById('scoreFill');sf.style.strokeDashoffset=circ;setTimeout(()=>{sf.style.strokeDashoffset=circ*(1-score/100);},100);setTimeout(()=>drawRadar('partnerRadar',['愛情深さ','信頼度','将来性','情熱','調和'],[d.love,d.trust,d.future,d.passion,d.harmony]),200);document.getElementById('partnerBody').innerHTML=d.comment.replace(/\n/g,'<br>');document.getElementById('partnerResult').classList.add('show');document.getElementById('partnerResult').scrollIntoView({behavior:'smooth'});}catch(e){alert('エラーが発生しました。もう一度お試しください。');}btn.disabled=false;btn.textContent='✦ 相性を読み解く ✦';}
+/* PARTNER */
+async function diagnosePartner(){if(!sel.my||!sel.partner){alert('両方の星座を選んでください');return;}const btn=document.getElementById('diagBtn');btn.disabled=true;btn.textContent='読み解いています…';const rel=document.getElementById('relStatus').value,memo=document.getElementById('relMemo').value;const prompt=`相性診断。私の星座：${sel.my} / 相手：${sel.partner} / 関係性：${rel||'未回答'} / メモ：${memo||'なし'}\n${buildUserContext()}\nJSONのみ：{"score":50〜99,"love":1〜100,"trust":1〜100,"future":1〜100,"passion":1〜100,"harmony":1〜100,"comment":"250字診断"}`;try{const raw=await callClaude('占い師。JSONのみ出力。',[{role:'user',content:prompt}]);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());const score=Math.min(99,Math.max(50,d.score));document.getElementById('scoreNum').textContent=score;const circ=2*Math.PI*36;const sf=document.getElementById('scoreFill');sf.style.strokeDashoffset=circ;setTimeout(()=>{sf.style.strokeDashoffset=circ*(1-score/100);},100);setTimeout(()=>drawRadar('partnerRadar',['愛情深さ','信頼度','将来性','情熱','調和'],[d.love,d.trust,d.future,d.passion,d.harmony]),200);document.getElementById('partnerBody').innerHTML=d.comment.replace(/\n/g,'<br>');document.getElementById('partnerResult').classList.add('show');document.getElementById('partnerResult').scrollIntoView({behavior:'smooth'});await addLoveScore(2);}catch(e){alert('エラーが発生しました。');}btn.disabled=false;btn.textContent='✦ 相性を読み解く ✦';}
 
-/* ===== PALM ===== */
+/* PALM */
 let palmB64=null;
 function onPalmUpload(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{palmB64=ev.target.result.split(',')[1];const prev=document.getElementById('palmPreview');prev.src=ev.target.result;prev.style.display='block';document.getElementById('palmPlaceholder').style.display='none';};reader.readAsDataURL(file);}
-async function readPalm(){const focus=document.getElementById('palmFocus').value,note=document.getElementById('palmNote').value;const btn=document.getElementById('palmBtn');btn.disabled=true;btn.textContent='✦ 読み解いています… ✦';const sys=`TSUKI手相占い師。${buildUserContext()}\nJSONのみ：{"love":1〜100,"money":1〜100,"health":1〜100,"luck":1〜100,"fate":1〜100,"reading":"300字鑑定（恋愛線・感情線・知能線・生命線・運命線に触れ${focus}中心に）"}`;try{const messages=palmB64?[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:palmB64}},{type:'text',text:`この手相を鑑定してください。気になること：${focus}、メモ：${note||'なし'}`}]}]:[{role:'user',content:`${focus}について手相占いをしてください。メモ：${note||'なし'}`}];const raw=await callClaude(sys,messages);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());setTimeout(()=>drawRadar('palmRadar',['恋愛運','金運','健康運','総合運','運命力'],[d.love,d.money,d.health,d.luck,d.fate]),200);document.getElementById('palmBody').innerHTML=d.reading.replace(/\n/g,'<br>');document.getElementById('palmResult').classList.add('show');document.getElementById('palmResult').scrollIntoView({behavior:'smooth'});}catch(e){alert('エラーが発生しました。再度お試しください。');}btn.disabled=false;btn.textContent='✦ 手相を読み解く ✦';}
+async function readPalm(){const focus=document.getElementById('palmFocus').value,note=document.getElementById('palmNote').value;const btn=document.getElementById('palmBtn');btn.disabled=true;btn.textContent='読み解いています…';const sys=`手相占い師。${buildUserContext()}\nJSONのみ：{"love":1〜100,"money":1〜100,"health":1〜100,"luck":1〜100,"fate":1〜100,"reading":"300字鑑定"}`;try{const messages=palmB64?[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:palmB64}},{type:'text',text:`気になること：${focus}、メモ：${note||'なし'}`}]}]:[{role:'user',content:`${focus}について手相占い。メモ：${note||'なし'}`}];const raw=await callClaude(sys,messages);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());setTimeout(()=>drawRadar('palmRadar',['恋愛運','金運','健康運','総合運','運命力'],[d.love,d.money,d.health,d.luck,d.fate]),200);document.getElementById('palmBody').innerHTML=d.reading.replace(/\n/g,'<br>');document.getElementById('palmResult').classList.add('show');document.getElementById('palmResult').scrollIntoView({behavior:'smooth'});await addLoveScore(2);}catch(e){alert('エラーが発生しました。');}btn.disabled=false;btn.textContent='✦ 手相を読み解く ✦';}
 
-/* ===== FORTUNE ===== */
-async function getFortune(){if(!sel.fortune){alert('星座を選んでください');return;}const focus=document.getElementById('fortuneFocus').value,mood=document.getElementById('fortuneMood').value;const today=new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'long'});const prompt=`今日（${today}）の${sel.fortune}の占い。フォーカス：${focus}、気分：${mood}。${buildUserContext()}\nJSONのみ：{"moon":"🌑🌒🌓🌔🌕🌖🌗🌘から1文字","title":"10字以内","message":"250字","love":1〜5,"money":1〜5,"work":1〜5,"health":1〜5,"color":"ラッキーカラー","number":"ラッキーナンバー","word":"キーワード","action":"今日やると良いこと","lucky_item":"ラッキーアイテム"}`;try{const raw=await callClaude('占い師。JSONのみ出力。',[{role:'user',content:prompt}]);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());document.getElementById('fortuneOrb').textContent=d.moon||'🌕';document.getElementById('fortuneLabel').textContent=d.title||"Today's Fortune";document.getElementById('fortuneBody').innerHTML=d.message.replace(/\n/g,'<br>');const bars=document.getElementById('luckBars');bars.innerHTML='';[{l:'恋愛運',v:d.love},{l:'金運',v:d.money},{l:'仕事運',v:d.work},{l:'健康運',v:d.health}].forEach(item=>{bars.innerHTML+=`<div class="luck-row"><div class="luck-label">${item.l}</div><div class="luck-track"><div class="luck-fill" style="width:0%" data-pct="${(item.v/5)*100}"></div></div><div class="luck-val">${'★'.repeat(item.v)}${'☆'.repeat(5-item.v)}</div></div>`;});document.getElementById('luckyGrid').innerHTML=`<div class="lucky-item"><div class="li-label">LUCKY COLOR</div><div class="li-val">${d.color}</div></div><div class="lucky-item"><div class="li-label">LUCKY NUMBER</div><div class="li-val">${d.number}</div></div><div class="lucky-item"><div class="li-label">KEY WORD</div><div class="li-val">${d.word}</div></div><div class="lucky-item"><div class="li-label">LUCKY ITEM</div><div class="li-val">${d.lucky_item||d.action}</div></div>`;document.getElementById('fortuneResult').classList.add('show');setTimeout(()=>{document.querySelectorAll('.luck-fill').forEach(el=>{el.style.width=el.dataset.pct+'%';});},100);document.getElementById('fortuneResult').scrollIntoView({behavior:'smooth'});// 運勢履歴保存
-if(currentUser){const today2=new Date().toISOString().split('T')[0];await sb.from('fortune_history').upsert({user_id:currentUser.id,date:today2,love:d.love*20,money:d.money*20,work:d.work*20,health:d.health*20,overall:Math.round((d.love+d.money+d.work+d.health)/4)*20},{onConflict:'user_id,date'});loadWeekChart();}}catch(e){alert('エラーが発生しました。再度お試しください。');}}
+/* FORTUNE */
+async function getFortune(){if(!sel.fortune){alert('星座を選んでください');return;}const focus=document.getElementById('fortuneFocus').value,mood=document.getElementById('fortuneMood').value;const today=new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'long'});const prompt=`今日（${today}）の${sel.fortune}の占い。フォーカス：${focus}、気分：${mood}。${buildUserContext()}\nJSONのみ：{"moon":"🌑🌒🌓🌔🌕🌖🌗🌘から1文字","title":"10字以内","message":"250字","love":1〜5,"money":1〜5,"work":1〜5,"health":1〜5,"color":"ラッキーカラー","number":"ラッキーナンバー","word":"キーワード","lucky_item":"ラッキーアイテム","action":"今日やると良いこと"}`;try{const raw=await callClaude('占い師。JSONのみ。',[{role:'user',content:prompt}]);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());document.getElementById('fortuneOrb').textContent=d.moon||'🌕';document.getElementById('fortuneLabel').textContent=d.title||"Today's Fortune";document.getElementById('fortuneBody').innerHTML=d.message.replace(/\n/g,'<br>');const bars=document.getElementById('luckBars');bars.innerHTML='';[{l:'恋愛運',v:d.love},{l:'金運',v:d.money},{l:'仕事運',v:d.work},{l:'健康運',v:d.health}].forEach(item=>{bars.innerHTML+=`<div class="luck-row"><div class="luck-label">${item.l}</div><div class="luck-track"><div class="luck-fill" style="width:0%" data-pct="${(item.v/5)*100}"></div></div><div class="luck-val">${'★'.repeat(item.v)}${'☆'.repeat(5-item.v)}</div></div>`;});document.getElementById('luckyGrid').innerHTML=`<div class="lucky-item"><div class="li-label">LUCKY COLOR</div><div class="li-val">${d.color}</div></div><div class="lucky-item"><div class="li-label">LUCKY NUMBER</div><div class="li-val">${d.number}</div></div><div class="lucky-item"><div class="li-label">KEY WORD</div><div class="li-val">${d.word}</div></div><div class="lucky-item"><div class="li-label">LUCKY ITEM</div><div class="li-val">${d.lucky_item}</div></div>`;document.getElementById('fortuneResult').classList.add('show');setTimeout(()=>{document.querySelectorAll('.luck-fill').forEach(el=>{el.style.width=el.dataset.pct+'%';});},100);document.getElementById('fortuneResult').scrollIntoView({behavior:'smooth'});if(currentUser){const today2=new Date().toISOString().split('T')[0];await sb.from('fortune_history').upsert({user_id:currentUser.id,date:today2,love:d.love*20,money:d.money*20,work:d.work*20,health:d.health*20,overall:Math.round((d.love+d.money+d.work+d.health)/4)*20},{onConflict:'user_id,date'});loadWeekChart();}}catch(e){alert('エラーが発生しました。');}}
 
-/* ===== WEEK CHART ===== */
-async function loadWeekChart(){if(!currentUser)return;const days=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*86400000);days.push(d.toISOString().split('T')[0]);}const{data}=await sb.from('fortune_history').select('*').eq('user_id',currentUser.id).in('date',days);const map={};(data||[]).forEach(r=>map[r.date]=r);const chartEl=document.getElementById('weekChart');if(!chartEl)return;const dayNames=['日','月','火','水','木','金','土'];chartEl.innerHTML=days.map(date=>{const d=new Date(date);const rec=map[date];const love=rec?rec.love:0,money=rec?rec.money:0,work=rec?rec.work:0;const maxH=80;return`<div class="week-bar-wrap"><div class="week-bar-inner" style="position:relative;height:${maxH}px;display:flex;align-items:flex-end;gap:1px">${love>0?`<div style="width:33%;height:${(love/100)*maxH}px;border-radius:3px 3px 0 0;background:var(--sakura);opacity:0.8"></div>`:'<div style="width:33%;height:2px;background:rgba(255,255,255,0.05);border-radius:2px"></div>'}${money>0?`<div style="width:33%;height:${(money/100)*maxH}px;border-radius:3px 3px 0 0;background:var(--moon);opacity:0.8"></div>`:'<div style="width:33%;height:2px;background:rgba(255,255,255,0.05);border-radius:2px"></div>'}${work>0?`<div style="width:33%;height:${(work/100)*maxH}px;border-radius:3px 3px 0 0;background:var(--lav);opacity:0.8"></div>`:'<div style="width:33%;height:2px;background:rgba(255,255,255,0.05);border-radius:2px"></div>'}</div><div class="week-bar-label">${dayNames[d.getDay()]}</div></div>`;}).join('');}
+/* WEEK CHART */
+async function loadWeekChart(){if(!currentUser)return;const days=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*86400000);days.push(d.toISOString().split('T')[0]);}const{data}=await sb.from('fortune_history').select('*').eq('user_id',currentUser.id).in('date',days);const map={};(data||[]).forEach(r=>map[r.date]=r);const chartEl=document.getElementById('weekChart');if(!chartEl)return;const dayNames=['日','月','火','水','木','金','土'];chartEl.innerHTML=days.map(date=>{const d=new Date(date);const rec=map[date];const love=rec?rec.love:0,money=rec?rec.money:0,work=rec?rec.work:0;const maxH=80;return`<div class="week-bar-wrap"><div class="week-bar-inner" style="height:${maxH}px">${love>0?`<div style="width:33%;height:${(love/100)*maxH}px;border-radius:3px 3px 0 0;background:var(--sakura);opacity:0.8;align-self:flex-end"></div>`:'<div style="width:33%;height:2px;background:rgba(255,255,255,0.05);align-self:flex-end"></div>'}${money>0?`<div style="width:33%;height:${(money/100)*maxH}px;border-radius:3px 3px 0 0;background:var(--moon);opacity:0.8;align-self:flex-end"></div>`:'<div style="width:33%;height:2px;background:rgba(255,255,255,0.05);align-self:flex-end"></div>'}${work>0?`<div style="width:33%;height:${(work/100)*maxH}px;border-radius:3px 3px 0 0;background:var(--lav);opacity:0.8;align-self:flex-end"></div>`:'<div style="width:33%;height:2px;background:rgba(255,255,255,0.05);align-self:flex-end"></div>'}</div><div class="week-bar-label">${dayNames[d.getDay()]}</div></div>`;}).join('');}
 
-/* ===== DIARY ===== */
-let diaryDate=new Date(),currentMood=3,diaryData={};
-function renderDiaryDate(){const label=diaryDate.toLocaleDateString('ja-JP',{month:'long',day:'numeric',weekday:'short'});document.getElementById('diaryDateLabel').textContent=label;}
+/* DIARY */
+let diaryDate=new Date(),currentMood=3;
+function renderDiaryDate(){document.getElementById('diaryDateLabel').textContent=diaryDate.toLocaleDateString('ja-JP',{month:'long',day:'numeric',weekday:'short'});}
 function changeDiaryDate(d){diaryDate=new Date(diaryDate.getTime()+d*86400000);renderDiaryDate();loadDiary();}
 function setMood(m){currentMood=m;document.querySelectorAll('.mood-btn').forEach(b=>{b.classList.toggle('selected',parseInt(b.dataset.mood)===m);});}
-async function loadDiary(){if(!currentUser)return;const dateStr=diaryDate.toISOString().split('T')[0];const{data}=await sb.from('diaries').select('*').eq('user_id',currentUser.id).eq('date',dateStr).single();if(data){document.getElementById('diaryGood').value=data.good_thing||'';document.getElementById('diaryBad').value=data.bad_thing||'';setMood(data.mood||3);diaryData=data;}else{document.getElementById('diaryGood').value='';document.getElementById('diaryBad').value='';setMood(3);diaryData={};}}
-async function saveDiary(){if(!currentUser)return;const dateStr=diaryDate.toISOString().split('T')[0];const good=document.getElementById('diaryGood').value.trim();const bad=document.getElementById('diaryBad').value.trim();await sb.from('diaries').upsert({user_id:currentUser.id,date:dateStr,good_thing:good,bad_thing:bad,mood:currentMood},{onConflict:'user_id,date'});alert('日記を保存しました🌙');loadCalendar();}
-async function generateWeekHighlight(){const el=document.getElementById('weekHighlight');el.innerHTML='<div style="text-align:center;padding:16px"><div class="dots"><span></span><span></span><span></span></div></div>';const days=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*86400000);days.push(d.toISOString().split('T')[0]);}const{data}=await sb.from('diaries').select('*').eq('user_id',currentUser.id).in('date',days);if(!data||data.length===0){el.innerHTML='<div style="text-align:center;color:var(--text-d);font-size:12px;padding:12px">今週の日記がまだありません🌙</div>';return;}const diaryText=data.map(d=>`${d.date}：良かったこと「${d.good_thing||'なし'}」気になったこと「${d.bad_thing||'なし'}」気分：${d.mood}/5`).join('\n');try{const sys=`TSUKI、AI人生相談師。週次ハイライトを生成する。ユーザーの1週間の日記を読んで、200字程度で温かく詩的に振り返りのメッセージを書く。良かった点・成長・来週へのメッセージを含める。${buildUserContext()}`;const reply=await callClaude(sys,[{role:'user',content:`今週の日記です：\n${diaryText}\n\n週次ハイライトを生成してください。`}]);el.innerHTML=`<div class="week-highlight-title">✦ 今週の月からのメッセージ</div><div style="font-size:12.5px;line-height:1.85;color:var(--text-s);font-family:'Shippori Mincho',serif">${reply.replace(/\n/g,'<br>')}</div>`;}catch(e){el.innerHTML='<div style="text-align:center;color:var(--text-d);font-size:12px;padding:12px">エラーが発生しました。再度お試しください。</div>';}}
+async function loadDiary(){if(!currentUser)return;const dateStr=diaryDate.toISOString().split('T')[0];const{data}=await sb.from('diaries').select('*').eq('user_id',currentUser.id).eq('date',dateStr).single();if(data){document.getElementById('diaryGood').value=data.good_thing||'';document.getElementById('diaryBad').value=data.bad_thing||'';setMood(data.mood||3);}else{document.getElementById('diaryGood').value='';document.getElementById('diaryBad').value='';setMood(3);}}
+async function saveDiary(){if(!currentUser)return;const dateStr=diaryDate.toISOString().split('T')[0];const good=document.getElementById('diaryGood').value.trim();const bad=document.getElementById('diaryBad').value.trim();await sb.from('diaries').upsert({user_id:currentUser.id,date:dateStr,good_thing:good,bad_thing:bad,mood:currentMood},{onConflict:'user_id,date'});await addLoveScore(1);loadCalendar();loadEmotionGraph();loadTimeline();generateAiDiaryComment(good,bad);}
+async function generateAiDiaryComment(good,bad){
+  const avatarName=userProfile.avatar_name||'TSUKI';
+  const sys=`あなたは守護キャラクター「${avatarName}」です。ユーザーの今日の日記を読んで、温かいひとことコメントをします。50字以内で詩的に。前日の記録があれば触れてもよい。${buildUserContext()}`;
+  try{const reply=await callClaude(sys,[{role:'user',content:`今日の日記：良かったこと「${good||'なし'}」気になったこと「${bad||'なし'}」`}]);document.getElementById('aiDiaryComment').textContent=reply;document.getElementById('aiDiaryCommentCard').style.display='block';}catch(e){console.error(e);}
+}
+async function generateWeekHighlight(){const el=document.getElementById('weekHighlight');el.innerHTML='<div style="text-align:center;padding:14px"><div class="dots"><span></span><span></span><span></span></div></div>';const days=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*86400000);days.push(d.toISOString().split('T')[0]);}const{data}=await sb.from('diaries').select('*').eq('user_id',currentUser.id).in('date',days);if(!data||data.length===0){el.innerHTML='<div style="text-align:center;color:var(--text-d);font-size:11.5px;padding:10px">今週の日記がまだありません🌙</div>';return;}const diaryText=data.map(d=>`${d.date}：良かったこと「${d.good_thing||'なし'}」気になったこと「${d.bad_thing||'なし'}」気分：${d.mood}/5`).join('\n');try{const avatarName=userProfile.avatar_name||'TSUKI';const sys=`守護キャラクター「${avatarName}」として週次ハイライトを生成。200字程度で温かく詩的に。良かった点・成長・来週へのメッセージを含める。${buildUserContext()}`;const reply=await callClaude(sys,[{role:'user',content:`今週の日記：\n${diaryText}\n\n週次ハイライトを生成してください。`}]);el.innerHTML=`<div style="font-size:9.5px;letter-spacing:0.2em;color:var(--lav);margin-bottom:8px">✦ ${avatarName}からのメッセージ</div><div style="font-size:12px;line-height:1.85;color:var(--text-s);font-family:'Shippori Mincho',serif">${reply.replace(/\n/g,'<br>')}</div>`;}catch(e){el.innerHTML='<div style="color:var(--text-d);font-size:11.5px;text-align:center;padding:10px">エラーが発生しました</div>';}}
 
-/* ===== CALENDAR ===== */
+/* CALENDAR */
 let calYear=new Date().getFullYear(),calMonth=new Date().getMonth();
-async function loadCalendar(){if(!currentUser)return;const label=`${calYear}年${calMonth+1}月`;document.getElementById('calMonthLabel').textContent=label;const firstDay=new Date(calYear,calMonth,1);const lastDay=new Date(calYear,calMonth+1,0);const startDate=`${calYear}-${String(calMonth+1).padStart(2,'0')}-01`;const endDate=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(lastDay.getDate()).padStart(2,'0')}`;const[{data:diaries},{data:fortunes}]=await Promise.all([sb.from('diaries').select('date').eq('user_id',currentUser.id).gte('date',startDate).lte('date',endDate),sb.from('fortune_history').select('date').eq('user_id',currentUser.id).gte('date',startDate).lte('date',endDate)]);const diaryDates=new Set((diaries||[]).map(d=>d.date));const fortuneDates=new Set((fortunes||[]).map(d=>d.date));const today=new Date().toISOString().split('T')[0];const grid=document.getElementById('calGrid');const dayNames=['日','月','火','水','木','金','土'];grid.innerHTML=dayNames.map(d=>`<div class="cal-header">${d}</div>`).join('');const startDow=firstDay.getDay();for(let i=0;i<startDow;i++)grid.innerHTML+=`<div class="cal-day empty"></div>`;for(let day=1;day<=lastDay.getDate();day++){const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;const isToday=dateStr===today;const hasDiary=diaryDates.has(dateStr);const hasFortune=fortuneDates.has(dateStr);let cls='cal-day';if(isToday)cls+=' today';if(hasDiary)cls+=' has-diary';else if(hasFortune)cls+=' has-fortune';grid.innerHTML+=`<div class="${cls}">${day}</div>`;}}
+async function loadCalendar(){if(!currentUser)return;const label=`${calYear}年${calMonth+1}月`;document.getElementById('calMonthLabel').textContent=label;const startDate=`${calYear}-${String(calMonth+1).padStart(2,'0')}-01`;const lastDay=new Date(calYear,calMonth+1,0);const endDate=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(lastDay.getDate()).padStart(2,'0')}`;const[{data:diaries},{data:fortunes}]=await Promise.all([sb.from('diaries').select('date').eq('user_id',currentUser.id).gte('date',startDate).lte('date',endDate),sb.from('fortune_history').select('date').eq('user_id',currentUser.id).gte('date',startDate).lte('date',endDate)]);const diaryDates=new Set((diaries||[]).map(d=>d.date));const fortuneDates=new Set((fortunes||[]).map(d=>d.date));const today=new Date().toISOString().split('T')[0];const grid=document.getElementById('calGrid');const dayNames=['日','月','火','水','木','金','土'];grid.innerHTML=dayNames.map(d=>`<div class="cal-header">${d}</div>`).join('');const firstDow=new Date(calYear,calMonth,1).getDay();for(let i=0;i<firstDow;i++)grid.innerHTML+=`<div class="cal-day empty"></div>`;for(let day=1;day<=lastDay.getDate();day++){const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;let cls='cal-day';if(dateStr===today)cls+=' today';if(diaryDates.has(dateStr))cls+=' has-diary';else if(fortuneDates.has(dateStr))cls+=' has-fortune';grid.innerHTML+=`<div class="${cls}">${day}</div>`;}}
 function changeCalMonth(d){calMonth+=d;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}loadCalendar();}
 
-/* ===== GOALS ===== */
-async function loadGoals(){if(!currentUser)return;const{data}=await sb.from('goals').select('*').eq('user_id',currentUser.id).eq('status','active').order('created_at',{ascending:false});const el=document.getElementById('goalsList');if(!data||data.length===0){el.innerHTML='<div class="card" style="text-align:center;color:var(--text-m);font-size:12.5px;padding:20px">目標をまだ設定していません🌙<br>上のボタンから最初の目標を追加してみましょう</div>';return;}el.innerHTML=data.map(g=>`<div class="goal-item"><div class="goal-header"><div class="goal-title">${g.title}</div><div class="goal-cat">${g.category||''}</div></div><div class="goal-progress-wrap"><div class="goal-progress-label"><span>進捗</span><span>${g.progress}%</span></div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${g.progress}%"></div></div></div>${g.target_date?`<div style="font-size:10px;color:var(--text-m);margin-top:4px">目標日：${new Date(g.target_date).toLocaleDateString('ja-JP',{month:'long',day:'numeric'})}</div>`:''}<div id="advice-${g.id}" class="goal-advice${g.ai_advice?' show':''}">${g.ai_advice||''}</div><div class="goal-btns"><button class="btn-goal-action" onclick="updateProgress('${g.id}',${g.progress})">進捗更新</button><button class="btn-goal-action primary" onclick="getGoalAdvice('${g.id}','${g.title}','${g.category||''}',${g.progress})">🌙 アドバイス</button><button class="btn-goal-action" onclick="completeGoal('${g.id}')">✓ 完了</button></div></div>`).join('');}
+/* EMOTION GRAPH 30日 */
+async function loadEmotionGraph(){if(!currentUser)return;const days=[];for(let i=29;i>=0;i--){const d=new Date(Date.now()-i*86400000);days.push(d.toISOString().split('T')[0]);}const{data}=await sb.from('diaries').select('date,mood').eq('user_id',currentUser.id).in('date',days);const map={};(data||[]).forEach(r=>map[r.date]=r.mood);const moodColors=['','#f08080','#c9a96e','#b0a0d8','#90c8a0','#e8a0b4'];const el=document.getElementById('emotionGraph');if(!el)return;el.innerHTML=days.map((date,i)=>{const mood=map[date]||0;const pct=mood?((mood/5)*100):0;const color=moodColors[mood]||'rgba(255,255,255,0.05)';const isToday=i===29;return`<div class="eg-bar-wrap"><div class="eg-bar" style="height:${pct||4}%;background:${mood?color:'rgba(255,255,255,0.05)'};${isToday?'box-shadow:0 0 6px rgba(201,169,110,0.5)':''}"></div>${i%7===0||isToday?`<div class="eg-label">${isToday?'今':new Date(date).getDate()}</div>`:'<div class="eg-label"></div>'}</div>`}).join('');}
+
+/* TIMELINE */
+async function loadTimeline(){if(!currentUser)return;const{data}=await sb.from('diaries').select('*').eq('user_id',currentUser.id).order('date',{ascending:false}).limit(7);const el=document.getElementById('emotionTimeline');if(!data||data.length===0){el.innerHTML='<div style="color:var(--text-d);font-size:11.5px;text-align:center;padding:10px">日記を書くとタイムラインが作られます🌙</div>';return;}const moodEmoji=['','😔','😕','😊','😄','🥰'];el.innerHTML=data.map(d=>`<div class="tl-item"><div class="tl-dot"></div><div class="tl-line"></div><div class="tl-content"><div class="tl-date">${new Date(d.date).toLocaleDateString('ja-JP',{month:'short',day:'numeric'})} ${moodEmoji[d.mood||3]}</div><div class="tl-text">${d.good_thing?`✨ ${d.good_thing}`:''} ${d.bad_thing?`💭 ${d.bad_thing}`:''}</div></div></div>`).join('');}
+
+/* PATTERN ANALYSIS */
+async function analyzePattern(){const el=document.getElementById('patternAnalysis');el.innerHTML='<div style="text-align:center;padding:14px"><div class="dots"><span></span><span></span><span></span></div></div>';const{data:diaries}=await sb.from('diaries').select('*').eq('user_id',currentUser.id).order('date',{ascending:false}).limit(14);if(!diaries||diaries.length<3){el.innerHTML='<div style="color:var(--text-d);font-size:11.5px;text-align:center;padding:10px">もう少し日記を書くと分析できます（3日分以上）🌙</div>';return;}const diaryText=diaries.map(d=>`${d.date}：気分${d.mood}/5 良かったこと「${d.good_thing||'なし'}」気になったこと「${d.bad_thing||'なし'}」`).join('\n');const sys=`あなたはユーザーの日記を分析して恋愛・感情パターンを教えます。${buildUserContext()}\n3つのパターンを発見して、それぞれ30字以内で指摘してください。JSONのみ：{"patterns":["パターン1","パターン2","パターン3"]}`;try{const raw=await callClaude(sys,[{role:'user',content:`日記データ：\n${diaryText}`}]);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());el.innerHTML=d.patterns.map(p=>`<div class="pattern-item">${p}</div>`).join('');}catch(e){el.innerHTML='<div style="color:var(--text-d);font-size:11.5px;text-align:center;padding:10px">エラーが発生しました</div>';}}
+
+/* MONTHLY REPORT */
+async function generateMonthlyReport(){const el=document.getElementById('monthlyReportArea');el.innerHTML='<div style="text-align:center;padding:14px"><div class="dots"><span></span><span></span><span></span></div></div>';const now=new Date();const yearMonth=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;const startDate=yearMonth+'-01';const lastDay=new Date(now.getFullYear(),now.getMonth()+1,0);const endDate=`${yearMonth}-${String(lastDay.getDate()).padStart(2,'0')}`;const[{data:diaries},{data:fortunes}]=await Promise.all([sb.from('diaries').select('*').eq('user_id',currentUser.id).gte('date',startDate).lte('date',endDate),sb.from('fortune_history').select('*').eq('user_id',currentUser.id).gte('date',startDate).lte('date',endDate)]);const diaryCount=diaries?.length||0;const avgMood=diaries?.length?Math.round(diaries.reduce((s,d)=>s+(d.mood||3),0)/diaries.length*10)/10:0;const diaryText=(diaries||[]).map(d=>`${d.date}：気分${d.mood}/5 良いこと「${d.good_thing||'なし'}」`).join('\n');const sys=`あなたは守護キャラクター「${userProfile.avatar_name||'TSUKI'}」として月次レポートを生成します。${buildUserContext()}\nJSONのみ：{"emotion_summary":"今月の感情サマリー（60字）","growth_points":"成長した点（60字）","love_pattern":"今月の恋愛パターン（60字）","next_advice":"来月へのアドバイス（60字）"}`;try{const raw=await callClaude(sys,[{role:'user',content:`今月のデータ：日記${diaryCount}回 平均気分${avgMood}/5\n${diaryText}`}]);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());el.innerHTML=`<div class="report-card"><div class="report-month">${now.getMonth()+1}月のあなた</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:10px;color:var(--text-m);margin-bottom:12px"><div>📔 日記：${diaryCount}回</div><div>😊 平均気分：${avgMood}/5</div></div><div class="report-section"><div class="report-section-title">✦ 感情のまとめ</div><div class="report-section-body">${d.emotion_summary}</div></div><div class="report-section"><div class="report-section-title">✦ 成長した点</div><div class="report-section-body">${d.growth_points}</div></div><div class="report-section"><div class="report-section-title">✦ 恋愛パターン</div><div class="report-section-body">${d.love_pattern}</div></div><div class="report-section"><div class="report-section-title">✦ 来月へのアドバイス</div><div class="report-section-body">${d.next_advice}</div></div></div>`;}catch(e){el.innerHTML='<div style="color:var(--text-d);font-size:11.5px;text-align:center;padding:10px">エラーが発生しました</div>';}}
+
+/* GOALS */
+async function loadGoals(){if(!currentUser)return;const{data}=await sb.from('goals').select('*').eq('user_id',currentUser.id).eq('status','active').order('created_at',{ascending:false});const el=document.getElementById('goalsList');if(!data||data.length===0){el.innerHTML='<div class="card" style="text-align:center;color:var(--text-m);font-size:12px;padding:18px">目標をまだ設定していません🌙<br>上のボタンから最初の目標を追加してみましょう</div>';return;}el.innerHTML=data.map(g=>`<div class="goal-item"><div class="goal-header"><div class="goal-title-text">${g.title}</div><div class="goal-cat">${g.category||''}</div></div><div class="goal-progress-label"><span>進捗</span><span>${g.progress}%</span></div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${g.progress}%"></div></div>${g.target_date?`<div style="font-size:9.5px;color:var(--text-m);margin-top:3px">目標日：${new Date(g.target_date).toLocaleDateString('ja-JP',{month:'long',day:'numeric'})}</div>`:''}<div id="advice-${g.id}" class="goal-advice${g.ai_advice?' show':''}">${g.ai_advice||''}</div><div class="goal-btns"><button class="btn-goal-action" onclick="updateProgress('${g.id}',${g.progress})">進捗更新</button><button class="btn-goal-action primary" onclick="getGoalAdvice('${g.id}','${g.title}','${g.category||''}',${g.progress})">🌙 アドバイス</button><button class="btn-goal-action" onclick="completeGoal('${g.id}')">✓ 完了</button></div></div>`).join('');}
 async function saveGoal(){const title=document.getElementById('goalTitle').value.trim();const cat=document.getElementById('goalCat').value;const date=document.getElementById('goalDate').value;if(!title){alert('目標タイトルを入力してください');return;}await sb.from('goals').insert({user_id:currentUser.id,title,category:cat,target_date:date||null});closeModal('goalModal');document.getElementById('goalTitle').value='';document.getElementById('goalDate').value='';loadGoals();}
-async function updateProgress(id,current){const newProgress=prompt(`現在の進捗：${current}%\n新しい進捗（0〜100）を入力してください：`,current);if(newProgress===null)return;const p=Math.min(100,Math.max(0,parseInt(newProgress)||0));await sb.from('goals').update({progress:p}).eq('id',id);loadGoals();}
-async function getGoalAdvice(id,title,category,progress){const btn=document.querySelector(`#advice-${id}`);const sys=`TSUKIのAIコーチ。目標達成のためのアドバイスを行う。${buildUserContext()}`;const prompt=`目標：「${title}」カテゴリ：${category} 現在の進捗：${progress}%\n\nこの目標を達成するための具体的なアドバイスを150字程度でください。次のステップや、達成のためのヒントを含めてください。`;try{const raw=await callClaude(sys,[{role:'user',content:prompt}]);await sb.from('goals').update({ai_advice:raw}).eq('id',id);const el=document.getElementById(`advice-${id}`);el.innerHTML=raw.replace(/\n/g,'<br>');el.classList.add('show');}catch(e){alert('エラーが発生しました。');}}
-async function completeGoal(id){if(!confirm('この目標を完了にしますか？'))return;await sb.from('goals').update({status:'completed'}).eq('id',id);loadGoals();}
+async function updateProgress(id,current){const newProgress=prompt(`現在の進捗：${current}%\n新しい進捗（0〜100）を入力：`,current);if(newProgress===null)return;const p=Math.min(100,Math.max(0,parseInt(newProgress)||0));await sb.from('goals').update({progress:p}).eq('id',id);if(p>=100)await addLoveScore(5);else await addLoveScore(1);loadGoals();}
+async function getGoalAdvice(id,title,category,progress){const sys=`守護キャラクター「${userProfile.avatar_name||'TSUKI'}」としてゴールアドバイスをします。${buildUserContext()}`;const prompt=`目標：「${title}」カテゴリ：${category} 進捗：${progress}%\n具体的なアドバイスを120字で。次のステップと達成のヒントを含めて。`;try{const raw=await callClaude(sys,[{role:'user',content:prompt}]);await sb.from('goals').update({ai_advice:raw}).eq('id',id);const el=document.getElementById(`advice-${id}`);el.innerHTML=raw.replace(/\n/g,'<br>');el.classList.add('show');}catch(e){alert('エラーが発生しました。');}}
+async function completeGoal(id){if(!confirm('この目標を完了にしますか？'))return;await sb.from('goals').update({status:'completed'}).eq('id',id);await addLoveScore(10);loadGoals();}
 </script>
 
 </body>
