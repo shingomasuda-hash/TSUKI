@@ -732,9 +732,98 @@ function quizBack(){if(quizStep>0){quizStep--;renderQuiz();}}
 /* AVATAR */
 let avatarB64=null;
 function onAvatarUpload(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{avatarB64=ev.target.result.split(',')[1];const img=document.getElementById('avatarPreviewImg');img.src=ev.target.result;img.style.display='block';document.getElementById('avatarPlaceholder').style.display='none';document.getElementById('avatarAnalyzeBtn').style.display='block';};reader.readAsDataURL(file);}
-async function analyzeAvatar(){const btn=document.getElementById('avatarAnalyzeBtn');btn.disabled=true;btn.textContent='生成中…';const sys=`あなたは神秘的なAIです。ユーザーの顔写真を見て、その人のための守護キャラクターを作ります。ユーザー情報：名前:${userProfile.name||'あなた'} 性格:${userProfile.personality||'未設定'} 恋愛観:${userProfile.love_value||'未設定'}\nJSONのみ出力：{"name":"キャラクター名（ひらがな・カタカナ2〜4文字）","personality":"キャラクターの性格（20字）","description":"キャラクターの説明（60字、月・星・自然のモチーフ）","color1":"#xxxxxx","color2":"#xxxxxx","emoji":"キャラクターを表す絵文字1文字","greeting":"ユーザーへの最初のひとこと（40字、温かく詩的に）"}`;
-try{const messages=avatarB64?[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:avatarB64}},{type:'text',text:'この人の守護キャラクターを作ってください'}]}]:[{role:'user',content:'守護キャラクターを作ってください'}];const raw=await callClaude(sys,messages);const d=JSON.parse(raw.replace(/```json|```/g,'').trim());const orb=document.getElementById('avatarOrb');orb.style.background=`linear-gradient(135deg,${d.color1},${d.color2})`;orb.textContent=d.emoji;document.getElementById('avatarCharName').textContent=d.name;document.getElementById('avatarCharDesc').textContent=d.description;document.getElementById('avatarResult').classList.add('show');document.getElementById('avatarNextBtn').style.display='block';document.getElementById('avatarAnalyzeBtn').style.display='none';
-await sb.from('profiles').update({avatar_name:d.name,avatar_personality:d.personality,avatar_description:d.description,avatar_color:d.color1+'|'+d.color2,last_ai_comment:d.greeting,last_ai_comment_date:new Date().toISOString().split('T')[0]}).eq('id',currentUser.id);userProfile.avatar_name=d.name;userProfile.avatar_personality=d.personality;userProfile.avatar_color=d.color1+'|'+d.color2;userProfile.last_ai_comment=d.greeting;}catch(e){btn.textContent='もう一度試す';console.error(e);}btn.disabled=false;}
+async function analyzeAvatar(){const btn=document.getElementById('avatarAnalyzeBtn');btn.disabled=true;btn.textContent='生成中…';
+const sys=`あなたは神秘的なAIです。ユーザーの顔写真を見て、その人のための守護キャラクターを作ります。ユーザー情報：名前:${userProfile.name||'あなた'} 性格:${userProfile.personality||'未設定'} 恋愛観:${userProfile.love_value||'未設定'}
+JSONのみ出力：{"name":"キャラクター名（ひらがな・カタカナ2〜4文字）","personality":"キャラクターの性格（20字）","description":"キャラクターの説明（60字、月・星・自然のモチーフ）","color1":"#で始まる明るめの色（例:#e8a0b4）","color2":"#で始まる色（例:#b0a0d8）","hair_color":"髪の色（例:#2d1a4a）","skin_tone":"肌色（例:#f5d5b8）","eye_color":"目の色（例:#6a4c9c）","face_shape":"顔の形（round/oval/heart/square）","hair_style":"hairshort/hairlong/hairmedium/hairbun","accessory":"star/moon/flower/none","greeting":"ユーザーへの最初のひとこと（40字、温かく詩的に）"}`;
+try{
+  const messages=avatarB64?[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:avatarB64}},{type:'text',text:'この人の守護キャラクターを作ってください。顔の特徴（髪型・目の色・肌の色）を参考にしてください。'}]}]:[{role:'user',content:'守護キャラクターを作ってください'}];
+  const raw=await callClaude(sys,messages);
+  const d=JSON.parse(raw.replace(/```json|```/g,'').trim());
+  
+  // SVGアバター生成
+  const svgAvatar=generateAvatarSVG(d);
+  const orbEl=document.getElementById('avatarOrb');
+  orbEl.innerHTML=svgAvatar;
+  orbEl.style.background='none';
+  orbEl.style.boxShadow=`0 0 30px ${d.color1}66`;
+  
+  document.getElementById('avatarCharName').textContent=d.name;
+  document.getElementById('avatarCharDesc').textContent=d.description;
+  document.getElementById('avatarResult').classList.add('show');
+  document.getElementById('avatarNextBtn').style.display='block';
+  document.getElementById('avatarAnalyzeBtn').style.display='none';
+  
+  // プロフィール保存（SVG文字列も保存）
+  const avatarSvgData=btoa(unescape(encodeURIComponent(svgAvatar)));
+  await sb.from('profiles').update({
+    avatar_name:d.name,avatar_personality:d.personality,avatar_description:d.description,
+    avatar_color:d.color1+'|'+d.color2,avatar_svg:avatarSvgData,
+    last_ai_comment:d.greeting,last_ai_comment_date:new Date().toISOString().split('T')[0]
+  }).eq('id',currentUser.id);
+  userProfile.avatar_name=d.name;userProfile.avatar_personality=d.personality;
+  userProfile.avatar_color=d.color1+'|'+d.color2;userProfile.avatar_svg=avatarSvgData;
+  userProfile.last_ai_comment=d.greeting;
+}catch(e){btn.textContent='もう一度試す';console.error(e);}
+btn.disabled=false;}
+
+function generateAvatarSVG(d){
+  const c1=d.color1||'#e8a0b4';const c2=d.color2||'#b0a0d8';
+  const hair=d.hair_color||'#3d2060';const skin=d.skin_tone||'#f5d5b8';const eye=d.eye_color||'#6a4c9c';
+  const faceShape=d.face_shape||'oval';
+  const rx=faceShape==='round'?28:faceShape==='heart'?24:faceShape==='square'?22:26;
+  const ry=faceShape==='round'?28:faceShape==='heart'?30:faceShape==='square'?28:30;
+  
+  // 髪型
+  let hairPath='';
+  const hs=d.hair_style||'hairmedium';
+  if(hs==='hairshort'){hairPath=`<ellipse cx="40" cy="22" rx="22" ry="16" fill="${hair}"/><rect x="18" y="22" width="6" height="10" rx="3" fill="${hair}"/><rect x="56" y="22" width="6" height="10" rx="3" fill="${hair}"/>`;}
+  else if(hs==='hairlong'){hairPath=`<ellipse cx="40" cy="20" rx="24" ry="18" fill="${hair}"/><rect x="16" y="25" width="8" height="35" rx="4" fill="${hair}"/><rect x="56" y="25" width="8" height="35" rx="4" fill="${hair}"/>`;}
+  else if(hs==='hairbun'){hairPath=`<ellipse cx="40" cy="22" rx="22" ry="16" fill="${hair}"/><circle cx="40" cy="8" r="9" fill="${hair}"/><ellipse cx="40" cy="17" rx="7" ry="4" fill="${hair}"/>`;}
+  else{hairPath=`<ellipse cx="40" cy="21" rx="23" ry="17" fill="${hair}"/><rect x="17" y="26" width="7" height="22" rx="4" fill="${hair}"/><rect x="56" y="26" width="7" height="22" rx="4" fill="${hair}"/>`;}
+  
+  // アクセサリー
+  let acc='';
+  if(d.accessory==='star'){acc=`<polygon points="40,2 42,8 48,8 43,12 45,18 40,14 35,18 37,12 32,8 38,8" fill="${c1}" opacity="0.9"/>`;}
+  else if(d.accessory==='moon'){acc=`<path d="M48,4 Q54,10 50,18 Q44,14 44,8 Q44,4 48,4Z" fill="${c1}" opacity="0.9"/>`;}
+  else if(d.accessory==='flower'){acc=`<circle cx="40" cy="5" r="3" fill="${c1}"/><circle cx="46" cy="7" r="2.5" fill="${c2}"/><circle cx="34" cy="7" r="2.5" fill="${c2}"/><circle cx="40" cy="5" r="2" fill="white" opacity="0.6"/>`;}
+  
+  return `<svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="bgG" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="${c2}" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="${c1}" stop-opacity="0.1"/>
+      </radialGradient>
+      <radialGradient id="skinG" cx="40%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="${skin}" stop-opacity="1"/>
+        <stop offset="100%" stop-color="${adjustColor(skin,-20)}" stop-opacity="1"/>
+      </radialGradient>
+    </defs>
+    <circle cx="40" cy="40" r="40" fill="url(#bgG)"/>
+    ${hairPath}
+    <ellipse cx="40" cy="44" rx="${rx}" ry="${ry}" fill="url(#skinG)"/>
+    <ellipse cx="31" cy="40" rx="5" ry="5.5" fill="white"/>
+    <ellipse cx="49" cy="40" rx="5" ry="5.5" fill="white"/>
+    <circle cx="31" cy="40" r="3.5" fill="${eye}"/>
+    <circle cx="49" cy="40" r="3.5" fill="${eye}"/>
+    <circle cx="32" cy="39" r="1.2" fill="white" opacity="0.8"/>
+    <circle cx="50" cy="39" r="1.2" fill="white" opacity="0.8"/>
+    <ellipse cx="40" cy="52" rx="6" ry="3" fill="${adjustColor(skin,-15)}" opacity="0.6"/>
+    <path d="M35,56 Q40,60 45,56" stroke="${adjustColor(skin,-30)}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="28" cy="46" rx="4" ry="3" fill="${c1}" opacity="0.25"/>
+    <ellipse cx="52" cy="46" rx="4" ry="3" fill="${c1}" opacity="0.25"/>
+    ${acc}
+    <circle cx="40" cy="40" r="39" fill="none" stroke="${c1}" stroke-width="0.5" opacity="0.4"/>
+  </svg>`;
+}
+
+function adjustColor(hex,amount){
+  try{
+    const r=Math.max(0,Math.min(255,parseInt(hex.slice(1,3),16)+amount));
+    const g=Math.max(0,Math.min(255,parseInt(hex.slice(3,5),16)+amount));
+    const b=Math.max(0,Math.min(255,parseInt(hex.slice(5,7),16)+amount));
+    return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+  }catch{return hex;}
+}
 function skipAvatarSetup(){userProfile.avatar_name=userProfile.avatar_name||'つき';userProfile.avatar_color=userProfile.avatar_color||'#c9a96e|#e8a0b4';sb.from('profiles').update({avatar_name:userProfile.avatar_name||'つき',avatar_color:userProfile.avatar_color}).eq('id',currentUser.id);document.getElementById('avatarSetup').classList.remove('show');showApp();}
 function finishAvatarSetup(){document.getElementById('avatarSetup').classList.remove('show');showApp();}
 
@@ -762,8 +851,16 @@ function updateGreeting(){const name=userProfile?.name||'';const hour=new Date()
 function setupAvatarUI(){
   const colors=(userProfile.avatar_color||'#c9a96e|#e8a0b4').split('|');
   const name=userProfile.avatar_name||'TSUKI';
-  const emoji=userProfile.avatar_emoji||'🌙';
-  ['chatAvatar','dmAvOrb','diaryAvOrb'].forEach(id=>{const el=document.getElementById(id);if(el){el.style.background=`linear-gradient(135deg,${colors[0]},${colors[1]})`;el.textContent=emoji;}});
+  ['chatAvatar','dmAvOrb','diaryAvOrb'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    if(userProfile.avatar_svg){
+      try{
+        const svg=decodeURIComponent(escape(atob(userProfile.avatar_svg)));
+        el.innerHTML=svg;el.style.background='none';el.style.padding='0';
+      }catch{el.style.background=`linear-gradient(135deg,${colors[0]},${colors[1]})`;el.textContent='🌙';}
+    }else{el.style.background=`linear-gradient(135deg,${colors[0]},${colors[1]})`;el.textContent='🌙';}
+  });
   ['dmAvName','diaryAvName'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=name;});
 }
 
